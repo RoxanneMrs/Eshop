@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+
+    <div class="row p-5">
+
+        <div class="col-8 border">
+
+            {% for product in products %}
+
+                <div class="col-md-12">
+                    <a href="{{ path('app_article_show', { id : product.id} ) }}">
+                        <div class="article d-flex p-3">
+
+                            <img class="col-md-4" src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
+                           
+                            <div class="d-flex flex-column ms-3">
+                                <h3> {{ product.name }} </h3>
+                                <p> {{ product.text }} </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            {% endfor %}
+
+            <div class="navigation">
+                {{ knp_pagination_render(products) }}
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+ {% extends 'base.html.twig' %}
+
+{% form_theme profileForm 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+    <div class="row col-md-8 mx-auto">
+
+        {{ form_start(profileForm, { 'attr': {'class': 'row', 'novalidate': 'novalidate'} }) }}
+
+            {{ form_row(profileForm.firstName, {'row_attr': {'class': 'col-md-6'} }) }} {# je peux mettre du style directement dans ma vue #}
+            {{ form_row(profileForm.name, {'row_attr': {'class': 'col-md-6'} }) }}
+            {{ form_row(profileForm.address, {'row_attr': {'class': 'col-md-6'} }) }}
+            {{ form_row(profileForm.city, {'row_attr': {'class': 'col-md-6'} }) }}
+            {{ form_row(profileForm.postalCode, {'row_attr': {'class': 'col-md-6'} }) }}
+            {{ form_row(profileForm.country, {'row_attr': {'class': 'col-md-6'} }) }}
+            {{ form_row(profileForm.phoneNumber, {'row_attr': {'class': 'col-md-6'} }) }}
+            {{ form_row(profileForm.picture, {'row_attr': {'class': 'col-md-6'} })}}
+
+            
+            {{ form_row(profileForm._token) }}
+
+            <button type="submit" class="btn btn-outline-primary mt-2"> Modifier </button>
+
+        {{ form_end(profileForm, {render_rest: false}) }}	
+        {# render_rest false fait en sorte que les champs non écrits dans cette page ne s'afficheront pas dans ma page modify profile même si UserType a d'autres champs #}
+
+    </div>
+
+{% endblock %}

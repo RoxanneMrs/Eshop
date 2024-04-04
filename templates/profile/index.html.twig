@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Profil de l'utilisateur!
+{% endblock %}
+
+
+{% block body %}
+    {% include 'flash.html.twig' %}
+    
+    {# var dump des infos des mon utilisateur connecté #}
+    {# {{dump(app.user)}} #}
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        Information du Profil
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ asset('/uploads/users/' ~ app.user.picture) }}" class="card-img-top" alt="{{app.user.firstName}}">
+                        <h5 class="card-title">{{ app.user.firstname }}
+                            {{ app.user.name }}</h5>
+                        <p class="card-text">Adresse :
+                            {{ app.user.address }}</p>
+                        <p class="card-text">Code Postal :
+                            {{ app.user.postalCode }}</p>
+                        <p class="card-text">Email :
+                            {{ app.user.email }}</p>
+                        <p class="card-text">Numéro de téléphone :
+                            {{ app.user.phoneNumber }}</p>
+                        <a href="{{ path('app_profile_edit') }}" class="btn btn-warning"> Modifier mes informations </a>
+                        <a href="{{ path('app_profile_password_edit') }}" class="btn btn-danger"> Modifier mot de passe </a>
+                        <a href="{# {{ path('app_profile_delete') }} #}" class="text-light btn btn-dark"> Supprimer mon compte </a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{# <a href={{path("app_forgot_password_request")}} class="btn btn-lg btn-danger" >Mot de passe oublié</a> #}
