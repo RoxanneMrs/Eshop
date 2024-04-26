@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Index product{% endblock %}
+
+{% block body %}
+    <h1>Product index</h1>
+
+{% include 'flash.html.twig' %}
+
+    <div class="col-10 mx-auto border my-3">
+
+            {% for product in products %}
+
+                <a href="{{ path('app_product_show', { id : product.id} ) }}">
+                    
+                    <div class="d-flex p-3">
+                        {% if product.picture is empty %}
+                            <img class="col-md-4" src="{{ asset('/uploads/products/default.jpg' ) }}" alt="{{product.text}}" title="{{product.name}}">
+                        {% else %}
+                            <img class="col-md-4" src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
+                        {% endif %}
+                
+
+                        <div class="col-md-8 d-flex flex-column ms-3 align-items-start">
+
+                            <h3> {{ product.name}} </h3>
+                            <p> {{ product.text }} </p>
+
+                            <a class="btn btn-success mb-2" href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
+
+                            {% if app.user and 'ROLE_ADMIN' in app.user.getroles()  %}
+                                <a class="btn btn-warning" href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                            {% endif %}
+                         
+                        </div>
+                    </div>  
+                </a>
+            {% endfor %}
+
+
+            {% if app.user and 'ROLE_ADMIN' in app.user.getroles()  %}
+                <div class="row justify-content-center">
+                    <a class="my-5 col-md-2 btn btn-success" href="{{ path('app_product_new') }}"> Create new </a>
+                </div>  
+            {% endif %}
+    </div>
+
+{% endblock %}

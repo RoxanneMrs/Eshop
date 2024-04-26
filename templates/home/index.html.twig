@@ -4,14 +4,59 @@
 
 {% block body %}
 
-    <div class="row p-5">
+    <section>
+
+        <h2> LES NOUVEAUTÉS </h2>
+
+        <div class="container">
+
+            {% for product in products %}
+
+            <div class="product-card"> 
+
+                <div class="img-container">
+                    <a href="{{ path('app_product_show', { id : product.id} ) }}">
+                        <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
+                    </a>
+                </div>    
+
+                <span> Pièce unique </span>
+
+                <h5> {{ product.name }} </h5>
+
+                <div class="trait"> </div>
+
+                <span class="price"> {{ product.price }}€</span>
+        
+                <button type="button"> Ajouter au panier </button>
+            </div>
+
+            {% endfor %}
+
+        </div>
+            
+            <button type="button" class="discover"> Découvrir </button>
+
+    </section>
+
+
+    <section>
+
+        
+
+
+    </section>
+
+
+
+    {# <div class="row p-5">
 
         <div class="col-8 border">
 
             {% for product in products %}
 
                 <div class="col-md-12">
-                    <a href="{{ path('app_article_show', { id : product.id} ) }}">
+                    <a href="{{ path('app_product_show', { id : product.id} ) }}">
                         <div class="article d-flex p-3">
 
                             <img class="col-md-4" src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
@@ -32,6 +77,6 @@
 
         </div>
 
-    </div>
+    </div>  #}
 
 {% endblock %}
