@@ -1,3 +1,4 @@
+
 import './bootstrap.js';
 /*
  * Welcome to your app's main JavaScript file!
@@ -7,21 +8,25 @@ import './bootstrap.js';
  */
 import './styles/app.scss';
 
+// this "modifies" the jquery module: adding behavior to it
+// the bootstrap module doesn't export/return anything
+require('bootstrap');
+
+// loads the jquery package from node_modules
+import $ from 'jquery'
+
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
 // NAV
-const li = document.querySelectorAll("#nav li");
-
 $('#nav li').hover(function() {
     $(this).addClass('highlight');
 }, function() {
     $(this).removeClass('highlight');
 });
 
-$('li').click(function() {
+$('#nav li').click(function() {
     $('li.selected').find('a').css('color', 'rgb(124, 95, 138)');   
     $('li').removeClass('selected');
     $(this).addClass('selected');
     $(this).find('a').css('color', 'rgb(247, 244, 240)');
 });
-
