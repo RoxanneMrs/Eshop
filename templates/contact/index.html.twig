@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ContactController!{% endblock %}
+
+{% block body %}
+
+{# je récupère en session les messages flash si j'en ai et j'itère à l'intérieur #}
+		<div class="row justify-content-center"> <div class="row col-md-8">
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	{# afficher les erreurs du formulaire #}
+
+	<div class="row justify-content-center">
+		<form class="row col-md-8">
+			{{ form_start(contactForm, { 'attr': {'class': 'row', 'novalidate': 'novalidate'} }) }}
+	    	{{ form_end(contactForm) }}
+		</form>
+	</div>
+
+{% endblock %}
