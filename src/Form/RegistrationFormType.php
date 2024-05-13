@@ -36,6 +36,7 @@ class RegistrationFormType extends AbstractType
             ])
 
             ->add('agreeTerms', CheckboxType::class, [
+                'label' => "Accepter les conditions",
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -47,15 +48,16 @@ class RegistrationFormType extends AbstractType
             ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
+                'label' => "Mot de passe",
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe doit comporter un minimum {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -92,7 +94,7 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Votre prénom doit être renseigné']),
-                    new Length(['min' => 2, 'minMessage' => 'Votre prénom doit faire au minimum 2 caractères'])
+                    new Length(['min' => 2, 'minMessage' => 'Votre prénom doit comporter un minimum de 2 caractères'])
                 ],
             ])
 
@@ -102,7 +104,7 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Votre nom doit être renseigné']),
-                    new Length(['min' => 2, 'minMessage' => 'Votre nom doit faire au minimum 2 caractères' ])],
+                    new Length(['min' => 2, 'minMessage' => 'Votre nom doit comporter un minimum de 2 caractères' ])],
             ])
 
             ->add('phoneNumber', TelType::class, [
@@ -111,8 +113,8 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez ajouter un numéro de téléphone']),
-                    new Length(['min' => 10, 'minMessage' => 'Votre numéro de téléphone doit être composé de 10 caractères',
-                                'max' => 10, 'maxMessage' => 'Votre numéro de téléphone doit être composé de 10 caractères'])
+                    new Length(['min' => 10, 'minMessage' => 'Votre numéro de téléphone doit être composé de 10 chiffres',
+                                'max' => 10, 'maxMessage' => 'Votre numéro de téléphone doit être composé de 10 chiffres'])
                 ],
             ])
 
@@ -142,8 +144,8 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Votre code postal doit être renseigné']),
-                    new Length(['min' => 5, 'minMessage' => 'Votre code postal doit faire 5 caractères',
-                                'max' => 5, 'maxMessage' => 'Votre code postal doit faire 5 caractères'])],                                 
+                    new Length(['min' => 5, 'minMessage' => 'Votre code postal doit comporter 5 caractères',
+                                'max' => 5, 'maxMessage' => 'Votre code postal doit comporter 5 caractères'])],                                 
             ])
         ;
     }

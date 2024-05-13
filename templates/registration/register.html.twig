@@ -12,69 +12,71 @@
 
      {% include 'flash.html.twig' %}
 
-    <h1>Register</h1>
+    
+    <section class="container">
+    
+        <h1 class="mb-5">Créer un compte</h1>
 
-    {{ form_errors(registrationForm) }}
+        {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm, { 'attr': {'class': 'row', 'novalidate': 'novalidate'} }) }}
+        {{ form_start(registrationForm, { 'attr': {'class': 'row container', 'novalidate': 'novalidate'} }) }}
 
-        <div class="row justify-content-center">
-            <div class="col-4">
-                {{ form_row(registrationForm.firstName) }}
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    {{ form_row(registrationForm.firstName, {'attr': {'class': 'form-purple'}}) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(registrationForm.name, {'attr': {'class': 'form-purple'}}) }}
+                </div>
             </div>
-            <div class="col-4">
-                {{ form_row(registrationForm.name) }}
-            </div>
-        </div>
 
-        <div class="row justify-content-center"> 
-            <div class="col-4">
-                {{ form_row(registrationForm.phoneNumber) }}
+            <div class="row justify-content-center"> 
+                <div class="col-4">
+                    {{ form_row(registrationForm.phoneNumber, {'attr': {'class': 'form-purple'}}) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(registrationForm.address, {'attr': {'class': 'form-purple'}}) }}
+                </div>
             </div>
-            <div class="col-4">
-                {{ form_row(registrationForm.address) }}
-            </div>
-        </div>
 
-        <div class="row justify-content-center"> 
-            <div class="col-3">
-                {{ form_row(registrationForm.city) }}
+            <div class="row justify-content-center"> 
+                <div class="col-3">
+                    {{ form_row(registrationForm.city, {'attr': {'class': 'form-purple'}}) }}
+                </div>
+                <div class="col-2">
+                    {{ form_row(registrationForm.postalCode, {'attr': {'class': 'form-purple'}}) }}
+                </div>
+                <div class="col-3">
+                    {{ form_row(registrationForm.country, {'attr': {'class': 'form-purple'}}) }}
+                </div>
             </div>
-            <div class="col-2">
-                {{ form_row(registrationForm.postalCode) }}
+            
+            <div class="row justify-content-center">
+                <div class="col-4">       
+                    {{ form_row(registrationForm.email, {'attr': {'class': 'form-purple'}}) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(registrationForm.password, {'attr' : {'class': 'form-purple'}}) }}
+                </div>
             </div>
-            <div class="col-3">
-                {{ form_row(registrationForm.country) }}
-            </div>
-        </div>
-        
-        <div class="row justify-content-center">
-            <div class="col-4">       
-                {{ form_row(registrationForm.email) }}
-            </div>
-            <div class="col-4">
-                {{ form_row(registrationForm.password, {
-                    label: 'Mot de passe'
-                }) }}
-            </div>
-        </div>
 
-        <div class="row justify-content-center">
-            <div class="col-8">
-                {{ form_row(registrationForm.picture) }}
-            </div>      
-        </div>
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    {{ form_row(registrationForm.picture, {'attr': {'class': 'form-purple'}}) }}
+                </div>      
+            </div>
 
-        <div class="row justify-content-center">
-            <div class="col-1">
-                {{ form_row(registrationForm.agreeTerms) }}
-            </div>      
-        </div>
-        
-        <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-outline-primary col-8">Register</button>
-        </div>
-        
-    {{ form_end(registrationForm) }}
+            <div class="row justify-content-center">
+                <div class="row justify-content-center">
+                    {{ form_row(registrationForm.agreeTerms, {'attr': {'class': 'form-purple'}}) }}
+                </div>      
+            </div>
+            
+            
+            <button type="submit" class="btn-modalAdd col-8">Créer mon compte</button>
+                    
+        {{ form_end(registrationForm) }}
+    
+    </section>
 
 {% endblock %}

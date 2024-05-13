@@ -1,6 +1,7 @@
-<div class="row mx-auto px-0 bg-grey-light justify-content-center pt-5">
+<footer class="row px-0 justify-content-center pt-5">
 
     <div class="row col-md-12 d-flex px-5">
+
         <div class='col-sm-6 col-md-3'>
             <ul>
                 <li class='fw-bold'>Eshop</li>
@@ -10,12 +11,12 @@
                     </a>
                 </li>
                 <li class='mt-4'>
-                    <a aria-label="Nos activités - Formation WS" href="{# {{ path('app_article_index') }} #}">
+                    <a href="{{ path('app_product_index') }}">
                         Nos produits
                     </a>
                 </li>
                 <li class='mt-4'>
-                    <a aria-label="Contactez-nous" href="{# {{ path('app_contact') }} #}">
+                    <a aria-label="Contactez-nous" href="{{ path('app_contact') }}">
                         Contact
                     </a>
                 </li>
@@ -70,8 +71,12 @@
                     </a>
                 </li>
             </ul>
-        </div>
-
+        </div>    
 
     </div>
-</div>
+
+    <div class="trait"> </div> 
+        
+    <p class="d-flex justify-content-center"> copyright 2024 </p>
+ 
+</footer>

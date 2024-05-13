@@ -30,17 +30,17 @@ class ContactType extends AbstractType
 
             ->add('topic', ChoiceType::class, [
                 
-                'label' => 'Sélectionnez un motif de contact',
+                'label' => 'Quel est le sujet de votre message ?',
 
                 'choices' => [ // pour que mon input devienne un Select
-                    'Quel est le sujet de votre message ?' => NULL,
+                    'Motif de contact' => NULL,
                     'Je souhaiterais passer une commande personnalisée' => 'Je souhaiterais passer une commande personnalisée',
                     'Il y a un problème avec ma commande'=> 'Il y a un problème avec ma commande',
                     "J'aimerais plus d'informations" => "J'aimerais plus d'informations",
                     'Autre' => 'Autre'
                 ],
                 'choice_attr' => [
-                    'Quel est le sujet de votre message ?' => ['disabled' => true] // pour qu'on ne puisse pas sélectionner cette valeur qui sert de placeholder
+                    'Motif de contact' => ['disabled' => true] // pour qu'on ne puisse pas sélectionner cette valeur qui sert de placeholder
                 ],
             ])
 

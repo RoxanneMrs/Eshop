@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ContactController!{% endblock %}
+{% block title %}Nous contacter{% endblock %}
+
+{% form_theme contactForm 'bootstrap_5_layout.html.twig' %}
 
 {% block body %}
 
@@ -12,15 +14,37 @@
 				</div>
 			{% endfor %}
 		</div>
-	</div>
 
-	{# afficher les erreurs du formulaire #}
 
-	<div class="row justify-content-center">
-		<form class="row col-md-8">
-			{{ form_start(contactForm, { 'attr': {'class': 'row', 'novalidate': 'novalidate'} }) }}
-	    	{{ form_end(contactForm) }}
-		</form>
-	</div>
+		<section class="container">
+
+			<h2 class="p-0"> Nous contacter </h2>
+			<p> Pour toute demande d'information supplémentaire ou une commande personnalisée, n'hésitez pas à nous contacter </p>
+
+			<div class="col-7">
+				{# désactiver les validations html5 par défaut #}
+				{{ form_start(contactForm, { 'attr': {'class': 'row', 'novalidate': 'novalidate'} }) }}
+
+					
+						<div>
+							{{ form_row(contactForm.firstName, {'attr': {'class': 'form-purple'}}) }}
+						</div>
+						<div>
+							{{ form_row(contactForm.name, {'attr': {'class': 'form-purple'}}) }}
+						</div>
+					
+					
+					{{ form_row(contactForm.topic, {'attr': {'class': 'form-purple'}}) }}
+					{{ form_row(contactForm.message, {'attr': {'class': 'form-purple'}}) }}
+					{{ form_row(contactForm.email, {'attr': {'class': 'form-purple'}}) }}
+					{{ form_row(contactForm.picture, {'attr': {'class': 'form-purple'}}) }}
+						
+				<button type="submit" class="btn-modalAdd">Envoyer</button>
+
+				{{ form_end(contactForm) }}
+			</div>
+				
+
+		</section>
 
 {% endblock %}
