@@ -7,42 +7,64 @@
 
 {% include 'flash.html.twig' %}
 
-    <div class="col-10 mx-auto border my-3">
+    <section>
+
+    <div class="container">
 
             {% for product in products %}
-
-                <a href="{{ path('app_product_show', { id : product.id} ) }}">
-                    
-                    <div class="d-flex p-3">
-                        {% if product.picture is empty %}
-                            <img class="col-md-4" src="{{ asset('/uploads/products/default.jpg' ) }}" alt="{{product.text}}" title="{{product.name}}">
-                        {% else %}
-                            <img class="col-md-4" src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
-                        {% endif %}
-                
-
-                        <div class="col-md-8 d-flex flex-column ms-3 align-items-start">
-
-                            <h3> {{ product.name}} </h3>
-                            <p> {{ product.text }} </p>
-
-                            <a class="btn btn-success mb-2" href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
-
-                            {% if app.user and 'ROLE_ADMIN' in app.user.getroles()  %}
-                                <a class="btn btn-warning" href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
-                            {% endif %}
-                         
+            <div class="product-card"> 
+                <div class="img-container">   
+                    <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
+                        <div class="quick-view">  
+                            <button class="btn-preview" type="button" data-bs-toggle="modal" data-bs-target="#quickViewModal-{{ product.id }}"> Aperçu rapide </button>
                         </div>
-                    </div>  
-                </a>
+                </div>    
+
+                <span> Pièce unique </span>
+                <h5> {{ product.name }} </h5>
+                <div class="trait"> </div>
+                <span class="price"> {{ product.price }}€</span>
+                <button  class="btn-add" type="button"> Ajouter au panier </button>
+            </div>
+
+            <!-- Modal -->
+                <div class="modal fade" id="quickViewModal-{{ product.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="btn-close p-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex">
+                            <div class="modal-img p-2"> 
+                                <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
+                            </div>
+                            <div class="p-2 d-flex flex-column justify-content-between">
+                                <div>
+                                    <h2 class="modal-title pt-0"> {{ product.name}} </h2>
+                                </div>
+                                <div>
+                                    <div> {{ product.price|number_format(2, '.', ' ') }}€ </div>
+                                    <div> {{ product.text }} </div>
+                                </div>
+                                <div>
+                                    <div> 
+                                        <button type="button" class="btn-modalAdd"> Ajouter au panier </button>
+                                    </div>
+                                    <div>
+                                        <a href="{{ path('app_product_show', { id : product.id} ) }}" class="fs-6"> Voir plus de détails </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
 
+        </div>
+            
+            <button type="button" class="discover"> Découvrir </button>
 
-            {% if app.user and 'ROLE_ADMIN' in app.user.getroles()  %}
-                <div class="row justify-content-center">
-                    <a class="my-5 col-md-2 btn btn-success" href="{{ path('app_product_new') }}"> Create new </a>
-                </div>  
-            {% endif %}
-    </div>
+    </section>
 
 {% endblock %}

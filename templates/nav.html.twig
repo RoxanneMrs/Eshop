@@ -7,8 +7,16 @@
       <a href="{{ path('app_home') }}"> Accueil </a>
     </li>
 
-    <li>
-      <a href=""> Nos créations </a>
+    <li id="creations">
+      <a href="{{ path('app_product_index') }}" id="creations"> Nos créations </a>
+
+      <ul id="dropdown">
+          {% for category in categories %}
+          <li>
+            <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> {{category.title}} </a>
+          </li>
+          {% endfor %}
+      </ul>
     </li>
 
     <li>

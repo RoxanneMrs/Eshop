@@ -30,3 +30,10 @@ $('#nav li').click(function() {
     $(this).addClass('selected');
     $(this).find('a').css('color', 'rgb(247, 244, 240)');
 });
+
+const CREATIONS = $("#creations");
+const DROPDOWN = $("#dropdown");
+
+CREATIONS.hover(function() {
+    DROPDOWN.slideToggle("slow")
+});

@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Service\ImageService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -92,7 +94,6 @@ class ProductController extends AbstractController
 
 
 
-
     #[Route('/{id}/delete', name: 'app_product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
@@ -107,6 +108,17 @@ class ProductController extends AbstractController
         );
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/category/{id_category}', name: 'app_get_product_by_category', methods: ['GET'])]
+    public function getProductByCategory(EntityManagerInterface $entityManager, int $id_category): Response
+    {
+        //findBy methode prédefini, permet de recuperer des données en filtrant
+        $products = $entityManager->getRepository(Product::class)->findBy(array("category" => $id_category));
+        return $this->render('product/index.html.twig', [
+            'products' => $products,
+        ]);
     }
 
 }

@@ -18,6 +18,7 @@
 
 
     {# accueil, créations, contact/commande perso, livre d'or, à propos #}
-    {% include "nav.html.twig" %}
+    {# avoir ma nav sur toutes mes pages #}
+    {{ render(controller('App\\Controller\\NavController::index')) }}
 
 </header>
