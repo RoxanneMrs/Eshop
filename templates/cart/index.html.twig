@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!{% endblock %}
+
+{% block body %}
+
+<div class="cart-container">
+    
+     {{ include('flash.html.twig') }}
+
+    <h2>Votre panier</h2>
+    
+    {% if cartItems is not empty %}   
+        
+        <table>
+            
+        
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Article</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    {# <th>Action</th> #}
+                </tr>
+            </thead>
+
+            <tbody>
+        
+            {% for i in 0..(cartItems.id|length - 1) %}
+
+                <tr>
+                <td> {{ cartItems.id[i] }} </td>
+                <td> {{ cartItems.name[i] }} </td>
+                <td> {{ cartItems.text[i] }} </td>
+                <td> <img style="width:100px" src="{{ asset('uploads/products/' ~ cartItems.picture[i]) }}" alt="Image de {{ cartItems.text[i]}}"> </td>
+                <td> {{ cartItems.price[i] }} € </td>
+                <td> {{ cartItems.stock[i] }} </td>
+                {# <td> {{ include('cart/_delete_form.html.twig') }} </td> #}
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        
+        </table>
+        
+        <div class="cart-total">
+            Total: <span>{{ cartTotal }} €</span>
+        </div>
+
+        {# <form action="{{path('app_stripe_checkout')}}" method="POST">
+            <input type="submit" name="payer" value="Pay" class="btn btn-outline-secondary">
+        </form> #}
+
+        <a href="{{ path('app_cart_delete')}}" class="btn btn-danger mt-2"> Vider le panier </a>
+
+    {% else %}
+        <p>Votre panier est vide.</p>
+    {% endif %}    
+
+</div>
+
+
+
+{% endblock %}

@@ -7,19 +7,25 @@
 
 {% include 'flash.html.twig' %}
 
-    <section>
+    <section class="section-products">
 
-    <div class="container">
+    <div class="d-flex col-8">
+
+        <ul class="m-2 products-categories col-2">
+                <li class="fs-4">Filtrer par</li>
+            {% for category in categories %}
+                <li>
+                     <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> {{category.title}} </a>
+                </li>
+            {% endfor %}         
+        </ul>
 
             {% for product in products %}
-            <div class="product-card"> 
-                <div class="img-container">   
-                    <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
-                        <div class="quick-view">  
-                            <button class="btn-preview" type="button" data-bs-toggle="modal" data-bs-target="#quickViewModal-{{ product.id }}"> Aperçu rapide </button>
-                        </div>
+            <div class="products-card"> 
+                <div class="products-img-container">   
+                    <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">      
                 </div>    
-
+                <button class="btn-add" type="button"> Aperçu rapide </button>
                 <span> Pièce unique </span>
                 <h5> {{ product.name }} </h5>
                 <div class="trait"> </div>

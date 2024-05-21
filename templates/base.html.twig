@@ -16,6 +16,8 @@
 
     <body>
         {% include "header.html.twig" %}
+
+        {{ render(controller('App\\Controller\\NavController::index')) }}
         
         <div class="container-fluid">
             {% block body %}
