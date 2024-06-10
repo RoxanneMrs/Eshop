@@ -27,38 +27,6 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,
-                        EntityManagerInterface $entityManager,
-                        SluggerInterface $slugger,
-                        ImageService $imageService ): Response
-    {
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $fileName = $imageService->copyImage("picture", $this->getParameter("article_picture_directory"), $form);
-            $product->setPicture($fileName); 
-            $entityManager->persist($product);
-            $entityManager->flush();
-
-            $this->addFlash(
-                'success',
-                'Votre produit a bien été ajouté'
-            );
-
-            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('product/new.html.twig', [
-            'product' => $product,
-            'form' => $form,
-        ]);
-    }
-
-    
     
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
@@ -112,13 +80,15 @@ class ProductController extends AbstractController
     }
 
 
+
     #[Route('/category/{id_category}', name: 'app_get_product_by_category', methods: ['GET'])]
-    public function getProductByCategory(EntityManagerInterface $entityManager, int $id_category): Response
+    public function getProductByCategory(EntityManagerInterface $entityManager, int $id_category, CategoryRepository $categoryRepository): Response
     {
         //findBy methode prédefini, permet de recuperer des données en filtrant
         $products = $entityManager->getRepository(Product::class)->findBy(array("category" => $id_category));
         return $this->render('product/index.html.twig', [
-            'products' => $products,
+            'products' => $products, 
+            'categories' => $categoryRepository->findAll(),
         ]);
     }
 

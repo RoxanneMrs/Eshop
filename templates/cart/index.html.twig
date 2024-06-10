@@ -31,13 +31,15 @@
         
             {% for i in 0..(cartItems.id|length - 1) %}
 
+                {{ dump(cartItems) }}
+
                 <tr>
                 <td> {{ cartItems.id[i] }} </td>
                 <td> {{ cartItems.name[i] }} </td>
                 <td> {{ cartItems.text[i] }} </td>
                 <td> <img style="width:100px" src="{{ asset('uploads/products/' ~ cartItems.picture[i]) }}" alt="Image de {{ cartItems.text[i]}}"> </td>
                 <td> {{ cartItems.price[i] }} € </td>
-                <td> {{ cartItems.stock[i] }} </td>
+                <td> {{ cartItems.stock[i] }} </td> 
                 {# <td> {{ include('cart/_delete_form.html.twig') }} </td> #}
                 </tr>
 

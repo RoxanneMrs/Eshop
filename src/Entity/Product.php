@@ -22,8 +22,8 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
-    #[ORM\Column]
-    private ?float $price = null;
+    #[ORM\Column(length: 255)]
+    private ?string $price = null;
 
     #[ORM\Column(length: 255)]
     private ?string $stock = null;
@@ -40,6 +40,9 @@ class Product
      */
     #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'product')]
     private Collection $orderDetails;
+
+    #[ORM\Column]
+    private ?bool $new = null;
 
     public function __construct()
     {
@@ -80,7 +83,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(float $price): static
+    public function setPrice(string $price): static
     {
         $this->price = $price;
 
@@ -149,6 +152,18 @@ class Product
                 $orderDetail->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isNew(): ?bool
+    {
+        return $this->new;
+    }
+
+    public function setNew(bool $new): static
+    {
+        $this->new = $new;
 
         return $this;
     }

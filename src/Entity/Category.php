@@ -27,6 +27,9 @@ class Category
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'category')]
     private Collection $products;
 
+    #[ORM\Column(length: 255)]
+    private ?string $picture = null;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -97,5 +100,17 @@ class Category
     // ici on fait en sorte qu'à la place, les choix affichés soient les noms de chaque catégorie
     public function __toString() {
         return $this->title;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): static
+    {
+        $this->picture = $picture;
+
+        return $this;
     }
 }

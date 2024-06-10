@@ -4,13 +4,13 @@
 
 {% block body %}
 
-    <section class="section-index">
+    <section class="section">
 
         <h2> LES NOUVEAUTÉS </h2>
 
         <div class="container">
 
-            {% for product in products %}
+            {% for product in newProducts %}
             <div class="product-card"> 
                 <div class="img-container">   
                     <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
@@ -19,39 +19,55 @@
                         </div>
                 </div>    
 
-                <span> Pièce unique </span>
+                <span class="type"> Pièce unique </span>
                 <h5> {{ product.name }} </h5>
                 <div class="trait"> </div>
                 <span class="price"> {{ product.price }}€</span>
-                <button  class="btn-add" type="button"> Ajouter au panier </button>
+
+                {% if product.stock > 0 %}
+                    <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
+                        <input type="submit" class="btn-add" value="Ajouter au panier" />
+                    </form>
+                 {% else %}
+                    <button class="btn-no-stock" disabled> Rupture de stock </button>
+                {% endif %}
+
             </div>
 
             <!-- Modal -->
                 <div class="modal fade" id="quickViewModal-{{ product.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
+
                         <div class="modal-header border-0">
                             <button type="button" class="btn-close p-0" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body d-flex">
-                            <div class="modal-img p-2"> 
+
+                        <div class="modal-body d-flex p-4">
+                            <div class="modal-img"> 
                                 <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
                             </div>
-                            <div class="p-2 d-flex flex-column justify-content-between">
+
+                            <div class="modal-infos">
                                 <div>
                                     <h2 class="modal-title pt-0"> {{ product.name}} </h2>
                                 </div>
+                        
+                                <p> {{ product.price }}€ </p>
+                                <p> {{ product.text }} </p>
+                                
+                               
                                 <div>
-                                    <div> {{ product.price|number_format(2, '.', ' ') }}€ </div>
-                                    <div> {{ product.text }} </div>
-                                </div>
-                                <div>
-                                    <div> 
-                                        <button type="button" class="btn-modalAdd"> Ajouter au panier </button>
-                                    </div>
-                                    <div>
-                                        <a href="{{ path('app_product_show', { id : product.id} ) }}" class="fs-6"> Voir plus de détails </a>
-                                    </div>
+                                    {% if product.stock > 0 %}
+                                        <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
+                                            <input type="submit" class="btn-modalAdd mb-2" value="Ajouter au panier" />
+                                        </form>
+                                    {% else %}
+                                        <button class="btn-modalNoStock" disabled> Rupture de stock </button>
+                                    {% endif %}
+
+                                    
+                                    <a href="{{ path('app_product_show', { id : product.id} ) }}" class="fs-6"> <u> Voir plus de détails </u> </a>                                    
                                 </div>
                             </div>
                         </div>
@@ -62,11 +78,59 @@
 
         </div>
             
-            <button type="button" class="discover"> Découvrir </button>
+        <a href="{{ path('app_product_index') }}" class="discover"> Découvrir </a>
+    </section>
+
+
+
+    <section class="section">
+
+        <div id="header-categories">
+            <h2> LES CRÉATIONS </h2>
+        </div>
+
+        <div class="container">
+
+             {% for category in categories %}
+                <div class="category-card">
+                    
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ asset('/uploads/categories/' ~ category.picture) }}" alt="{{category.description}}" title="{{category.title}}">
+                    </div>
+
+                    <div class="p-4">
+                        <div class="mt-4">
+                            <h4> {{category.title}} </h3>
+                        </div>
+                        <p> {{category.description }} </p> 
+                        <a class="btn-see" href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> Voir tout </a>
+                    </div>
+                </div>
+            {% endfor %}    
+
+        </div>
 
     </section>
 
 
+
+    <section class="section">
+
+        <h2 class""> PERSONNALISATION </h2>
+
+
+
+    </section>
+
+
+
+    <section class="section">
+
+        <h2 class""> AVIS </h2>
+
+
+
+    </section>
 
 {# href="{{ path('app_product_show', { id : product.id} ) }}" #}
 

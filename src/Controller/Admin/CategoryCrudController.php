@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Category;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -15,14 +16,18 @@ class CategoryCrudController extends AbstractCrudController
         return Category::class;
     }
 
-    /*
+    
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            // IdField::new('id'),
             TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('description'),
+            ImageField::new('picture')->setUploadDir('public/uploads/categories')
+            ->setBasePath('uploads/categories')
+            ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]')
+            ->setRequired(false),
         ];
     }
-    */
+    
 }

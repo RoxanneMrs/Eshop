@@ -13,12 +13,11 @@ class CartController extends AbstractController
     #[Route('/cart', name: 'app_cart')]
     public function index(Request $request): Response
     {
-
         // récup les éléments du panier depuis la session
         $session = $request->getSession();
         $cartTotal = 0;
 
-        // si session et items > alors il y a total
+        // si il y a session et items > alors il y a total
         if(!is_null($session->get('cart')) && count($session->get('cart')) > 0) {
 
             for($i = 0; $i < count($session->get('cart')["id"]); $i++) {
@@ -46,10 +45,10 @@ class CartController extends AbstractController
                 "id" => [],
                 "name" => [],
                 "text" => [],
-                "picture" => [],
-                "stock" => [],
+                "picture" => [],    
                 "price" => [],
-                "priceIdStripe" => [],
+                "stock" => [],
+                // "priceIdStripe" => [],
             ]);
         }
 
@@ -59,12 +58,12 @@ class CartController extends AbstractController
         //récupérer les infos du produit en BDD et l'ajouter à mon panier
         $product = $productRepository->find($idProduct);
         $cart["id"][] = $product->getId();
-        $cart["title"][] = $product->getName();
-        $cart["description"][] = $product->getText();
+        $cart["name"][] = $product->getName();
+        $cart["text"][] = $product->getText();
         $cart["picture"][] = $product->getPicture();
         $cart["price"][] = $product->getPrice();
         $cart["stock"][] = 1;
-        $cart["priceIdStripe"][] = $product->getPriceIdStripe();
+        // $cart["priceIdStripe"][] = $product->getPriceIdStripe();
 
         $session->set('cart', $cart);
     
@@ -96,5 +95,10 @@ class CartController extends AbstractController
     return $this->redirectToRoute('app_cart');
 
    }
+
+
+
+
+
 
 }

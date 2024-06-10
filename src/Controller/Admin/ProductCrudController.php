@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Product;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -37,8 +38,9 @@ class ProductCrudController extends AbstractCrudController
         return [
             // IdField::new('id'),
             TextField::new('name'),
+            BooleanField::new('new'),
             AssociationField::new('category'),
-            TextareaField::new('text'),
+            TextEditorField::new('text'),
             ImageField::new('picture')->setUploadDir('public/uploads/products')
             ->setBasePath('uploads/products')
             ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]')

@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div class="row col-md-8 mx-auto">
+    <section class="section">
 
         {{ form_start(profileForm, { 'attr': {'class': 'row', 'novalidate': 'novalidate'} }) }}
 
@@ -25,6 +25,6 @@
         {{ form_end(profileForm, {render_rest: false}) }}	
         {# render_rest false fait en sorte que les champs non écrits dans cette page ne s'afficheront pas dans ma page modify profile même si UserType a d'autres champs #}
 
-    </div>
+    </section>
 
 {% endblock %}

@@ -33,6 +33,27 @@
             <input type="submit" class="btn btn-success" value="Ajouter au panier" />
         </form>
 
+    <div>
+         
+         <div>
+            <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">  
+        </div>
+
+        <div class="ps-4 d-flex flex-column justify-content-between">
+            
+            <h2 class="modal-title pt-0"> {{ product.name}} </h2>             
+            <p> {{ product.price|number_format(2, '.', ' ') }}€ </p>
+            <p> {{ product.text }} </p>
+                                               
+            <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
+                <input type="submit" class="btn-modalAdd mb-2" value="Ajouter au panier" />
+            </form>
+                                                                     
+                              
+        </div>
+    </div>
+
+
     {% if app.user and 'ROLE_ADMIN' in app.user.getroles()  %}
         
 
