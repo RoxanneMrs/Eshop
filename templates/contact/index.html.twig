@@ -16,34 +16,24 @@
 		</div>
 
 
-		<section class="container">
+		<section class="d-flex flex-column justify-content-center align-items-center p-5">
 
 			<h2 class="p-0"> Nous contacter </h2>
-			<p> Pour toute demande d'information supplémentaire ou une commande personnalisée, n'hésitez pas à nous contacter </p>
+			<p> Pour toute demande d'information supplémentaire ou si vous souhaitez passer une commande personnalisée, n'hésitez pas à nous contacter </p>
 
-			<div class="col-7">
-				{# désactiver les validations html5 par défaut #}
-				{{ form_start(contactForm, { 'attr': {'class': 'row', 'novalidate': 'novalidate'} }) }}
+			
+			{{ form_start(contactForm, { 'attr': {'class': 'col-5', 'novalidate': 'novalidate'} }) }}
 
-					
-						<div>
-							{{ form_row(contactForm.firstName, {'attr': {'class': 'form-purple'}}) }}
-						</div>
-						<div>
-							{{ form_row(contactForm.name, {'attr': {'class': 'form-purple'}}) }}
-						</div>
-					
-					
-					{{ form_row(contactForm.topic, {'attr': {'class': 'form-purple'}}) }}
-					{{ form_row(contactForm.message, {'attr': {'class': 'form-purple'}}) }}
-					{{ form_row(contactForm.email, {'attr': {'class': 'form-purple'}}) }}
-					{{ form_row(contactForm.picture, {'attr': {'class': 'form-purple'}}) }}
-						
-				<button type="submit" class="btn-modalAdd">Envoyer</button>
+				{{ form_row(contactForm.firstName, {'attr': {'class': 'form-purple'}}) }}
+				{{ form_row(contactForm.name, {'attr': {'class': 'form-purple'}}) }}
+				{{ form_row(contactForm.topic, {'attr': {'class': 'form-purple'}}) }}
+				{{ form_row(contactForm.message, {'attr': {'class': 'form-purple'}}) }}
+				{{ form_row(contactForm.email, {'attr': {'class': 'form-purple'}}) }}
+				{{ form_row(contactForm.picture, {'attr': {'class': 'form-purple'}}) }}
 
-				{{ form_end(contactForm) }}
-			</div>
-				
+				<button type="submit" class="btn-modalAdd mt-3">Envoyer</button>
+
+			{{ form_end(contactForm) }}		
 
 		</section>
 

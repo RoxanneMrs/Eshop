@@ -4,11 +4,12 @@
 
 {% block body %}
 
-    <section class="container section">
+    <section class="section">
 
         <h1 class="h3 mb-3">Se connecter</h1>
         
         <form method="post">
+        
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}

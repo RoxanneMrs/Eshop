@@ -23,37 +23,7 @@
             </ul>
         </div>
 
-        <div class='col-sm-6 col-md-3'>
-            <ul>
-                <li class='fw-bold'>Administration</li>
-                <li class='mt-4'>
-                    <a aria-label="Notre partenaire vidéo sur l'Académie WS - Formation WS" href="{{path('admin')}}">
-                        BackOffice
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class='col-sm-6 col-md-3'>
-            <ul>
-                <li class='fw-bold'>Opportunités</li>
-                <li class='mt-4'>
-                    <a aria-label="Commandez un formateur - Formation WS" href="">
-                        Mentions Légales
-                    </a>
-                </li>
-                <li class='mt-4'>
-                    <a aria-label="Devenir formateur - Formation WS" href="">
-                        Politique de cookies
-                    </a>
-                </li>
-                <li class='mt-4'>
-                    <a aria-label="Devenir formateur - Formation WS" href="">
-                        Conditions générales de vente
-                    </a>
-                </li>
-            </ul>
-        </div>
+      
 
         <div class='col-sm-6 col-md-3'>
             <ul>
@@ -70,8 +40,28 @@
                         Cookies
                     </a>
                 </li>
+
+                  <li class='mt-4'>
+                    <a aria-label="Devenir formateur - Formation WS" href="">
+                        Conditions générales de vente
+                    </a>
+                </li>
             </ul>
-        </div>    
+        </div>
+        
+        
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class='col-sm-6 col-md-3'>
+                <ul>
+                    <li class='fw-bold'>Administration</li>
+                    <li class='mt-4'>
+                        <a aria-label="" href="{{path('admin')}}">
+                            BackOffice
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
 
     </div>
 

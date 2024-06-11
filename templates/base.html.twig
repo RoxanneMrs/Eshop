@@ -19,11 +19,9 @@
 
         {{ render(controller('App\\Controller\\NavController::index')) }}
         
-        <div class="container-fluid">
-            {% block body %}
+        {% block body %}
             
-            {% endblock %}
-        </div>
+        {% endblock %}
 
         {% include "footer.html.twig" %}
 

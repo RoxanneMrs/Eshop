@@ -4,11 +4,21 @@
 
 {% block body %}
 
+    <div id="banner">
+        <h1> CRÉATIONS EN COTON <br> FAITES À LA MAIN </h1>
+        <p> Réalisées en Provence </p>
+        <div id="collection"> Nouvelle collection chaque mois </div>
+    </div>
+
     <section class="section">
 
-        <h2> LES NOUVEAUTÉS </h2>
+        <div id="news" class="pt-5">           
+            <h2 class="pt-5"> LES NOUVEAUTÉS </h2>
+            <p> Découvrez notre nouvelle collection, fraîche et authentique pour égayer vos journées. </p>
+        </div>
 
-        <div class="container">
+
+        <div class="container m-3">
 
             {% for product in newProducts %}
             <div class="product-card"> 
@@ -83,10 +93,11 @@
 
 
 
-    <section class="section">
+    <section class="section vh100">
 
         <div id="header-categories">
             <h2> LES CRÉATIONS </h2>
+            <p> Embellissez votre quotidien avec douceur.</p>
         </div>
 
         <div class="container">
