@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
 
@@ -14,7 +14,7 @@
 
         <div id="news" class="pt-5">           
             <h2 class="pt-5"> LES NOUVEAUTÉS </h2>
-            <p> Découvrez notre nouvelle collection, fraîche et authentique pour égayer vos journées. </p>
+            <p> Découvrez notre toute nouvelle collection,<br> à la fois rafraichissante et authentique pour illuminer vos journées ! </p>
         </div>
 
 
@@ -93,11 +93,11 @@
 
 
 
-    <section class="section vh100">
+    <section class="section">
 
         <div id="header-categories">
             <h2> LES CRÉATIONS </h2>
-            <p> Embellissez votre quotidien avec douceur.</p>
+            <span> Embellissez votre quotidien avec douceur.</span>
         </div>
 
         <div class="container">
@@ -124,6 +124,47 @@
     </section>
 
 
+    <section class="section bg-beige">
+
+        <div id="header-comments">
+            <h2> AVIS </h2>
+            <span>Ce que vous en avez pensé : </span>
+        </div>
+
+        <div class="container py-3 my-3">
+            {% for comment in comments %}
+                <div class="comment-card m-3">
+
+                    <div class="comment-head">
+                        <div>
+                            {% if comment.user.picture is empty %}
+                                <img src="{{ asset('noPicture.png')}}" alt="Photo de profil par défaut" height="50px" width="50px" style="border-radius : 50%;"> 
+                            {% else %}
+                                <img src="{{ asset('/uploads/users/' ~ comment.user.picture) }}" alt="{{comment.user.firstName}}" height="50px" width="50px" style="border-radius : 50%;">
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between ps-3 w-100">
+                            <div class="d-flex flex-column">
+                                <span> <b> {{comment.user}} </b> - <i>acheteur vérifié</i> </span>
+                                <span> Note : {{comment.note}}/5 </span>
+                            </div>
+
+                            <span style="text-align : end;"> {{comment.date|date("d.m.Y")}} </span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        {{comment.comment}}
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </div>
+        
+        <a href="{{ path('app_comment') }}" class="btn-see-more"> Voir plus </a>
+    </section>
+
 
     <section class="section">
 
@@ -132,17 +173,6 @@
 
 
     </section>
-
-
-
-    <section class="section">
-
-        <h2 class""> AVIS </h2>
-
-
-
-    </section>
-
 {# href="{{ path('app_product_show', { id : product.id} ) }}" #}
 
     {# <div class="row p-5">

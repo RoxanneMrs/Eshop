@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ProductRepository $productRepository, PaginatorInterface $paginator, Request $request, CategoryRepository $categoryRepository): Response
+    public function index(ProductRepository $productRepository, PaginatorInterface $paginator, Request $request, CategoryRepository $categoryRepository, CommentRepository $commentRepository): Response
     {
         $products = $paginator->paginate(
             $productRepository->findAll(),
@@ -23,10 +24,18 @@ class HomeController extends AbstractController
 
         $newProducts = $productRepository->findBy(['new' => true]);
 
+        $comments = $paginator->paginate(
+            $commentRepository->findBy(['note' => 5]),
+            $request->query->getInt('page', 1),
+            5 // nombre de commentaires par page
+        );
+
+
         return $this->render('home/index.html.twig', [
             'products' => $products,
             'newProducts' => $newProducts,
             'categories' => $categoryRepository->findAll(),
+            'comments' => $comments,
         ]);
     }
 

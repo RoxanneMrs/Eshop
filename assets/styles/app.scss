@@ -12,6 +12,7 @@ a {
 ul {
     list-style: none;
     padding: 0px;
+    margin-bottom: 0;
 }
 
 h2 {
@@ -26,10 +27,42 @@ input[type="checkbox"] {
     accent-color: rgb(86, 36, 110);
 }
 
-.form-check-input:checked {
-        background-color: rgb(86, 36, 110);
-        border-color:rgb(86, 36, 110) ;
-    }    
+textarea {
+    resize: vertical;
+    max-height: 250px;
+    height:100px;
+    overflow-y: hidden;
+}
+
+
+///
+.container {
+    width: 70vw;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.banner {
+    opacity: 0.8;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+.bg-beige {
+   background: rgb(241, 238, 234);
+}
 
 // HEADER
 .delivery-banner {
@@ -67,12 +100,12 @@ input[type="search"]:hover {
     background-color: rgb(247, 244, 240);
 }
 
-nav {
-    background-color: rgb(241, 238, 234); 
+#nav {
+    background-color: rgb(241, 237, 230); 
     cursor: pointer; 
 }
 
-nav li {
+#nav li {
     display: flex;
     width: 100vw;
     justify-content: space-around;
@@ -80,7 +113,7 @@ nav li {
     z-index: 1;
 }
 
-nav a {
+#nav a {
     color: rgb(124, 95, 138);
 }
 
@@ -102,7 +135,7 @@ nav a {
     position: absolute;
     width: 100%;
     top: 100%;
-    background-color: rgb(247, 244, 240);
+    background-color: rgb(241, 237, 230);
 }
 
 #dropdown li,
@@ -111,34 +144,11 @@ nav a {
     text-align: center;
 }
 
-
-///
-.container {
-    width: 70vw;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    // padding: 4rem 0rem 5rem 0rem;
-}
-
-.vh100 {
-   height: 100vh; 
-}
-
-
 // ACCUEIL
 #banner {
     background: url(/public/lavender_banner.png) no-repeat;
     opacity: 0.8;
-    width: 100vw;
+    width: 100%;
     height: 300px;
     display: flex;
     flex-direction: column;
@@ -155,6 +165,7 @@ nav a {
     p {
         font-size: 1.5rem;
         color: white;
+        margin: 0;
     }
 
     #collection {
@@ -168,8 +179,7 @@ nav a {
     }
 }
 
-
-// SECTION NOUVEAUTES
+// ACCUEIL : SECTION NOUVEAUTES
 #news {
     color: rgb(124, 95, 138);
 
@@ -177,13 +187,14 @@ nav a {
         padding-top: 1rem;
         font-size: larger;
         font-weight: bold;
+        text-align: center;
     }
 }
 
 .product-card {
     width: 250px;
     text-align: center;
-    padding: 1rem;
+    padding: 0.7rem 1rem;
     position: relative;
     margin: 1rem;
     border: 1px solid transparent;
@@ -261,7 +272,7 @@ nav a {
 .btn-add {
     width: 100%;
     background-color: rgb(248, 247, 246);
-    color: rgb(136, 173, 139);
+    color: rgb(127, 167, 130);
     border-color:rgb(136, 173, 139);
     border-style: solid;
     padding: 0.2rem;
@@ -287,7 +298,6 @@ nav a {
 .discover:hover {
     background-color: rgba(136, 173, 139, 0.8);
 }
-
 
 // MODAL
 .modal-content {
@@ -327,9 +337,7 @@ nav a {
     width: 50%;
 }
 
-
-
-// SECTION CREATIONS
+// ACCUEIL : SECTION CREATIONS
 #header-categories {
     width: 100vw;
     height: 200px;
@@ -343,7 +351,7 @@ nav a {
         color: white;
     }
 
-    p {
+    span {
         color: white;
         font-size: larger;
         font-weight: bold;
@@ -396,7 +404,47 @@ nav a {
     transform: translateY(50px); /* Ajuste la valeur selon l'effet désiré */
 }
 
+.container .category-card:first-child,
+.container .category-card:nth-child(3),
+.container .category-card:nth-child(4),
+.container .category-card:nth-child(6) {
+    transform: translateY(20px); /* Ajuste la valeur selon l'effet désiré */
+} 
 
+
+// ACCUEIL : SECTION COMMENTAIRES 
+#header-comments {
+    width: 100%;
+    height: 200px;
+    background-color: rgba(124, 95, 138, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h2 {
+        color: white;
+    }
+
+    span {
+        color: white;
+        font-size: larger;
+        font-weight: bold;
+    }
+}
+
+.btn-see-more {
+    background-color: rgba(124, 95, 138, 1);
+    color: white;
+    border: none;
+    font-size: 1.3rem;
+    padding: 0.2rem 4rem;
+    margin-bottom: 1rem;
+
+    &:hover {
+    opacity: 0.8;
+    }
+}
 
 // FORMULAIRES
 .form-purple {
@@ -404,11 +452,12 @@ nav a {
     border-color : rgb(86, 36, 110);
 }
 
-textarea {
-    resize: vertical;
-    max-height: 200px;
-}
 
+.form-check-input:checked {
+        background-color: rgb(86, 36, 110);
+        border-color:rgb(86, 36, 110) ;
+    }   
+    
 
 // FOOTER
 footer {
@@ -419,7 +468,6 @@ footer {
     height: 1px;
     background-color: rgb(86, 36, 110);
 }
-
 
 
 /// PAGE PRODUCT ///
@@ -456,3 +504,70 @@ footer {
     border: 1px solid black;
 }
 
+
+//// PAGE LIVRE D'OR
+.banner-comments {
+    background: url(/public/banner1.png) no-repeat;
+    background-position-y: center;
+    // background-position-x: center;
+    opacity: 0.8;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+        color: white;
+    }
+}
+
+.comment-card {
+    border-radius: 45px 0px;
+    background: rgba(197, 220, 200, 0.6);
+    color: black;
+    width: 400px;
+    height: 175px;
+    padding: 1rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.comment-head {
+    display: flex;
+    width: 100%;
+}
+
+.write-comment {
+    padding: 1rem;
+    border: 1px solid rgb(86, 36, 110);
+    background: white;
+}
+
+.pagination {
+
+    nav {
+        margin: 2rem 0rem 1rem 0rem;       
+        background-color: transparent;
+
+        span {
+            margin: 0 10px;
+        }
+
+        .active span {
+            background: rgb(178, 204, 181);
+            border: 1px solid rgb(178, 204, 181);
+        }
+    }
+        
+
+    a {
+        border: 1px solid rgba(197, 220, 200, 1);
+        color: black;
+        float: left;
+        margin: 0 10px;
+        text-decoration: none;
+        transition: background-color 3s;    
+    }
+
+}

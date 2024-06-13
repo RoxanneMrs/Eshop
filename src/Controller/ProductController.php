@@ -37,50 +37,6 @@ class ProductController extends AbstractController
     }
 
 
-
-    #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            $this->addFlash(
-                'success',
-                'Votre article a bien été modifié'
-            );
-
-            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('product/edit.html.twig', [
-            'product' => $product,
-            'form' => $form,
-        ]);
-    }
-
-
-
-    #[Route('/{id}/delete', name: 'app_product_delete', methods: ['POST'])]
-    public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($product);
-            $entityManager->flush();
-        }
-
-        $this->addFlash(
-            'success',
-            'Votre produit a bien été supprimé'
-        );
-
-        return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-
-
     #[Route('/category/{id_category}', name: 'app_get_product_by_category', methods: ['GET'])]
     public function getProductByCategory(EntityManagerInterface $entityManager, int $id_category, CategoryRepository $categoryRepository): Response
     {
