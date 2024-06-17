@@ -3,79 +3,62 @@
 {% block title %} Index product{% endblock %}
 
 {% block body %}
-    <h1>Product index</h1>
 
-{% include 'flash.html.twig' %}
+    <div id="banner-contact">
+		<h1> Les créations de l'Atelier </h1>
+	</div>
 
     <section class="section-products">
 
-    <div class="d-flex col-8">
+        <div class="filter">
 
-        <ul class="m-2 products-categories col-2">
-                <li class="fs-4">Filtrer par</li>
-            {% for category in categories %}
-                <li>
-                     <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> {{category.title}} </a>
-                </li>
-            {% endfor %}         
-        </ul>
+            <h4> Filtrer par </h4>
 
-           {% for product in products %}
-            <div class="products-card"> 
-                <a href="{{ path('app_product_show', { id : product.id} ) }}">
-                    <div class="products-img-container">   
-                        <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
-                    </div>    
-
-                    <span class="type"> Pièce unique </span>
-                    <h5> {{ product.name }} </h5>
-                    <div class="trait"> </div>
-                    <span class="price"> {{ product.price }}€</span>
-                    <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
-                        <input type="submit" class="btn-add" value="Ajouter au panier" />
-                    </form>
-                </a>
-            </div>
-
-            <!-- Modal -->
-                <div class="modal fade" id="quickViewModal-{{ product.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-
-                        <div class="modal-header border-0">
-                            <button type="button" class="btn-close p-0" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-
-                        <div class="modal-body d-flex p-5">
-                            <div class="modal-img"> 
-                                <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
-                            </div>
-
-                            <div class="d-flex flex-column justify-content-between">
-                                <div>
-                                    <h2 class="modal-title pt-0"> {{ product.name}} </h2>
-                                </div>
-                        
-                                <p> {{ product.price|number_format(2, '.', ' ') }}€ </p>
-                                <p> {{ product.text }} </p>
-                                
-                                <div>
-                                    <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
-                                        <input type="submit" class="btn-modalAdd mb-2" value="Ajouter au panier" />
-                                    </form>
-                                    
-                                    <a href="{{ path('app_product_show', { id : product.id} ) }}" class="fs-6"> <u> Voir plus de détails </u> </a>                                    
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-
+            <form>
+                <select class="form-select col-2" id="filter" name="filter">
+                    <option selected disabled> Trier par </option>
+                    <option value="asc"> Prix (bas à élevé) </option>
+                    <option value="desc"> Prix (élevé à bas) </option>
+                </select>
+            </form>
         </div>
-            
 
+
+        <div class="container-products">  
+        
+            <ul id="products-categories" class="col-2">
+                {% for category in categories %}
+                    <li>
+                        <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> {{category.title}} </a>
+                    </li>
+                {% endfor %}         
+            </ul>
+
+            <div class="products">
+            
+          
+           
+                {% for product in products %}
+                    <div class="products-card" id="list-products"> 
+                        <a href="{{ path('app_product_show', { id : product.id} ) }}">
+                            <div class="products-img-container">   
+                                <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
+                            </div>    
+
+                            <span class="type"> Pièce unique </span>
+                            <h5> {{ product.name }} </h5>
+                            <div class="trait"> </div>
+                            <span class="price"> {{ product.price }}€</span>
+                            <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
+                                <input type="submit" class="btn-add" value="Ajouter au panier" />
+                            </form>
+                        </a>
+                    </div>
+                {% endfor %}
+              
+            </div>
+    
+        </div>
     </section>
 
 {% endblock %}

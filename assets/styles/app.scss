@@ -40,7 +40,6 @@ textarea {
     width: 70vw;
     margin: 0 auto;
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -49,7 +48,7 @@ textarea {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    margin: 2rem;
 }
 
 .banner {
@@ -63,6 +62,7 @@ textarea {
 .bg-beige {
    background: rgb(241, 238, 234);
 }
+
 
 // HEADER
 .delivery-banner {
@@ -146,7 +146,9 @@ input[type="search"]:hover {
 
 // ACCUEIL
 #banner {
-    background: url(/public/lavender_banner.png) no-repeat;
+    background: url(/public/lavender_banner_scroll.png) no-repeat;
+    background-attachment: fixed;
+    background-position-y: top;
     opacity: 0.8;
     width: 100%;
     height: 300px;
@@ -155,6 +157,7 @@ input[type="search"]:hover {
     align-items: center;
     justify-content: center;
     position: relative;
+    margin-bottom: 2rem;
 
     h1 {
         color: white;
@@ -173,9 +176,9 @@ input[type="search"]:hover {
         font-size: 1.5rem;
         background-color: rgb(86, 36, 110);
         color: white;
-        padding: 1.5rem;
+        padding: 0.5rem 1rem;
         border-radius: 50px;      
-        bottom : -40px;
+        bottom : -24px;
     }
 }
 
@@ -292,7 +295,7 @@ input[type="search"]:hover {
     background-color: rgba(136, 173, 139, 1);
     color: rgb(252, 251, 250);
     padding: 0.2rem 4rem;
-    margin: 1rem;
+    margin: 1rem 0rem 2rem 0rem;
 }
 
 .discover:hover {
@@ -339,7 +342,7 @@ input[type="search"]:hover {
 
 // ACCUEIL : SECTION CREATIONS
 #header-categories {
-    width: 100vw;
+    width: 100%;
     height: 200px;
     background-color: rgba(136, 173, 139, 1);
     display: flex;
@@ -411,6 +414,30 @@ input[type="search"]:hover {
     transform: translateY(20px); /* Ajuste la valeur selon l'effet désiré */
 } 
 
+// ACCUEIL : SECTION CONTACT/PERSONNALISATION PROJETS
+.border-purple {
+    border: 1px solid rgb(86, 36, 110);
+    border-top: none;
+    margin: 0rem 2rem 2rem 2rem;
+
+    p {
+        text-align: center;
+    }
+}
+
+#header-contact {
+    width: 100%;
+    height: 200px;
+    background-color: rgb(241, 238, 234);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h2, span {
+       color: rgba(124, 95, 138, 1); 
+    }
+}
 
 // ACCUEIL : SECTION COMMENTAIRES 
 #header-comments {
@@ -471,48 +498,146 @@ footer {
 
 
 /// PAGE PRODUCT ///
-.section-products {
+#banner-products {
+    background: url(/public/banner_contact.png) no-repeat;
+    background-position-x: center;
+    background-attachment: fixed;
+    background-position-y:center;
+    opacity: 0.8;
+    width: 100%;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 5rem;
+    text-align: center;
+
+    h1, p {
+        color: white;
+    }
+
+    p {
+        font-size: large;
+        font-weight: bold;
+    }
 }
 
-.products-categories {
-    background-color: rgb(247, 244, 240);
-    text-align: center;
+.section-products {
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding: 5rem;
+    margin: auto;
+}
+
+
+.filter {
+    height: 50px;
+    margin: 0rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 0.5rem;
+
+    h3 {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.form-select {
+    width: 200px;
+}
+
+.container-products {
+    width: 70vw;
+    display: flex;
+    justify-content: center;
+}
+
+#products-categories {
+    margin: 1rem;
+
+    li {
+        padding: 0.5rem;
+    }
 } 
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    // justify-content: center;
+    align-content: flex-start;
+    
+}
 
 .products-card {
     width: 200px;
     text-align: center;
-    padding: 1.5rem;
+   
+    margin: 1rem;
     position: relative;
+    // box-shadow: 0px 5px 5px 1px rgba(124, 95, 138, 0.5);
+    // background: rgb(255, 255, 255);
+    
+    h5 {
+        color: rgb(124, 95, 138);
+        padding: 0.2rem;
+    }
 }
 
 .products-img-container {
     width: 100%;
-    overflow: hidden;
+    height: 200px;
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 0.3rem;
+
+    img {
+        object-fit: cover;
+        object-position: center center;
+        width: 100%;
+        height: 100%;
+    }
 }
 
-.products-img-container img {
+
+//// PAGE CONTACT
+#banner-contact {
+    background: url(/public/banner_thread_scroll.png) no-repeat;
+    background-position-x: center;
+    background-attachment: fixed;
+    background-position-y:center;
+    opacity: 0.8;
+    width: 100vw;
     height: 200px;
-    object-fit:contain;
-    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    h1, p {
+        color: white;
+    }
+
+    p {
+        font-size: large;
+        font-weight: bold;
+    }
 }
 
 
 //// PAGE LIVRE D'OR
-.banner-comments {
-    background: url(/public/banner1.png) no-repeat;
-    background-position-y: center;
+#banner-comments {
+    background: url(/public/banner_comments_scroll.png) no-repeat;
+    background-position-y: top;
+    background-attachment: fixed;
     // background-position-x: center;
     opacity: 0.8;
     width: 100%;
-    height: 150px;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;

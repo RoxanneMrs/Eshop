@@ -6,7 +6,12 @@
 
 {% block body %}
 
-{# je récupère en session les messages flash si j'en ai et j'itère à l'intérieur #}
+	<div id="banner-contact">
+		<h1> NOUS CONTACTER </h1>
+		<p> Si vous souhaitez une commande personnalisée ou des informations supplémentaires, <br> Contactez nous, nous sommes là pour vous répondre ! </p>
+	</div>
+
+	{# je récupère en session les messages flash si j'en ai et j'itère à l'intérieur #}
 		<div class="row justify-content-center"> <div class="row col-md-8">
 			{% for message in app.flashes('success') %}
 				<div class="alert alert-success">
@@ -15,13 +20,8 @@
 			{% endfor %}
 		</div>
 
+		<section class="section">
 
-		<section class="d-flex flex-column justify-content-center align-items-center p-5">
-
-			<h2 class="p-0"> Nous contacter </h2>
-			<p> Pour toute demande d'information supplémentaire ou si vous souhaitez passer une commande personnalisée, n'hésitez pas à nous contacter </p>
-
-			
 			{{ form_start(contactForm, { 'attr': {'class': 'col-5', 'novalidate': 'novalidate'} }) }}
 
 				{{ form_row(contactForm.firstName, {'attr': {'class': 'form-purple'}}) }}

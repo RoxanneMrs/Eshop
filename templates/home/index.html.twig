@@ -10,15 +10,15 @@
         <div id="collection"> Nouvelle collection chaque mois </div>
     </div>
 
-    <section class="section">
+    <section class="section border-purple">
 
-        <div id="news" class="pt-5">           
+        <div id="news" class="pt-3">           
             <h2 class="pt-5"> LES NOUVEAUTÉS </h2>
             <p> Découvrez notre toute nouvelle collection,<br> à la fois rafraichissante et authentique pour illuminer vos journées ! </p>
         </div>
 
 
-        <div class="container m-3">
+        <div class="container justify-content-center m-3">
 
             {% for product in newProducts %}
             <div class="product-card"> 
@@ -100,7 +100,7 @@
             <span> Embellissez votre quotidien avec douceur.</span>
         </div>
 
-        <div class="container">
+        <div class="container justify-content-center">
 
              {% for category in categories %}
                 <div class="category-card">
@@ -124,6 +124,22 @@
     </section>
 
 
+
+    <section class="section p-0 border-purple">
+        
+        <div id="header-contact">
+            <h2> VOS PROJETS </h2>
+            <span> Confectionnez avec nous un accessoire à votre image.</span>
+        </div>
+
+        <div class="container justify-content-center">
+            <p> Vous avez une idée précise en tête ? Nos créations en coton sont personnalisables ! <br> Pour un cadeau, un événement spécial ou tout simplement avoir un accessoire qui vous ressemble, nous sommes là pour faire naître vos idées. </p>
+        </div>
+			
+    </section>
+
+
+
     <section class="section bg-beige">
 
         <div id="header-comments">
@@ -131,7 +147,7 @@
             <span>Ce que vous en avez pensé : </span>
         </div>
 
-        <div class="container py-3 my-3">
+        <div class="container justify-content-center py-3 my-3">
             {% for comment in comments %}
                 <div class="comment-card m-3">
 
@@ -162,17 +178,10 @@
             
         </div>
         
-        <a href="{{ path('app_comment') }}" class="btn-see-more"> Voir plus </a>
+        <a href="{{ path('app_comment') }}" class="btn-see-more mb-5"> Voir plus </a>
     </section>
 
 
-    <section class="section">
-
-        <h2 class""> PERSONNALISATION </h2>
-
-
-
-    </section>
 {# href="{{ path('app_product_show', { id : product.id} ) }}" #}
 
     {# <div class="row p-5">

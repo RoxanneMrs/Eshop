@@ -30,7 +30,7 @@ class CommentController extends AbstractController
                     $note = $form->get('note')->getData();
                     $comment->setNote($note);
                     $comment->setDate(new \DateTime);
-                    $comment->setValid(false);
+                    $comment->setValid(true);
                     $entityManager->persist($comment); // insérer en base
                     $entityManager->flush(); // fermer la transaction executée par la BDD
         

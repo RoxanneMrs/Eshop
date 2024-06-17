@@ -33,6 +33,17 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findProductByFilter($filter) : array {
+
+        return $this->createQueryBuilder('a')
+
+            ->orderBy("a.price", $filter)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
