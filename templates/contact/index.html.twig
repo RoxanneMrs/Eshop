@@ -22,13 +22,13 @@
 
 		<section class="section">
 
-			{{ form_start(contactForm, { 'attr': {'class': 'col-5', 'novalidate': 'novalidate'} }) }}
+			{{ form_start(contactForm, { 'attr': {'class': 'col-5 box-shadow', 'novalidate': 'novalidate'} }) }}
 
-				{{ form_row(contactForm.firstName, {'attr': {'class': 'form-purple'}}) }}
-				{{ form_row(contactForm.name, {'attr': {'class': 'form-purple'}}) }}
-				{{ form_row(contactForm.topic, {'attr': {'class': 'form-purple'}}) }}
-				{{ form_row(contactForm.message, {'attr': {'class': 'form-purple'}}) }}
-				{{ form_row(contactForm.email, {'attr': {'class': 'form-purple'}}) }}
+				{{ form_row(contactForm.firstName, {'attr': {'class': 'form-purple mb-4'}}) }}
+				{{ form_row(contactForm.name, {'attr': {'class': 'form-purple mb-4'}}) }}
+				{{ form_row(contactForm.topic, {'attr': {'class': 'form-purple mb-4'}}) }}
+				{{ form_row(contactForm.message, {'attr': {'class': 'form-purple mb-4'}}) }}
+				{{ form_row(contactForm.email, {'attr': {'class': 'form-purple mb-4'}}) }}
 				{{ form_row(contactForm.picture, {'attr': {'class': 'form-purple'}}) }}
 
 				<button type="submit" class="btn-modalAdd mt-3">Envoyer</button>

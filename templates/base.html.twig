@@ -15,14 +15,15 @@
     </head>
 
     <body>
+           
         {% include "header.html.twig" %}
 
         {{ render(controller('App\\Controller\\NavController::index')) }}
-        
+
         {% block body %}
         {% endblock %}
 
         {% include "footer.html.twig" %}
-
+    
     </body>
 </html>

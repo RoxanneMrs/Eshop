@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div id="banner-contact">
+    <div id="banner-products">
 		<h1> Les créations de l'Atelier </h1>
 	</div>
 
@@ -27,6 +27,12 @@
         <div class="container-products">  
         
             <ul id="products-categories" class="col-2">
+
+                <li> 
+                    <a href="{{ path('app_product_index') }}"> Voir tout </a>
+                </li>
+            
+
                 {% for category in categories %}
                     <li>
                         <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> {{category.title}} </a>
@@ -34,12 +40,10 @@
                 {% endfor %}         
             </ul>
 
-            <div class="products">
+            <div class="products" id="list-products">
             
-          
-           
                 {% for product in products %}
-                    <div class="products-card" id="list-products"> 
+                    <div class="products-card"> 
                         <a href="{{ path('app_product_show', { id : product.id} ) }}">
                             <div class="products-img-container">   
                                 <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">

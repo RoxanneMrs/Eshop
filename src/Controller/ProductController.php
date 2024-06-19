@@ -38,6 +38,7 @@ class ProductController extends AbstractController
     }
 
 
+
     #[Route('/category/{id_category}', name: 'app_get_product_by_category', methods: ['GET'])]
     public function getProductByCategory(EntityManagerInterface $entityManager, int $id_category, CategoryRepository $categoryRepository): Response
     {
@@ -51,12 +52,61 @@ class ProductController extends AbstractController
 
 
 
+    #[Route('/category/{id_category}/filter/{filter}', name: 'app_get_filtered_product_by_category', methods: ['GET'])]
+    public function getFilteredProductsByCategory(EntityManagerInterface $entityManager, int $id_category, string $filter): JsonResponse
+    {
+        $products = $entityManager->getRepository(Product::class)->findBy(array("category" => $id_category));
+
+        // on trie les produits par rapport au filtre choisi 
+        if ($filter === 'asc') {
+            usort($products, function($a, $b) {
+            return $a->getPrice() - $b->getPrice();
+            });
+        } else if ($filter === 'desc') {
+            usort($products, function($a, $b) {
+            return $b->getPrice() - $a->getPrice();
+            });
+        }
+
+        // on met les infos des produits dans un tableau qui sera transformé en json
+        $productsData = [];
+        foreach ($products as $product) {
+            $productData = [
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'text' => $product->getText(),
+            'picture' => $product->getPicture(),
+            'price'=> $product->getPrice(),
+            'category_id' => $product->getCategory() ? $product->getCategory()->getId() : null,
+            'category_name' => $product->getCategory() ? $product->getCategory()->getTitle() : null,
+            ];
+            $productsData[] = $productData;
+        }
+
+        // on transforme en json
+        return new JsonResponse($productsData);
+    }
+
+
+
     #[Route('/filter/{filter}', name: 'app_product_filter')]
     public function getProductByFilter(ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request, string $filter): JsonResponse {
-        
+    
+        $products = $productRepository->findProductByFilter($filter);
+
+        if ($filter === 'asc') {
+            usort($products, function($a, $b) {
+                return $a->getPrice() - $b->getPrice();
+            });
+        } else {
+            usort($products, function($a, $b) {
+                return $b->getPrice() - $a->getPrice();
+            });
+        }
+
         $productsData = [];
 
-        foreach ($productRepository->findProductByFilter($filter) as $product) {
+        foreach ($products as $product) {
 
             $productData = [
                 'id' => $product->getId(),
@@ -68,11 +118,11 @@ class ProductController extends AbstractController
                 'category_name' => $product->getCategory() ? $product->getCategory()->getTitle() : null,
             ];
 
-            // Ajouter le tableau simplifié de l'article au tableau des articles
+            // on ajoute un tableau simplifié des produits au tableau des produits
             $productsData[] = $productData;
         }
-
-        // Utilisez JsonResponse pour retourner le tableau d'articles en JSON
+        
+        // on renvoie le tableau des produits en JSON
         return new JsonResponse($productsData);
     }
 
