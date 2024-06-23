@@ -47,10 +47,7 @@ class ProductCrudController extends AbstractCrudController
             ->setRequired(false),
             // ->hideWhenUpdating(),
             IntegerField::new('stock'),
-            MoneyField::new('price')
-            ->setCurrency('EUR')
-            ->format('%d,%d')
-           
+            MoneyField::new('price')->setCurrency('EUR')    
         ];
     }
 }

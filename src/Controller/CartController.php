@@ -57,12 +57,19 @@ class CartController extends AbstractController
         //ajouter le produit au panier
         //récupérer les infos du produit en BDD et l'ajouter à mon panier
         $product = $productRepository->find($idProduct);
+
+        $quantity = $request->request->getInt('quantity');
+        if ($quantity <= 0 || $quantity > $product->getStock()) {
+            $this->addFlash('error', 'Quantité invalide. Ce produit est disponible en ' . $product->getStock() . ' exemplaires maximum.');
+        return $this->redirectToRoute('app_product_show', ['id'=> $idProduct]);
+        }
+
         $cart["id"][] = $product->getId();
         $cart["name"][] = $product->getName();
         $cart["text"][] = $product->getText();
         $cart["picture"][] = $product->getPicture();
         $cart["price"][] = $product->getPrice();
-        $cart["stock"][] = 1;
+        $cart["stock"][] = $quantity;
         // $cart["priceIdStripe"][] = $product->getPriceIdStripe();
 
         $session->set('cart', $cart);
