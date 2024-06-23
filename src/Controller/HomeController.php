@@ -42,7 +42,7 @@ class HomeController extends AbstractController
 
 
     #[Route('/search', name: 'app_search_products', methods: ['GET'])]
-    public function getProductBySearch(ProductRepository $productRepository, Request $request, PaginatorInterface $paginator): Response
+    public function getProductBySearch(ProductRepository $productRepository, Request $request, PaginatorInterface $paginator, CategoryRepository $categoryRepository): Response
     {
 
         // si j'ai un param GET search
@@ -53,12 +53,13 @@ class HomeController extends AbstractController
             $products = $paginator->paginate(
             $productRepository->findProductBySearch($search), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
-            5 /*limit per page*/
+            8 /*limit per page*/
             );
 
 
             return $this->render('product/index.html.twig', [
                 'products' => $products,
+                'categories' => $categoryRepository->findAll(),
             ]);
         
         } else {

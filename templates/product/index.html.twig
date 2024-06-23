@@ -35,12 +35,19 @@
 
                 {% for category in categories %}
                     <li>
-                        <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> {{category.title}} </a>
+                        <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"  id="category-link-{{ loop.index }}"> {{category.title}} </a>
                     </li>
-                {% endfor %}         
+                {% endfor %}
+                
             </ul>
 
             <div class="products" id="list-products">
+
+                {% if products is empty %}
+                    <div>
+                        Aucun résultat trouvé pour votre recherche.
+                    </div>
+                {% endif %}
             
                 {% for product in products %}
                     <div class="products-card"> 
@@ -61,8 +68,15 @@
                 {% endfor %}
               
             </div>
-    
+ 
+          
+
         </div>
+   
+        <div class="pagination">
+            {{ knp_pagination_render(products) }}
+        </div>
+
     </section>
 
 {% endblock %}

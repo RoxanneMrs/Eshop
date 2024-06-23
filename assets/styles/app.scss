@@ -534,6 +534,11 @@ input[type="search"]:hover {
     align-content: center;
     padding: 5rem;
     margin: auto;
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 
@@ -676,7 +681,6 @@ input[type="search"]:hover {
 }
 
 .pagination {
-
     nav {
         margin: 2rem 0rem 1rem 0rem;       
         background-color: transparent;
@@ -691,7 +695,6 @@ input[type="search"]:hover {
         }
     }
         
-
     a {
         border: 1px solid rgba(197, 220, 200, 1);
         color: black;
@@ -700,5 +703,4 @@ input[type="search"]:hover {
         text-decoration: none;
         transition: background-color 3s;    
     }
-
 }

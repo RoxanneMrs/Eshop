@@ -22,11 +22,11 @@
             <h3 class="text-center">Bonjour {{ app.user.firstname }}, voici votre profil !</h2>
             <a href="{{ path('app_profile_edit') }}"style="text-decoration: underline;"> Modifier votre profil </a>
             
-            <div class="card m-2">
+            <div class="card box-shadow m-2">
                 <img src="{{ asset('/uploads/users/' ~ app.user.picture) }}" alt="{{app.user.firstName}}">
 
                 <div class="card-body">
-                    <h5 class="card-title">
+                    <h5 class="card-title m-0">
                     
                         {{ app.user.firstname }} {{ app.user.name }} 
                     </h5>

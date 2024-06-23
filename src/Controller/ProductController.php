@@ -9,22 +9,31 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Service\ImageService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/product')]
 class ProductController extends AbstractController
 {
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $products = $paginator->paginate(
+            $productRepository->findAll(),
+            $request->query->getInt('page', 1),
+            8 // nombre de produits par page
+        );
+
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            // 'products' => $productRepository->findAll(),
             'categories' => $categoryRepository->findAll(),
+            'products' => $products,
         ]);
     }
 
@@ -44,11 +53,24 @@ class ProductController extends AbstractController
     {
         //findBy methode prédefini, permet de recuperer des données en filtrant
         $products = $entityManager->getRepository(Product::class)->findBy(array("category" => $id_category));
+        
         return $this->render('product/index.html.twig', [
             'products' => $products, 
             'categories' => $categoryRepository->findAll(),
         ]);
     }
+
+
+
+    #[Route('/api/category/{id_category}', name: 'app_api_get_product_by_category', methods: ['GET'])]
+    public function getProductByCategoryJson(EntityManagerInterface $entityManager, int $id_category, CategoryRepository $categoryRepository): JsonResponse
+    {
+        $products = $entityManager->getRepository(Product::class)->findBy(array("id_category" => $id_category));
+
+        return new JsonResponse($products);
+    }   
+
+
 
 
 

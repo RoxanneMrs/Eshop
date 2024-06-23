@@ -127,3 +127,63 @@ $('#products-categories li').click(function() {
 
 
 
+//// REQUETE ASYNC POUR LES CATEGORIES DE LA PAGE PRODUCT (A L'AIDE)
+$(document).ready(function() {
+
+    $("#products-categories a").click(function(event) {
+
+        event.preventDefault(); 
+  
+        const id_category = parseInt($(this).attr('id').replace('category-link-', ''));
+  
+        fetchProductsByCategory(id_category);
+
+            async function fetchProductsByCategory(id_category) {
+
+                const url = `/product/api/category/${id_category}`;
+            
+                const response = await fetch(url, {
+                    method: 'GET', 
+                    headers: {
+                    'Content-Type': 'application/json', 
+                    },
+                });
+                
+                let data = await response.json();    
+            
+                let listProducts = "";
+
+                for(let i = 0; i < data.length; i++) {
+
+                    listProducts += "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
+                        "<div class='products-card'>" +             
+                            "<div class='products-img-container'>" +
+                                "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
+                            "</div>" +
+                            "<span class='type'>Pièce unique</span>" +
+                            "<h5>" + data[i].name + "</h5>" +
+                            "<div class='trait'> </div>" +
+                            "<span class='price'>" + data[i].price + "€ </span>" +
+                            
+                            "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
+                                "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
+                            "</form>" +
+                        "</div>" +
+                    "</a>";
+                }
+
+            $('#list-products').html(listProducts);
+
+        }
+
+        $("#products-categories a").removeClass("active"); // Supprimer la classe "active" de tous les liens
+        $(`#products-categories a#${id_category}`).addClass("active"); // Ajouter la classe "active" au lien sélectionné   
+
+        if (id_category) {
+            fetchProductsByCategory(id_category);
+        }
+
+
+    });
+  });
+  
