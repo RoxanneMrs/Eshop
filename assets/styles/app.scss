@@ -32,7 +32,7 @@ textarea {
 
 //// CLASSES GENERALES 
 .container {
-    width: 70vw;
+    width: 80vw;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -57,6 +57,10 @@ textarea {
 
 .bg-beige {
    background: rgb(241, 238, 234);
+}
+
+.light-purple {   
+    color: rgb(124, 95, 138);
 }
 
 .box-shadow {
@@ -532,17 +536,21 @@ input[type="search"]:hover {
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    padding: 5rem;
     margin: auto;
 
     .pagination {
         display: flex;
-        justify-content: center;
+        justify-content: end;
+
+        .page-item:last-child .page-link {
+            margin-right: 1rem;
+        }
     }
 }
 
 
 .filter {
+    width: 70vw;
     height: 50px;
     margin: 0rem 1rem;
     display: flex;
@@ -555,11 +563,26 @@ input[type="search"]:hover {
         vertical-align: middle;
     }
 
-    .form-select {
-        width: 200px;
+    // form {
+    //     width: 200px;
+    //     margin-right: 1rem;
+
+    //     select {
+    //         margin-right: 1rem;
+    //     }
+    // }
+
+    .selected a {
+        color: white;
+    }
+
+    .btn-dropdown {
+        border: 1px solid rgb(172, 199, 175);
+        background-color: rgb(178, 204, 181);
+        padding: 0.2rem 2rem;
+        color: white;
     }
 }
-
 
 
 .container-products {
@@ -579,15 +602,14 @@ input[type="search"]:hover {
 .products {
     display: flex;
     flex-wrap: wrap;
-    // justify-content: center;
+    justify-content: space-between;
     align-content: flex-start;
     
 }
 
 .products-card {
     width: 200px;
-    text-align: center;
-   
+    text-align: center;  
     margin: 1rem;
     position: relative;
     // box-shadow: 0px 5px 5px 1px rgba(124, 95, 138, 0.5);
@@ -702,5 +724,17 @@ input[type="search"]:hover {
         margin: 0 10px;
         text-decoration: none;
         transition: background-color 3s;    
+    }
+}
+
+/// PAGES PROFIL
+.btn-delete {
+    background-color: rgb(52, 53, 52);
+    color: rgb(252, 251, 250);
+    padding: 0.2rem 2rem;
+    margin: 1rem 0rem;
+
+    :hover {
+        opacity: 0.5;
     }
 }

@@ -1,25 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Profil de l'utilisateur!
+     {{app.user.firstname}} {{app.user.name}}
 {% endblock %}
 
 
 {% block body %}
-    {% include 'flash.html.twig' %}
     
-{# 
-    <img src="{{ asset('/uploads/users/' ~ app.user.picture) }}" class="card-img-top" alt="{{app.user.firstName}}">
-    {{ app.user.firstname }}
-    {{ app.user.name }}                 
-    {{ app.user.address }}                   
-    {{ app.user.postalCode }}          
-    {{ app.user.email }}         
-    {{ app.user.phoneNumber }} #}
 
     <section class="section">
 
-            <h3 class="text-center">Bonjour {{ app.user.firstname }}, voici votre profil !</h2>
+        {% include 'flash.html.twig' %}
+
+            <h2 class="light-purple">Bonjour {{ app.user.firstname }} !</h2>
             <a href="{{ path('app_profile_edit') }}"style="text-decoration: underline;"> Modifier votre profil </a>
             
             <div class="card box-shadow m-2">
@@ -51,7 +44,7 @@
                 </ul>
             </div>
         
-            <a href="{{ path('app_profile_delete') }}" class="text-light btn btn-dark"> Supprimer mon compte </a>
+            <a href="{{ path('app_profile_delete') }}" class="btn-delete"> Supprimer mon compte </a>
 
     </section>
    

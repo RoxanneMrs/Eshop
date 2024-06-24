@@ -20,12 +20,7 @@ class ChangePasswordFormType extends AbstractType
         ->add('oldPassword', PasswordType::class, array(
             'mapped' => false,
             'label' => 'Ancien mot de passe',
-            'row_attr' => [
-                'class' => 'col-md-12 mb-3'
-            ],
-            'attr' => array(
-                'placeholder' => 'Ancien mot de passe'
-            )
+            'attr' => ['placeholder' => 'Ancien mot de passe']
         ))
 
             ->add('password', RepeatedType::class, [
@@ -60,9 +55,7 @@ class ChangePasswordFormType extends AbstractType
                         'placeholder' => 'Confirmez votre nouveau mot de passe'
                     )
                 ],
-                'invalid_message' => 'The password fields must match.',
-                // Instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                'invalid_message' => 'Les mots de passe doivent être identiques',
                 'mapped' => false,
             ])
         ;

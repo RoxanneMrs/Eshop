@@ -1,48 +1,51 @@
-<footer class="px-0 justify-content-center pt-5">
+<footer class="py-3">
 
-    <div class=" col-md-12 d-flex px-5">
+    <div class=" col-md-12 d-flex justify-content-center px-5">
 
-        <div class='col-sm-6 col-md-3'>
+        <div class='d-flex text-end '>
             <ul>
                 <li class='fw-bold'>Eshop</li>
-                <li class='mt-4'>
-                    <a aria-label="Qui sommes-nous? - Formation WS" href="">
-                        Qui sommes-nous?
+                <li class='mt-2'>
+                    <a aria-label="Qui sommes-nous?" href="">
+                        À propos de l'Atelier
                     </a>
                 </li>
-                <li class='mt-4'>
+                <li class='mt-2'>
                     <a href="{{ path('app_product_index') }}">
                         Nos produits
                     </a>
                 </li>
-                <li class='mt-4'>
+                <li class='mt-2'>
                     <a aria-label="Contactez-nous" href="{{ path('app_contact') }}">
                         Contact
                     </a>
                 </li>
             </ul>
         </div>
+ 
+        <div>
 
-      
+        </div>
 
-        <div class='col-sm-6 col-md-3'>
+
+        <div class='d-flex justify-content-start text-start'>
             <ul>
                 <li class='fw-bold'>DIVERS</li>
 
-                <li class='mt-4'>
-                    <a aria-label="Politique de cookies - Formation WS" href="">
+                <li class='mt-2'>
+                    <a aria-label="Politique de cookies" href="">
                         Cookies
                     </a>
                 </li>
 
 
-                <li class='mt-4'>
-                    <a aria-label="Mentions légales - Formation WS" href="">
+                <li class='mt-2'>
+                    <a aria-label="Mentions légales - Atelier de Marais" href="{{ path('app_legal_notices') }}">
                         Mentions légales
                     </a>
                 </li>
 
-                  <li class='mt-4'>
+                  <li class='mt-2'>
                     <a aria-label="Conditions générales de vente - Atelier de Marais" href="{{ path('app_conditions') }}">
                         Conditions générales de vente
                     </a>
@@ -52,11 +55,11 @@
         
         
         {% if is_granted('ROLE_ADMIN') %}
-            <div class='col-sm-6 col-md-3'>
+            <div class=''>
                 <ul>
                     <li class='fw-bold'>Administration</li>
                     <li class='mt-4'>
-                        <a aria-label="" href="{{path('admin')}}">
+                        <a aria-label="backoffice" href="{{path('admin')}}">
                             BackOffice
                         </a>
                     </li>

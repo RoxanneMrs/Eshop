@@ -6,21 +6,30 @@
 
     <section class="section">
 
-        {{ form_start(profileForm, { 'attr': {'class': 'row', 'novalidate': 'novalidate'} }) }}
+    <h1 class="light-purple"> Modifier les informations de votre profil</h1>
 
-            {{ form_row(profileForm.firstName, {'row_attr': {'class': 'col-md-6'} }) }} {# je peux mettre du style directement dans ma vue #}
-            {{ form_row(profileForm.name, {'row_attr': {'class': 'col-md-6'} }) }}
-            {{ form_row(profileForm.address, {'row_attr': {'class': 'col-md-6'} }) }}
-            {{ form_row(profileForm.city, {'row_attr': {'class': 'col-md-6'} }) }}
-            {{ form_row(profileForm.postalCode, {'row_attr': {'class': 'col-md-6'} }) }}
-            {{ form_row(profileForm.country, {'row_attr': {'class': 'col-md-6'} }) }}
-            {{ form_row(profileForm.phoneNumber, {'row_attr': {'class': 'col-md-6'} }) }}
-            {{ form_row(profileForm.picture, {'row_attr': {'class': 'col-md-6'} })}}
+        {{ form_start(profileForm, { 'attr': {'class': 'box-shadow col-6 m-3', 'novalidate': 'novalidate'} }) }}
 
+            <div class="d-flex">
+                {{ form_row(profileForm.firstName, {'row_attr': {'class': 'form-purple px-2 mb-4 col-6'} }) }}        
+                {{ form_row(profileForm.name, {'row_attr': {'class': 'form-purple px-2 mb-4 col-6'} }) }}
+            </div>
+            <div class="d-flex">
+                {{ form_row(profileForm.address, {'row_attr': {'class': 'form-purple px-2 mb-4 col-6'} }) }}
+                {{ form_row(profileForm.city, {'row_attr': {'class': 'form-purple px-2 mb-4 col-6'} }) }}
+             </div>
+            <div class="d-flex">
+                {{ form_row(profileForm.postalCode, {'row_attr': {'class' : 'form-purple px-2 mb-4 col-6'} }) }}
+                {{ form_row(profileForm.country, {'row_attr': {'class': 'form-purple px-2 mb-4 col-6'} }) }}
+             </div>
+            <div class="d-flex">
+                {{ form_row(profileForm.phoneNumber, {'row_attr': {'class': 'form-purple px-2 mb-4 col-6'} }) }}
+                {{ form_row(profileForm.picture, {'row_attr': {'class': 'form-purple px-2 mb-4 col-6'} })}}
+            </div>
             
             {{ form_row(profileForm._token) }}
 
-            <button type="submit" class="btn btn-outline-primary mt-2"> Modifier </button>
+            <button type="submit" class="btn-modalAdd"> Modifier</button>
 
         {{ form_end(profileForm, {render_rest: false}) }}	
         {# render_rest false fait en sorte que les champs non écrits dans cette page ne s'afficheront pas dans ma page modify profile même si UserType a d'autres champs #}

@@ -12,8 +12,7 @@
     
     {% if cartItems is not empty %}   
         
-        <table>
-            
+        <table class="col-8 box-shadow">
         
             <thead>
                 <tr>
@@ -37,7 +36,7 @@
                 <td> {{ cartItems.id[i] }} </td>
                 <td> {{ cartItems.name[i] }} </td>
                 <td> {{ cartItems.text[i] }} </td>
-                <td> <img style="width:100px" src="{{ asset('uploads/products/' ~ cartItems.picture[i]) }}" alt="Image de {{ cartItems.text[i]}}"> </td>
+                <td> <img style="width:50px" src="{{ asset('uploads/products/' ~ cartItems.picture[i]) }}" alt="Image de {{ cartItems.text[i]}}"> </td>
                 <td> {{ cartItems.price[i] }} € </td>
                 <td> {{ cartItems.stock[i] }} </td> 
                 {# <td> {{ include('cart/_delete_form.html.twig') }} </td> #}
@@ -46,6 +45,8 @@
             {% endfor %}
 
             </tbody>
+        
+
         
         </table>
         

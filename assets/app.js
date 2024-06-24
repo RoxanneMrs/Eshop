@@ -17,7 +17,7 @@ import $ from 'jquery'
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
-// NAV
+// NAV PRINCIPALE
 $('#nav li').hover(function() {
     $(this).addClass('highlight');
 }, function() {
@@ -38,6 +38,20 @@ CREATIONS.hover(function() {
     DROPDOWN.slideToggle("slow")
 });
 
+
+/// PAGE PRODUCT : LISTE DES CATEGORIES
+$('#products-categories li').hover(function() {
+    $(this).addClass('highlight');
+}, function() {
+    $(this).removeClass('highlight');
+});
+
+$('#products-categories li').click(function() {
+    $('li.selected').find('a').css('color', 'rgb(124, 95, 138)');   
+    $('li').removeClass('selected');
+    $(this).addClass('selected');
+    $(this).find('a').css('color', 'rgb(247, 244, 240)');
+});
 
 
 //// REQUETE ASYNC TRIER PRODUITS PAR PRIX
@@ -112,22 +126,7 @@ $(document).ready(function() {
 });
 
 
-$('#products-categories li').hover(function() {
-    $(this).addClass('highlight');
-}, function() {
-    $(this).removeClass('highlight');
-});
-
-$('#products-categories li').click(function() {
-    $('li.selected').find('a').css('color', 'rgb(124, 95, 138)');   
-    $('li').removeClass('selected');
-    $(this).addClass('selected');
-    $(this).find('a').css('color', 'rgb(247, 244, 240)');
-});
-
-
-
-//// REQUETE ASYNC POUR LES CATEGORIES DE LA PAGE PRODUCT (A L'AIDE)
+// REQUETE ASYNC POUR LES CATEGORIES DE LA PAGE PRODUCT
 $(document).ready(function() {
 
     $("#products-categories a").click(function(event) {
@@ -136,9 +135,9 @@ $(document).ready(function() {
   
         const id_category = parseInt($(this).attr('id').replace('category-link-', ''));
   
-        fetchProductsByCategory(id_category);
+        fetchProductByCategory(id_category);
 
-            async function fetchProductsByCategory(id_category) {
+            async function fetchProductByCategory(id_category) {
 
                 const url = `/product/api/category/${id_category}`;
             
@@ -150,6 +149,14 @@ $(document).ready(function() {
                 });
                 
                 let data = await response.json();    
+
+                if (filter === 'desc') {
+                    data.sort((a, b) => b.price - a.price);
+                } 
+                
+                if (filter === 'asc') {
+                    data.sort((a, b) => a.price - b.price);
+                }
             
                 let listProducts = "";
 
@@ -176,14 +183,14 @@ $(document).ready(function() {
 
         }
 
-        $("#products-categories a").removeClass("active"); // Supprimer la classe "active" de tous les liens
-        $(`#products-categories a#${id_category}`).addClass("active"); // Ajouter la classe "active" au lien sélectionné   
+        $("#products-categories a").removeClass("active"); 
+        $(`#products-categories a#${id_category}`).addClass("active"); 
 
         if (id_category) {
-            fetchProductsByCategory(id_category);
+            fetchProductByCategory(id_category);
         }
-
-
     });
   });
+  
+
   

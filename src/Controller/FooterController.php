@@ -25,4 +25,12 @@ class FooterController extends AbstractController
             'controller_name' => 'FooterController',
         ]);
     }
+
+    #[Route('/mentionslegales', name: 'app_legal_notices')]
+    public function showLegalNotices(): Response
+    {
+        return $this->render('footer/legal_notices.html.twig', [
+            'controller_name' => 'FooterController',
+        ]);
+    }
 }
