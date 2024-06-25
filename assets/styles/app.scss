@@ -175,6 +175,9 @@ input[type="search"]:hover {
 
 
 // ACCUEIL
+
+
+
 #banner {
     background: url(/public/lavender_banner_scroll.png) no-repeat;
     background-attachment: fixed;
@@ -215,6 +218,10 @@ input[type="search"]:hover {
 // ACCUEIL : SECTION NOUVEAUTES
 #news {
     color: rgb(124, 95, 138);
+
+    h2 {
+        color: rgb(86, 36, 110);
+    }
 
     p {
         padding-top: 1rem;
@@ -332,6 +339,7 @@ input[type="search"]:hover {
     background-color: rgba(136, 173, 139, 0.8);
 }
 
+
 // MODAL
 .modal-content {
     border-radius: 0;
@@ -395,6 +403,7 @@ input[type="search"]:hover {
     margin-bottom: 5rem;
     position: relative;
     padding: 1rem;
+    text-align: center;
 
     img {
         position: absolute;
@@ -410,13 +419,19 @@ input[type="search"]:hover {
         height: 275px;
         display: flex;
         flex-direction: column;
-        justify-content: end;
+        justify-content: space-between;
         margin-bottom: 1rem;
+        padding: 1.5rem;
     }
-
+    
     h4 {
         text-transform: uppercase;
-        margin-top: 1rem;
+        margin-top: 4rem;
+        margin-bottom: 0;
+    }
+
+    P {
+        margin: 0;
     }
 
     .btn-see {
@@ -424,7 +439,6 @@ input[type="search"]:hover {
         color: rgb(247, 244, 240);
         border-color:rgb(136, 173, 139);
         padding: 0.2rem;
-        text-align: center;
 
         &:hover, &:focus {
             background-color: rgba(124, 95, 138, 0.8);
@@ -432,17 +446,18 @@ input[type="search"]:hover {
     }
 }
 
-.container .category-card:nth-child(2),
-.container .category-card:nth-child(5) {
+.category-card:nth-child(2),
+.category-card:nth-child(5) {
     transform: translateY(50px); /* Ajuste la valeur selon l'effet désiré */
 }
 
-.container .category-card:first-child,
-.container .category-card:nth-child(3),
-.container .category-card:nth-child(4),
-.container .category-card:nth-child(6) {
+.category-card:first-child,
+.category-card:nth-child(3),
+.category-card:nth-child(4),
+.category-card:nth-child(6) {
     transform: translateY(20px); /* Ajuste la valeur selon l'effet désiré */
 } 
+
 
 // ACCUEIL : SECTION CONTACT/PERSONNALISATION PROJETS
 .border-purple {
@@ -601,7 +616,7 @@ input[type="search"]:hover {
 .products {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    
     align-content: flex-start;
     
 }
@@ -633,6 +648,181 @@ input[type="search"]:hover {
         height: 100%;
     }
 }
+
+@media screen and (max-width: 768px) {
+
+    .section {
+        margin: 1.5rem 0rem;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0;
+        // margin: 0rem 0.5rem;
+    }
+
+    #news {
+        color: rgb(124, 95, 138);
+        
+        h2 {
+            font-size: xx-large;
+            font-weight: bolder;
+            padding: 0;
+        }
+
+        p {
+            padding: 0rem 0.75rem;
+        }
+    }
+
+    .product-card {
+        width: 45%;
+        // background: none;
+        padding: 0.5rem;
+        margin: 1rem 0.5rem;
+        border: none;
+        // box-shadow: none;
+        
+        .img-container {
+            height: 200px;
+        }
+
+        .quick-view, .btn-preview {
+        display: none;
+        }     
+    }
+
+    .discover {
+        margin: 0rem 0rem 1.5rem 0rem;
+    }
+
+    #header-categories {
+        height: 150px;
+
+        span {
+            font-weight: initial;
+        }
+    }
+
+   .category-card {
+    width: 45%;
+    transform: none !important;
+    padding: 0;
+    margin: 1rem 0.5rem;
+
+        img {
+            width: 80%;
+            top: -90px;
+        }
+
+        div:nth-of-type(2) {
+            width: 100%;
+            height: 210px;
+            margin-top: 1rem;
+            padding: 0.75rem;
+        }
+
+        h4 {
+            margin-top: 3rem;
+        }
+
+        p {
+            font-size: small;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-see {
+            width: 100%;
+        }
+    }
+
+    #header-contact {
+        height: 150px;
+    }
+
+    #header-comments {
+        height: 150px;
+    }
+
+    #banner {
+        background-size:cover;
+        background-attachment: scroll;
+        background-position: bottom;
+        height: 200px;
+
+        h1 {
+            font-size: 2rem;
+        }
+    
+        p {
+            font-size: 1.25rem;
+        }
+    
+        #collection {
+            font-size: 1rem;
+            bottom : -18px;
+        }   
+    }
+
+
+    .section-products {
+        width: 100vw;
+    }
+
+     .hidden {
+            display: inline;
+        }
+
+        #products-categories {
+                display: none;
+        }
+
+        .container-products {
+            width: 100vw;
+            // justify-content: center;
+        }
+
+        .filter {
+            width: 100%;
+            margin: 1rem;
+            padding: 0;
+
+            form {
+               margin-right: 1.5rem;
+            }
+        }
+             
+        .products {
+            justify-content: center;
+            align-content: flex-start;      
+        }
+        
+        .products-card {
+            width: 45%;
+            margin: 1rem 0.5rem;
+         
+            h5 {
+                padding: 0.2rem;
+            }
+        }
+        
+        .products-img-container {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin-bottom: 0.3rem;
+        }
+        
+        .pagination {
+            justify-content: center;
+        }
+        
+
+
+}
+
+
+
 
 
 //// PAGE CONTACT
@@ -741,13 +931,5 @@ input[type="search"]:hover {
 
 
 /// MEDIA QUERIES
-@media screen and (max-width: 768px) {
 
-    #quick-view, #btn-preview {
-            display: none !important;
-    } 
 
-    .container {
-        width: 100% !important;
-    }
-}

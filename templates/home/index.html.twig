@@ -24,8 +24,8 @@
             <div class="product-card"> 
                 <div class="img-container">   
                     <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
-                        <div class="quick-view" id="quick-view">  
-                            <button class="btn-preview" id="btn-preview" type="button" data-bs-toggle="modal" data-bs-target="#quickViewModal-{{ product.id }}"> Aperçu rapide </button>
+                        <div class="quick-view">  
+                            <button class="btn-preview" type="button" data-bs-toggle="modal" data-bs-target="#quickViewModal-{{ product.id }}"> Aperçu rapide </button>
                         </div>
                 </div>    
 
@@ -115,10 +115,8 @@
                         <img src="{{ asset('/uploads/categories/' ~ category.picture) }}" alt="{{category.description}}" title="{{category.title}}">
                     </div>
 
-                    <div class="p-4">
-                        <div class="mt-4">
-                            <h4> {{category.title}} </h3>
-                        </div>
+                    <div>
+                        <h4 class> {{category.title}} </h3>
                         <p> {{category.description }} </p> 
                         <a class="btn-see" href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> Voir tout </a>
                     </div>
@@ -153,9 +151,9 @@
             <span>Ce que vous en avez pensé : </span>
         </div>
 
-        <div class="container justify-content-center py-3 my-3">
+        <div class="container justify-content-center py-0 px-2 py-sm-3 my-3">
             {% for comment in comments %}
-                <div class="comment-card m-3">
+                <div class="comment-card m-2 m-sm-3">
 
                     <div class="comment-head">
                         <div>
@@ -184,7 +182,7 @@
             
         </div>
         
-        <a href="{{ path('app_comment') }}" class="btn-see-more mb-5"> Voir plus </a>
+        <a href="{{ path('app_comment') }}" class="btn-see-more mb-4 mb-sm-5"> Voir plus </a>
     </section>
 
 

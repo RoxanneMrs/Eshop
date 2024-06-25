@@ -8,14 +8,14 @@
 		<h1> Les créations de l'Atelier </h1>
 	</div>
 
-    <section class="section-products py-5">
+    <section class="section-products py-5 px-0 px-sm-5">
 
         <div class="filter">
 
             <h4> Filtrer par </h4>
 
             <form>
-                <select class="form-select col-2" id="filter" name="filter">
+                <select class="form-select" id="filter" name="filter">
                     <option selected disabled> Trier par </option>
                     <option value="asc"> Prix (bas à élevé) </option>
                     <option value="desc"> Prix (élevé à bas) </option>
@@ -73,7 +73,7 @@
 
         </div>
    
-        <div class="pagination">
+        <div class="pagination hidden">
             {{ knp_pagination_render(products) }}
         </div>
 
