@@ -167,7 +167,6 @@ input[type="search"]:hover {
     border-color : rgb(86, 36, 110);
 }
 
-
 .form-check-input:checked {
         background-color: rgb(86, 36, 110);
         border-color:rgb(86, 36, 110) ;
@@ -347,7 +346,7 @@ input[type="search"]:hover {
     padding: 0.5rem;
     border: none;
 
-    &:hover {
+    &:hover, &:focus {
     opacity: 0.6;
     }
 }
@@ -427,7 +426,7 @@ input[type="search"]:hover {
         padding: 0.2rem;
         text-align: center;
 
-        &:hover {
+        &:hover, &:focus {
             background-color: rgba(124, 95, 138, 0.8);
         }
     }
@@ -499,7 +498,7 @@ input[type="search"]:hover {
     padding: 0.2rem 4rem;
     margin-bottom: 1rem;
 
-    &:hover {
+    &:hover, &:focus {
     opacity: 0.8;
     }
 }
@@ -734,7 +733,21 @@ input[type="search"]:hover {
     padding: 0.2rem 2rem;
     margin: 1rem 0rem;
 
-    :hover {
+    &:hover, &:focus {
         opacity: 0.5;
+    }
+}
+
+
+
+/// MEDIA QUERIES
+@media screen and (max-width: 768px) {
+
+    #quick-view, #btn-preview {
+            display: none !important;
+    } 
+
+    .container {
+        width: 100% !important;
     }
 }

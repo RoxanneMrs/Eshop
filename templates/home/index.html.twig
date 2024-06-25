@@ -24,8 +24,8 @@
             <div class="product-card"> 
                 <div class="img-container">   
                     <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
-                        <div class="quick-view">  
-                            <button class="btn-preview" type="button" data-bs-toggle="modal" data-bs-target="#quickViewModal-{{ product.id }}"> Aperçu rapide </button>
+                        <div class="quick-view" id="quick-view">  
+                            <button class="btn-preview" id="btn-preview" type="button" data-bs-toggle="modal" data-bs-target="#quickViewModal-{{ product.id }}"> Aperçu rapide </button>
                         </div>
                 </div>    
 
