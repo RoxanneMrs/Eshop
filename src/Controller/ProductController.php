@@ -30,7 +30,7 @@ class ProductController extends AbstractController
         $products = $paginator->paginate(
             $productRepository->findAll(),
             $request->query->getInt('page', 1),
-            8 // nombre de produits par page
+            10 // nombre de produits par page
         );
 
         return $this->render('product/index.html.twig', [
@@ -51,7 +51,6 @@ class ProductController extends AbstractController
     }
 
 
-
     // Cette route permet d'accéder aux produits liés à 1 catégorie à partir de ma nav
     #[Route('/category/{id_category}', name: 'app_get_product_by_category', methods: ['GET'])]
     public function getProductByCategory(EntityManagerInterface $entityManager, int $id_category, CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request, ProductRepository $productRepository): Response
@@ -59,7 +58,7 @@ class ProductController extends AbstractController
         $products = $paginator->paginate(
             $productRepository->findBy(array("category" => $id_category)),
             $request->query->getInt('page', 1),
-            8 // nombre de produits par page
+            5 // nombre de produits par page
         );
    
         return $this->render('product/index.html.twig', [
@@ -67,7 +66,6 @@ class ProductController extends AbstractController
             'categories' => $categoryRepository->findAll(),
         ]);
     }
-
 
 
     // Cette route permet de sélectionner tous les produits d'une catégorie si on est déjà sur la page d'accueil des produits, sans recharger la page
@@ -94,53 +92,19 @@ class ProductController extends AbstractController
     }   
 
 
-
-    // #[Route('/category/{id_category}/filter/{filter}', name: 'app_get_filtered_product_by_category', methods: ['GET'])]
-    // public function getFilteredProductByCategory(EntityManagerInterface $entityManager, int $id_category, string $filter): JsonResponse
-    // {
-    //     $products = $entityManager->getRepository(Product::class)->findBy(array("category" => $id_category));
-
-    //     // on trie les produits par rapport au filtre choisi 
-    //     if ($filter === 'asc') {
-    //         usort($products, function($a, $b) {
-    //         return $a->getPrice() - $b->getPrice();
-    //         });
-    //     } else if ($filter === 'desc') {
-    //         usort($products, function($a, $b) {
-    //         return $b->getPrice() - $a->getPrice();
-    //         });
-    //     }
-
-    //     $productsData = [];
-    //     foreach ($products as $product) {
-    //         $productData = [
-    //         'id' => $product->getId(),
-    //         'name' => $product->getName(),
-    //         'text' => $product->getText(),
-    //         'picture' => $product->getPicture(),
-    //         'price'=> $product->getPrice(),
-    //         'category_id' => $product->getCategory() ? $product->getCategory()->getId() : null,
-    //         'category_name' => $product->getCategory() ? $product->getCategory()->getTitle() : null,
-    //         ];
-    //         $productsData[] = $productData;
-    //     }
-
-    //     return new JsonResponse($productsData);
-    // }
-
-
-
     // cette route a pour but de laisser la possibilité à mes utilisateurs de trier les produits par prix
     #[Route('/filter/{filter}', name: 'app_product_filter')]
     public function getProductByFilter(ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request, string $filter): JsonResponse {
-    
+
         $products = $productRepository->findProductByFilter($filter);
 
         if ($filter === 'asc') {
             usort($products, function($a, $b) {
                 return $a->getPrice() - $b->getPrice();
             });
-        } else {
+        } 
+        
+        if ($filter === 'desc') {
             usort($products, function($a, $b) {
                 return $b->getPrice() - $a->getPrice();
             });
@@ -165,5 +129,44 @@ class ProductController extends AbstractController
         
         return new JsonResponse($productsData);
     }
+
+
+// on essaye de filtrer en prenant en compte la pagination 
+//     #[Route('/filter/{filter}/{page}', name: 'app_product_filter')]
+// public function getProductByFilter(ProductRepository $productRepository, Request $request, string $filter, int $page): JsonResponse {
+    
+//     $itemsPerPage = 8;
+    
+//     $products = $productRepository->findProductByFilter($filter);
+//     $totalProducts = count($products);
+
+//     if ($filter === 'desc') {
+//         $offset = $totalProducts - ($page * $itemsPerPage);
+//     } 
+    
+//     if ($filter === 'asc') {
+//         $offset = ($page - 1) * $itemsPerPage;
+//     }
+
+//     $paginatedProducts = $productRepository->findProductByFilterPaginated($filter, $offset, $itemsPerPage);
+    
+//     $productsData = [];
+
+//     foreach ($paginatedProducts as $product) {
+//         $productData = [
+//             'id' => $product->getId(),
+//             'name' => $product->getName(),
+//             'picture' => $product->getPicture(),
+//             'price'=> $product->getPrice(),
+//         ];
+
+//         $productsData[] = $productData;
+//     }
+
+//     dump($productsData);
+
+//     return new JsonResponse($productsData);
+// }
+
 
 }

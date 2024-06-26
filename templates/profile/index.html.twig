@@ -15,13 +15,13 @@
             <h2 class="light-purple">Bonjour {{ app.user.firstname }} !</h2>
             <a href="{{ path('app_profile_edit') }}"style="text-decoration: underline;"> Modifier votre profil </a>
             
-            <div class="card box-shadow m-2">
+            <div class="card col-11 col-sm-4 box-shadow m-2">
                 <img src="{{ asset('/uploads/users/' ~ app.user.picture) }}" alt="{{app.user.firstName}}">
 
                 <div class="card-body">
                     <h5 class="card-title m-0">
-                    
                         {{ app.user.firstname }} {{ app.user.name }} 
+    
                     </h5>
                 </div>
 
@@ -39,12 +39,15 @@
                         <a href=""> Mes commandes </a>
                     </li>
                     <li class="list-group-item text-center">
-                        <a href="{{ path('app_profile_password_edit') }}"> Modifier mon mot de passe </a>
+                        <a href="{{ path('app_profile_password_edit') }}"> <u> Modifier mon mot de passe </u> </a>
+                    </li>
+                    <li class="list-group-item text-center">
+                        <a href="{{ path('app_profile_delete') }}"> <u> Supprimer mon compte </u> </a>
                     </li>
                 </ul>
             </div>
         
-            <a href="{{ path('app_profile_delete') }}" class="btn-delete"> Supprimer mon compte </a>
+            
 
     </section>
    

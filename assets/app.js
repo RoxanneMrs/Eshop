@@ -54,6 +54,73 @@ $('#products-categories li').click(function() {
 });
 
 
+// REQUETE ASYNC POUR LES CATEGORIES DE LA PAGE PRODUCT
+$(document).ready(function() {
+
+    $("#products-categories a").click(function(event) {
+
+        event.preventDefault(); 
+  
+        const id_category = parseInt($(this).attr('id').replace('category-link-', ''));
+  
+        fetchProductByCategory(id_category);
+
+            async function fetchProductByCategory(id_category) {
+
+                const url = `/product/api/category/${id_category}`;
+            
+                const response = await fetch(url, {
+                    method: 'GET', 
+                    headers: {
+                    'Content-Type': 'application/json', 
+                    },
+                });
+                
+                let data = await response.json();    
+
+                if (filter === 'desc') {
+                    data.sort((a, b) => b.price - a.price);
+                } 
+                
+                if (filter === 'asc') {
+                    data.sort((a, b) => a.price - b.price);
+                }
+            
+                let listProducts = "";
+
+                for(let i = 0; i < data.length; i++) {
+
+                    listProducts += "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
+                        "<div class='products-card'>" +             
+                            "<div class='products-img-container'>" +
+                                "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
+                            "</div>" +
+                            "<span class='type'>Pièce unique</span>" +
+                            "<h5>" + data[i].name + "</h5>" +
+                            "<div class='trait'> </div>" +
+                            "<span class='price'>" + data[i].price + "€ </span>" +
+                            
+                            "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
+                                "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
+                            "</form>" +
+                        "</div>" +
+                    "</a>";
+                }
+
+            $('#list-products').html(listProducts);
+
+        }
+
+        $("#products-categories a").removeClass("active"); 
+        $(`#products-categories a#${id_category}`).addClass("active"); 
+
+        if (id_category) {
+            fetchProductByCategory(id_category);
+        }
+    });
+});
+  
+
 //// REQUETE ASYNC TRIER PRODUITS PAR PRIX
 $(document).ready(function() {
     
@@ -126,71 +193,69 @@ $(document).ready(function() {
 });
 
 
-// REQUETE ASYNC POUR LES CATEGORIES DE LA PAGE PRODUCT
-$(document).ready(function() {
+/// Trier produits par prix avec pagination
+// $(document).ready(function() {
+//     $("#filter").change(function() {
+//         async function fetchData(filter, page) {
 
-    $("#products-categories a").click(function(event) {
-
-        event.preventDefault(); 
-  
-        const id_category = parseInt($(this).attr('id').replace('category-link-', ''));
-  
-        fetchProductByCategory(id_category);
-
-            async function fetchProductByCategory(id_category) {
-
-                const url = `/product/api/category/${id_category}`;
-            
-                const response = await fetch(url, {
-                    method: 'GET', 
-                    headers: {
-                    'Content-Type': 'application/json', 
-                    },
-                });
+//             try {
                 
-                let data = await response.json();    
+//                 const url = `/product/filter/${filter}/${page}`;
+        
+//                 const response = await fetch(url, {
+//                     method: 'GET', 
+//                     headers: {
+//                         'Content-Type': 'application/json', 
+//                     },
+//                 });
+        
+//                 if (!response.ok) {
+//                     throw new Error(`Erreur: ${response.status}`); 
+//                 }
+        
+//                 const data = await response.json();
+//                 console.log(data);
+                    
 
-                if (filter === 'desc') {
-                    data.sort((a, b) => b.price - a.price);
-                } 
-                
-                if (filter === 'asc') {
-                    data.sort((a, b) => a.price - b.price);
-                }
+//                 let listProducts = "";
+
+//                 for(let i = 0; i < data.length; i++) {
+//                     listProducts += "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
+//                         "<div class='products-card'>" +             
+//                             "<div class='products-img-container'>" +
+//                                 "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
+//                             "</div>" +
+//                             "<span class='type'>Pièce unique</span>" +
+//                             "<h5>" + data[i].name + "</h5>" +
+//                             "<div class='trait'> </div>" +
+//                             "<span class='price'>" + data[i].price + "€ </span>" +
+//                             "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
+//                                 "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
+//                             "</form>" +
+//                         "</div>" +
+//                     "</a>";
+//                 }
+
+//                 $('#list-products').html(listProducts);
+
+//                 console.log(data); 
             
-                let listProducts = "";
+//             } catch (error) {
+//                 console.error("Il y a eu une erreur avec la requête fetch: ", error.message);
+//             }
+//         }
 
-                for(let i = 0; i < data.length; i++) {
+//         let filter = $(this).find(":selected").val();
+//         const urlParams = new URLSearchParams(window.location.search);
+//         let currentPage = urlParams.get("page") || 1;
 
-                    listProducts += "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
-                        "<div class='products-card'>" +             
-                            "<div class='products-img-container'>" +
-                                "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
-                            "</div>" +
-                            "<span class='type'>Pièce unique</span>" +
-                            "<h5>" + data[i].name + "</h5>" +
-                            "<div class='trait'> </div>" +
-                            "<span class='price'>" + data[i].price + "€ </span>" +
-                            
-                            "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
-                                "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
-                            "</form>" +
-                        "</div>" +
-                    "</a>";
-                }
+//         if (filter) {
+//             fetchData(filter, currentPage);
+//         }
+//     });
+// });
 
-            $('#list-products').html(listProducts);
 
-        }
 
-        $("#products-categories a").removeClass("active"); 
-        $(`#products-categories a#${id_category}`).addClass("active"); 
-
-        if (id_category) {
-            fetchProductByCategory(id_category);
-        }
-    });
-  });
-  
 
   
