@@ -10,6 +10,7 @@ use App\Repository\ProductRepository;
 use App\Service\ImageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ProductController extends AbstractController
 {
 
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     // La page d'accueil de "Nos créations". 
     //Elle doit afficher toutes les catégories de mes produits ainsi que tous mes produits
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
@@ -30,7 +38,7 @@ class ProductController extends AbstractController
         $products = $paginator->paginate(
             $productRepository->findAll(),
             $request->query->getInt('page', 1),
-            10 // nombre de produits par page
+            8 // nombre de produits par page
         );
 
         return $this->render('product/index.html.twig', [
@@ -38,6 +46,63 @@ class ProductController extends AbstractController
             'products' => $products,
         ]);
     }
+
+
+     // Action pour le chargement progressif des produits
+     #[Route('/load-more/{filter}', name: 'app_product_load_more', methods: ['POST'])]
+     public function loadMore(ProductRepository $productRepository, Request $request, $filter): Response
+     {
+        try {
+            // Récupération du lastProductId depuis la requête
+            $lastProductId = $request->request->getInt('lastProductId');
+
+            // Déterminer si un filtre par prix est demandé
+            $isPriceFilter = $filter === 'price';
+
+            if ($isPriceFilter) {
+                // Filtrez les produits par prix et par ID supérieur à lastProductId
+                $products = $productRepository->findBy(
+                    ['price' => 'asc', 'id' => ['gt' => $lastProductId]],
+                    [], // Trier par prix croissant
+                    8 // Limiter à 8 produits
+                );
+            } else {
+                // Récupérez simplement les 8 produits suivants sans filtrage
+                $products = $productRepository->findBy(
+                    ['id' => ['gt' => $lastProductId]],
+                    [],
+                    8
+                );
+            }
+
+            $productsData = [];
+
+            foreach ($products as $product) {
+                $productData = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'picture' => $product->getPicture(),
+                    'price'=> $product->getPrice(),
+                    'category_id' => $product->getCategory() ? $product->getCategory()->getId() : null,
+                    'category_name' => $product->getCategory() ? $product->getCategory()->getTitle() : null,
+                ];
+            }
+
+            $productsData[] = $productData;
+
+            // Retourner les produits au format JSON
+            return $this->json(['products' => $productsData]);
+            
+        } catch (\Exception $e) {
+            // En cas d'erreur, journaliser l'exception
+            $this->logger->error('Erreur lors du chargement des produits : ' . $e->getMessage());
+
+            // Retourner une réponse d'erreur
+            return $this->json(['error' => 'Erreur lors du chargement des produits'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+
 
 
 

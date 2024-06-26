@@ -614,6 +614,10 @@ input[type="search"]:hover {
     }
 } 
 
+#loading-message {
+    display: none;
+}
+
 .products {
     display: flex;
     flex-wrap: wrap;

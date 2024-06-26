@@ -50,7 +50,7 @@
                 {% endif %}
             
                 {% for product in products %}
-                    <div class="products-card"> 
+                    <div class="products-card" data-product-id="{{ product.id }}"> 
                         <a href="{{ path('app_product_show', { id : product.id} ) }}">
                             <div class="products-img-container">   
                                 <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
@@ -66,6 +66,8 @@
                         </a>
                     </div>
                 {% endfor %}
+
+                 <span id="loading-message"> Chargement en cours </span>
               
             </div>
  

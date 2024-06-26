@@ -193,69 +193,103 @@ $(document).ready(function() {
 });
 
 
-/// Trier produits par prix avec pagination
-// $(document).ready(function() {
-//     $("#filter").change(function() {
-//         async function fetchData(filter, page) {
+////  CODE POUR AFFICHER LES PRODUITS PETIT A PETIT
+function loadProducts(filter = null) {
 
-//             try {
-                
-//                 const url = `/product/filter/${filter}/${page}`;
+    const lastProductElement = document.querySelector('.products-card:last-of-type');
+    if (lastProductElement) {
+        lastProductId = parseInt(lastProductElement.dataset.productId, 10);
+    }
+
+    console.log('last product element', lastProductElement) // renvoie bien le dernier produit
+    console.log('last product id', lastProductId) // renvoie bien l'id du dernier produit
+
+    const url = filter ? `/product/load-more/${encodeURIComponent(filter)}` : '/product/load-more/all'; // pas la même url si y a un filtre ou pas de filtre
+
+    const loadingMessage = document.querySelector('#loading-message');
+    if (loadingMessage) {
+        loadingMessage.style.display = 'block'; // pour que le message de chargement soit affiché uniquement pendant la requête
+    }
+
+    const formData = new FormData();
+    formData.append('lastProductId', lastProductId);
+
+    // le fetch semble mauvais
+    fetch(url, {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+
+        console.log('Données reçues depuis fetch :', data); // renvoie les données du dernier produit au lieu de renvoyer les produits à l'id supérieur au dernier produit
+
+        const productsContainer = document.querySelector('#list-products'); // le parent qui contient mes cards product
         
-//                 const response = await fetch(url, {
-//                     method: 'GET', 
-//                     headers: {
-//                         'Content-Type': 'application/json', 
-//                     },
-//                 });
-        
-//                 if (!response.ok) {
-//                     throw new Error(`Erreur: ${response.status}`); 
-//                 }
-        
-//                 const data = await response.json();
-//                 console.log(data);
-                    
+        data.products.forEach(product => {
+            const productElement = createProductElement(product); // créer l'élément HTML pour le produit
+            productsContainer.appendChild(productElement); // ajouter l'élément au container
+        });
 
-//                 let listProducts = "";
+        // met à jour la valeur de 'lastProductId' pour le prochain chargement (à vérifier)
+        if (data.products.length > 0) {
+            lastProductId = data.products[data.products.length - 1].id;
+        }
 
-//                 for(let i = 0; i < data.length; i++) {
-//                     listProducts += "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
-//                         "<div class='products-card'>" +             
-//                             "<div class='products-img-container'>" +
-//                                 "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
-//                             "</div>" +
-//                             "<span class='type'>Pièce unique</span>" +
-//                             "<h5>" + data[i].name + "</h5>" +
-//                             "<div class='trait'> </div>" +
-//                             "<span class='price'>" + data[i].price + "€ </span>" +
-//                             "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
-//                                 "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
-//                             "</form>" +
-//                         "</div>" +
-//                     "</a>";
-//                 }
+        //  le message de chargement disparait une fois la requête terminée
+        if (loadingMessage) {
+            loadingMessage.style.display = 'none';
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors du chargement des produits:', error);
+    });
 
-//                 $('#list-products').html(listProducts);
+   
+}
 
-//                 console.log(data); 
-            
-//             } catch (error) {
-//                 console.error("Il y a eu une erreur avec la requête fetch: ", error.message);
-//             }
-//         }
+window.addEventListener('scroll', function() {
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
 
-//         let filter = $(this).find(":selected").val();
-//         const urlParams = new URLSearchParams(window.location.search);
-//         let currentPage = urlParams.get("page") || 1;
-
-//         if (filter) {
-//             fetchData(filter, currentPage);
-//         }
-//     });
-// });
+        // l'utilisateur est en bas bas de la page
+        const filterElement = document.getElementById('filter');
+        const currentFilter = filterElement ? filterElement.value : null; // pas convaincue de cette ligne
+        loadProducts(currentFilter); // charge les produits suivants avec le filtre pris en compte
+    }
+});
 
 
+// créer le visuel des produits mais je dois soit initialiser "data" soit afficher autrement (on verra une  fois que la requête fonctionne)
+function createProductElement(product) {
+
+    const productElement = document.createElement('div');
+    productElement.classList.add('product');
+    productElement.dataset.productId = product.id;
+
+    // Ajoutez le contenu HTML du produit (nom, image, prix, etc.)
+    productElement.innerHTML = "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
+                                "<div class='products-card'>" +             
+                                    "<div class='products-img-container'>" +
+                                        "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
+                                    "</div>" +
+                                    "<span class='type'>Pièce unique</span>" +
+                                    "<h5>" + data[i].name + "</h5>" +
+                                    "<div class='trait'> </div>" +
+                                    "<span class='price'>" + data[i].price + "€ </span>" +
+                                    
+                                    "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
+                                        "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
+                                    "</form>" +
+                                "</div>" +
+                            "</a>";
+
+    return productElement;
+}
 
 
   
