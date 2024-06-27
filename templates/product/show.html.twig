@@ -13,27 +13,27 @@
 
         {{ include('flash.html.twig') }}
 
-        <div class="col-8 d-flex p-5 align-items-center">
+        <div class="container justify-content-center">
             
-            <div class="d-flex align-items-center">
-                <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">  
+            <div class="pb-3 pb-sm-0">
+                <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}" style="border: 1px solid" class="dark-purple">  
             </div>
 
-            <div class="ps-5 d-flex flex-column justify-content-between">           
-                <h2 class="pb-4"> {{ product.name}} </h2>             
+            <div class="d-flex flex-column ps-sm-5 col-sm-4 justify-content-between dark-purple">           
+                <h2 class="pb-sm-4"> {{ product.name}} </h2>             
                 <p> {{ product.price|number_format(2, '.', ' ') }}€ </p>
                 <p> {{ product.text | raw}} </p> 
 
                 <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
                     
                     Quantité :
-                    <select name="quantity" class="form-purple col-1 mb-3">
+                    <select name="quantity" class="form-purple col-12 mb-3">
                         {% for i in 1..product.stock %}
                             <option value="{{ i }}">{{ i }}</option>
                         {% endfor %}
                     </select>
 
-                    <input type="submit" class="btn-modalAdd col-3 mb-2" value="Ajouter au panier" />
+                    <input type="submit" class="btn-modalAdd" value="Ajouter au panier" />
                 </form>                                                       
             </div>                              
         </div>

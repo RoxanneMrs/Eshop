@@ -23,7 +23,7 @@ class Product
     private ?string $picture = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $price = null;
+    private ?float $price = null;
 
     #[ORM\Column(length: 255)]
     private ?string $stock = null;
@@ -83,7 +83,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(string $price): static
+    public function setPrice(float $price): static
     {
         $this->price = $price;
 

@@ -22,21 +22,31 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/product')]
 class ProductController extends AbstractController
 {
-
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
     // La page d'accueil de "Nos créations". 
     //Elle doit afficher toutes les catégories de mes produits ainsi que tous mes produits
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(ProductRepository $productRepository,
+        CategoryRepository $categoryRepository, 
+        PaginatorInterface $paginator, 
+        Request $request): Response
     {
+
+        $filter = $request->query->get('filter'); // Récupère le paramètre 'filter' de la requête
+
+        // Récupère les événements selon le filtre, s'il est défini
+        if ($filter === 'ASC') {
+            $products = $productRepository->findBy([], ['price' => 'ASC']);
+        } elseif ($filter === 'DESC') {
+            $products = $productRepository->findBy([], ['price' => 'DESC']);
+        } else {
+            // Par défaut, affiche tous les événements
+            $products =$productRepository->findAll();
+        }
+
+        // dd($products);
+
         $products = $paginator->paginate(
-            $productRepository->findAll(),
+            $products,
             $request->query->getInt('page', 1),
             8 // nombre de produits par page
         );
@@ -44,6 +54,7 @@ class ProductController extends AbstractController
         return $this->render('product/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
             'products' => $products,
+            'filter' => $filter
         ]);
     }
 
@@ -55,24 +66,18 @@ class ProductController extends AbstractController
         try {
             // Récupération du lastProductId depuis la requête
             $lastProductId = $request->request->getInt('lastProductId');
+            $lastProductPrice = $request->request->getInt('lastProductPrice', 0);
+            $filter = $request->request->get('filter', 'none');
 
             // Déterminer si un filtre par prix est demandé
-            $isPriceFilter = $filter === 'price';
+            $isPriceFilter = $filter === 'ASC' || $filter === 'DESC';
 
             if ($isPriceFilter) {
                 // Filtrez les produits par prix et par ID supérieur à lastProductId
-                $products = $productRepository->findBy(
-                    ['price' => 'asc', 'id' => ['gt' => $lastProductId]],
-                    [], // Trier par prix croissant
-                    8 // Limiter à 8 produits
-                );
+                $products = $productRepository->findProductsByLastIdAndFilter($lastProductPrice, strtoupper($filter));
             } else {
                 // Récupérez simplement les 8 produits suivants sans filtrage
-                $products = $productRepository->findBy(
-                    ['id' => ['gt' => $lastProductId]],
-                    [],
-                    8
-                );
+                $products = $productRepository->findProductsByLastId($lastProductId);
             }
 
             $productsData = [];
@@ -86,16 +91,14 @@ class ProductController extends AbstractController
                     'category_id' => $product->getCategory() ? $product->getCategory()->getId() : null,
                     'category_name' => $product->getCategory() ? $product->getCategory()->getTitle() : null,
                 ];
-            }
 
-            $productsData[] = $productData;
+                $productsData[] = $productData;   
+            }
 
             // Retourner les produits au format JSON
             return $this->json(['products' => $productsData]);
             
         } catch (\Exception $e) {
-            // En cas d'erreur, journaliser l'exception
-            $this->logger->error('Erreur lors du chargement des produits : ' . $e->getMessage());
 
             // Retourner une réponse d'erreur
             return $this->json(['error' => 'Erreur lors du chargement des produits'], Response::HTTP_INTERNAL_SERVER_ERROR);

@@ -41,7 +41,29 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findProductsByLastId($lastProductId, $limit = 8): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.id > :lastProductId')
+            ->setParameter('lastProductId', $lastProductId)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
     
+
+    public function findProductsByLastIdAndFilter($lastProductPrice, $order = 'ASC', $limit = 8): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.price > :lastProductPrice')
+            ->setParameter('lastProductPrice', $lastProductPrice)
+            ->orderBy('p.price', $order)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
 
     // public function findProductByFilterPaginated(string $filter, int $offset, int $limit): array {
 

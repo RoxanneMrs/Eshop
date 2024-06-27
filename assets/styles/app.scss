@@ -63,6 +63,10 @@ textarea {
     color: rgb(124, 95, 138);
 }
 
+.dark-purple {
+    color: rgb(86, 36, 110);
+}
+
 .box-shadow {
     padding: 1.5rem;
     border: 1px solid rgba(124, 95, 138, 0.5);
@@ -175,9 +179,6 @@ input[type="search"]:hover {
 
 
 // ACCUEIL
-
-
-
 #banner {
     background: url(/public/lavender_banner_scroll.png) no-repeat;
     background-attachment: fixed;
@@ -232,11 +233,11 @@ input[type="search"]:hover {
 }
 
 .product-card {
-    width: 250px;
+    width: 280px;
     text-align: center;
     padding: 0.7rem 1rem;
     position: relative;
-    margin: 1rem;
+    margin: 1rem 1.5rem;
     border: 1px solid transparent;
     box-shadow: 0px 5px 5px 1px rgba(124, 95, 138, 0.5);
     background: rgb(248, 247, 246);
@@ -554,8 +555,6 @@ input[type="search"]:hover {
 
     .pagination {
         display: none;
-        // display: flex;
-        // justify-content: end;
 
         .page-item:last-child .page-link {
             margin-right: 1rem;
@@ -616,6 +615,7 @@ input[type="search"]:hover {
 
 #loading-message {
     display: none;
+    z-index: 2;
 }
 
 .products {
@@ -741,6 +741,9 @@ input[type="search"]:hover {
         }
     }
 
+
+
+
     #header-contact {
         height: 150px;
     }
@@ -773,27 +776,29 @@ input[type="search"]:hover {
         width: 100vw;
 
         #products-categories {
-                display: none;
+            // display: none;
+            display: flex;
         }
 
         .container-products {
             width: 100vw;
             // justify-content: center;
+            flex-direction: column;
         }
 
         .filter {
             width: 100%;
-            margin: 1rem;
+            margin: 0;
+            justify-content: center;
             padding: 0;
 
             form {
-               display: none;
+            //    display: none;
             }
         }
              
         .products {
-            justify-content: center;
-            align-content: flex-start;      
+            justify-content: start;  
         }
         
         .products-card {
@@ -811,13 +816,9 @@ input[type="search"]:hover {
             position: relative;
             margin-bottom: 0.3rem;
         }
-        
-        .pagination {
-            display: flex;
-            justify-content: center;
-        }
     }
         
+
 
 }
 

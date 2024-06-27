@@ -10,28 +10,36 @@
 
     <section class="section-products py-5 px-0 px-sm-5">
 
-        <div class="filter">
+        <div class="filter" style="width: 100%;">
 
-            <h4> Filtrer par </h4>
+            <h4 class="d-none d-sm-block"> Filtrer par </h4>
 
-            <form>
-                <select class="form-select" id="filter" name="filter">
-                    <option selected disabled> Trier par </option>
-                    <option value="asc"> Prix (bas à élevé) </option>
-                    <option value="desc"> Prix (élevé à bas) </option>
-                </select>
-            </form>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-filter="{% if filter == 'ASC' %}ASC{% elseif filter == 'DESC' %}DESC{% else %}none{% endif %}">
+                        {% if filter == 'ASC' %}
+                            Par prix croissant
+                        {% elseif filter == 'DESC' %}
+                            Par prix décroissant
+                        {% else %}
+                            Sélectionner un filtre
+                        {% endif %}
+                    </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'ASC' })}}">Par prix croissant</a></li>
+                    <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'DESC' })}}">Par prix décroissant</a></li>
+                </ul>
+            </div>
         </div>
 
 
         <div class="container-products">  
-        
-            <ul id="products-categories" class="col-2">
 
-                <li> 
+            <ul id="products-categories" class="col-2 d-none d-sm-block">
+
+                {# <li> 
                     <a href="{{ path('app_product_index') }}"> Voir tout </a>
                 </li>
-            
+                #}
 
                 {% for category in categories %}
                     <li>
@@ -50,7 +58,7 @@
                 {% endif %}
             
                 {% for product in products %}
-                    <div class="products-card" data-product-id="{{ product.id }}"> 
+                    <div class="products-card" data-product-id="{{ product.id }}" data-product-price="{{ product.price }}"> 
                         <a href="{{ path('app_product_show', { id : product.id} ) }}">
                             <div class="products-img-container">   
                                 <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
@@ -67,7 +75,7 @@
                     </div>
                 {% endfor %}
 
-                 <span id="loading-message"> Chargement en cours </span>
+                 {# <span id="loading-message"> Chargement en cours </span> #}
               
             </div>
  

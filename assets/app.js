@@ -122,7 +122,7 @@ $(document).ready(function() {
   
 
 //// REQUETE ASYNC TRIER PRODUITS PAR PRIX
-$(document).ready(function() {
+/* $(document).ready(function() {
     
     $("#filter").change(function() {
 
@@ -191,105 +191,118 @@ $(document).ready(function() {
     });
 
 });
-
+ */
 
 ////  CODE POUR AFFICHER LES PRODUITS PETIT A PETIT
-function loadProducts(filter = null) {
+    let lastProductId = 0; // initialiser lastProductId
+    let lastProductPrice = 0;
+    let allProductsLoaded = false; 
 
-    const lastProductElement = document.querySelector('.products-card:last-of-type');
-    if (lastProductElement) {
-        lastProductId = parseInt(lastProductElement.dataset.productId, 10);
+    /// Fonction qui crée les cards à afficher
+    function createProductElement(product) {
+
+        const productElement = document.createElement('div');
+        productElement.classList.add('products-card');
+        productElement.dataset.productId = product.id;
+    
+        // Ajoutez le contenu HTML du produit (nom, image, prix, etc.)
+        productElement.innerHTML = `<a href="{{ path('app_product_show', ${product.id}) }}">            
+                                        <div class="products-img-container">
+                                            <img src="/uploads/products/${product.picture}" alt="${product.name}" title="${product.name}">
+                                        </div>
+                                        <span class="type">Pièce unique</span>
+                                        <h5> ${product.name} </h5>
+                                        <div class="trait"> </div>
+                                        <span class="price"> ${product.price} € </span>  
+                                        <form action="{{ path('app_cart_add', {'idProduct': ${product.id}}) }}" method="POST">
+                                            <input type="submit" class="btn-add" value="Ajouter au panier">
+                                        </form>
+                                    </a>`;    
+    
+        return productElement;
     }
+    
+    // Fonction qui récupère l'id du dernier produit affiché et récupère les infos des produits à l'id supérieur au dernier produit
+    function loadProducts(filter) {
 
-    console.log('last product element', lastProductElement) // renvoie bien le dernier produit
-    console.log('last product id', lastProductId) // renvoie bien l'id du dernier produit
-
-    const url = filter ? `/product/load-more/${encodeURIComponent(filter)}` : '/product/load-more/all'; // pas la même url si y a un filtre ou pas de filtre
-
-    const loadingMessage = document.querySelector('#loading-message');
-    if (loadingMessage) {
-        loadingMessage.style.display = 'block'; // pour que le message de chargement soit affiché uniquement pendant la requête
-    }
-
-    const formData = new FormData();
-    formData.append('lastProductId', lastProductId);
-
-    // le fetch semble mauvais
-    fetch(url, {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-
-        console.log('Données reçues depuis fetch :', data); // renvoie les données du dernier produit au lieu de renvoyer les produits à l'id supérieur au dernier produit
-
-        const productsContainer = document.querySelector('#list-products'); // le parent qui contient mes cards product
-        
-        data.products.forEach(product => {
-            const productElement = createProductElement(product); // créer l'élément HTML pour le produit
-            productsContainer.appendChild(productElement); // ajouter l'élément au container
-        });
-
-        // met à jour la valeur de 'lastProductId' pour le prochain chargement (à vérifier)
-        if (data.products.length > 0) {
-            lastProductId = data.products[data.products.length - 1].id;
+        if (allProductsLoaded) {
+            return;
         }
 
-        //  le message de chargement disparait une fois la requête terminée
+        const lastProductElement = document.querySelector('.products-card:last-of-type');
+        if (lastProductElement) {
+            lastProductId = parseInt(lastProductElement.dataset.productId, 10);
+            lastProductPrice = parseInt(lastProductElement.dataset.productPrice, 10);
+        }
+
+        console.log('last product element', lastProductElement) // renvoie bien le dernier produit
+        console.log('last product id', lastProductId) // renvoie bien l'id du dernier produit
+        console.log('last product price', lastProductPrice) // renvoie bien le prix du dernier produit
+
+        const url =`/product/load-more/${encodeURIComponent(filter)}`; // l'url change en fonction du filtre récupéré
+
+        const loadingMessage = document.querySelector('#loading-message');
         if (loadingMessage) {
-            loadingMessage.style.display = 'none';
+            loadingMessage.style.display = 'block'; // pour que le message de chargement soit affiché uniquement pendant la requête
         }
-    })
-    .catch(error => {
-        console.error('Erreur lors du chargement des produits:', error);
+
+        const formData = new FormData();
+        formData.append('lastProductId', lastProductId);
+        formData.append('lastProductPrice', lastProductPrice);
+
+        // le fetch semble mauvais
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+
+            console.log('Données reçues depuis fetch :', data);
+
+            const productsContainer = document.querySelector('#list-products'); // le parent qui contient mes cards product
+            
+            data.products.forEach(product => {
+                const productElement = createProductElement(product); // créer l'élément HTML pour le produit
+                productsContainer.appendChild(productElement); // ajouter l'élément au container
+            });
+
+            // met à jour la valeur de 'lastProductId' pour le prochain chargement (à vérifier)
+            if (data.products.length > 0) {
+                lastProductId = data.products[data.products.length - 1].id;
+                lastProductPrice = data.products[data.products.length - 1].price;
+            }
+
+            if (data.products.length < 8) {
+                allProductsLoaded = true;
+            }
+
+            //  le message de chargement disparait une fois la requête terminée
+            if (loadingMessage) {
+                loadingMessage.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des produits:', error);
+        });
+ 
+    }
+
+    // fonction qui détecte le scroll en bas de page et éxécute la fonction pour charger les produits
+    window.addEventListener('scroll', function() {
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+            const currentFilter = $('.dropdown-toggle').attr('data-filter');
+            loadProducts(currentFilter); // Charger initialement les produits avec le filtre appliqué s'il existe
+        }
     });
 
-   
-}
-
-window.addEventListener('scroll', function() {
-    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
-
-        // l'utilisateur est en bas bas de la page
-        const filterElement = document.getElementById('filter');
-        const currentFilter = filterElement ? filterElement.value : null; // pas convaincue de cette ligne
-        loadProducts(currentFilter); // charge les produits suivants avec le filtre pris en compte
-    }
-});
 
 
-// créer le visuel des produits mais je dois soit initialiser "data" soit afficher autrement (on verra une  fois que la requête fonctionne)
-function createProductElement(product) {
-
-    const productElement = document.createElement('div');
-    productElement.classList.add('product');
-    productElement.dataset.productId = product.id;
-
-    // Ajoutez le contenu HTML du produit (nom, image, prix, etc.)
-    productElement.innerHTML = "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
-                                "<div class='products-card'>" +             
-                                    "<div class='products-img-container'>" +
-                                        "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
-                                    "</div>" +
-                                    "<span class='type'>Pièce unique</span>" +
-                                    "<h5>" + data[i].name + "</h5>" +
-                                    "<div class='trait'> </div>" +
-                                    "<span class='price'>" + data[i].price + "€ </span>" +
-                                    
-                                    "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
-                                        "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
-                                    "</form>" +
-                                "</div>" +
-                            "</a>";
-
-    return productElement;
-}
 
 
   

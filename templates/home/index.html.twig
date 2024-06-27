@@ -71,7 +71,7 @@
                                     {% if product.stock > 0 %}
                                        <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
                                             Quantité :
-                                            <select name="quantity" class="form-purple quantity">
+                                            <select name="quantity" class="form-purple col-12 mb-3">
                                                 {% for i in 1..product.stock %}
                                                     <option value="{{ i }}">{{ i }}</option>
                                                 {% endfor %}
