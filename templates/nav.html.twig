@@ -1,4 +1,13 @@
 {# accueil, créations, contact/commande perso, livre d'or, à propos #}
+
+{# BURGER MENU #}
+  <div id="burger_menu">
+    <div>---</div>
+    <div>---</div>
+    <div>---</div>
+  </div>
+
+
 <nav id="nav">
 
   <ul class="d-flex">
@@ -8,12 +17,17 @@
     </li>
 
     <li id="creations">
-      <a href="{{ path('app_product_index') }}" id="creations"> Nos créations </a>
-
+     
+        <a href="{{ path('app_product_index') }}" id="creations" class="dropdown-toggle"> Nos créations </a>
+        {# <span id="dropdown_toggle">V</span> #}
+   
       <ul id="dropdown">
+          <li> 
+            <a href="{{ path('app_product_index') }}"> Voir tout </a>
+          </li>
           {% for category in categories %}
           <li>
-            <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}"> {{category.title}} </a>
+            <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}" id="nav-dropdown" data-category-id="{{ category.id }}"> {{category.title}} </a>
           </li>
           {% endfor %}
       </ul>

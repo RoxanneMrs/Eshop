@@ -14,22 +14,27 @@
 
             <h4 class="d-none d-sm-block"> Filtrer par </h4>
 
+
+            {# {% if app.request.attributes.get('_route') == 'app_product_index' %} #}
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-filter="{% if filter == 'ASC' %}ASC{% elseif filter == 'DESC' %}DESC{% else %}none{% endif %}">
+                <button class="btn btn-secondary dropdown-toggle" id="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-filter="{{ filter|default('none') }}">
                         {% if filter == 'ASC' %}
                             Par prix croissant
                         {% elseif filter == 'DESC' %}
                             Par prix décroissant
                         {% else %}
-                            Sélectionner un filtre
+                            Pas de filtre
                         {% endif %}
                     </button>
                 <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'none' })}}">Pas de filtre</a></li>
                     <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'ASC' })}}">Par prix croissant</a></li>
                     <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'DESC' })}}">Par prix décroissant</a></li>
                 </ul>
             </div>
+            {# {% endif %} #}
         </div>
+
 
 
         <div class="container-products">  
@@ -75,17 +80,15 @@
                     </div>
                 {% endfor %}
 
-                 {# <span id="loading-message"> Chargement en cours </span> #}
-              
             </div>
  
           
 
         </div>
    
-        <div class="pagination">
+        {# <div class="pagination">
             {{ knp_pagination_render(products) }}
-        </div>
+        </div> #}
 
     </section>
 

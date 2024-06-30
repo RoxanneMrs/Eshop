@@ -19,24 +19,57 @@ console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
 // NAV PRINCIPALE
 $('#nav li').hover(function() {
-    $(this).addClass('highlight');
+    if (!$(event.target).is('#creations') || window.innerWidth >= 768) {
+        $(this).addClass('highlight');
+    }
 }, function() {
-    $(this).removeClass('highlight');
+    if (!$(event.target).is('#creations') || window.innerWidth >= 768) {
+        $(this).removeClass('highlight');
+    }
 });
 
 $('#nav li').click(function() {
-    $('li.selected').find('a').css('color', 'rgb(124, 95, 138)');   
-    $('li').removeClass('selected');
-    $(this).addClass('selected');
-    $(this).find('a').css('color', 'rgb(247, 244, 240)');
+    if (!$(event.target).is('#creations')) {
+        $('li.selected').find('a').css('color', 'rgb(124, 95, 138)');   
+        $('li').removeClass('selected');
+        $(this).addClass('selected');
+        $(this).find('a').css('color', 'rgb(247, 244, 240)');
+    }
 });
 
 const CREATIONS = $("#creations");
 const DROPDOWN = $("#dropdown");
+const DROPDOWN_TOGGLE = $(".dropdown-toggle::after");
 
 CREATIONS.hover(function() {
     DROPDOWN.slideToggle("slow")
 });
+
+CREATIONS.click(function() {
+    if (window.innerWidth <= 768) {
+        event.preventDefault(); 
+    }
+})
+
+$("#burger_menu").click(function(){
+    $("#nav").slideToggle();
+});
+
+DROPDOWN_TOGGLE.click(function() {
+    if (window.innerWidth <= 768) { // Activer uniquement sur les petits écrans
+      CREATIONS.toggleClass('open');
+      DROPDOWN.slideToggle();
+    }
+});
+
+// /// NAV MOBILE 
+// const burgerIcon = $("#burger");
+// const navList = $('#nav ul');
+
+// burgerIcon.addEventListener('click', () => {
+//     navList.classList.toggle('active');
+// });
+
 
 
 /// PAGE PRODUCT : LISTE DES CATEGORIES
@@ -54,18 +87,22 @@ $('#products-categories li').click(function() {
 });
 
 
+
+
 // REQUETE ASYNC POUR LES CATEGORIES DE LA PAGE PRODUCT
 $(document).ready(function() {
 
     $("#products-categories a").click(function(event) {
 
         event.preventDefault(); 
-  
-        const id_category = parseInt($(this).attr('id').replace('category-link-', ''));
-  
-        fetchProductByCategory(id_category);
 
-            async function fetchProductByCategory(id_category) {
+        const isViewAll = $(this).attr('id') === 'view-all';
+        const id_category = isViewAll ? 0 : parseInt($(this).attr('id').replace('category-link-', ''));
+        let filter = getFilterValue();
+  
+        fetchProductByCategory(id_category, filter);
+
+            async function fetchProductByCategory(id_category, filter) {
 
                 const url = `/product/api/category/${id_category}`;
             
@@ -108,12 +145,21 @@ $(document).ready(function() {
                 }
 
             $('#list-products').html(listProducts);
+        }
 
+        function getFilterValue() {
+            // Implémentez votre logique pour obtenir la valeur actuelle du filtre (asc, desc, ou autre)
+            const filterValue = $('#dropdown-toggle').data('filter');
+            return filterValue;
         }
 
         $("#products-categories a").removeClass("active"); 
+        if (isViewAll) {
+            $("view-all").addClass("active");
+        } else {
         $(`#products-categories a#${id_category}`).addClass("active"); 
-
+        }
+        
         if (id_category) {
             fetchProductByCategory(id_category);
         }
@@ -194,6 +240,7 @@ $(document).ready(function() {
  */
 
 ////  CODE POUR AFFICHER LES PRODUITS PETIT A PETIT
+    
     let lastProductId = 0; // initialiser lastProductId
     let lastProductPrice = 0;
     let allProductsLoaded = false; 
@@ -204,6 +251,7 @@ $(document).ready(function() {
         const productElement = document.createElement('div');
         productElement.classList.add('products-card');
         productElement.dataset.productId = product.id;
+        productElement.dataset.productPrice = product.price;
     
         // Ajoutez le contenu HTML du produit (nom, image, prix, etc.)
         productElement.innerHTML = `<a href="{{ path('app_product_show', ${product.id}) }}">            
@@ -220,8 +268,8 @@ $(document).ready(function() {
                                     </a>`;    
     
         return productElement;
-    }
-    
+    } 
+
     // Fonction qui récupère l'id du dernier produit affiché et récupère les infos des produits à l'id supérieur au dernier produit
     function loadProducts(filter) {
 
@@ -235,22 +283,21 @@ $(document).ready(function() {
             lastProductPrice = parseInt(lastProductElement.dataset.productPrice, 10);
         }
 
+        if (filter !== 'ASC' && filter !== 'DESC') {
+            filter = 'none'; // Default filter
+        }
+        
         console.log('last product element', lastProductElement) // renvoie bien le dernier produit
         console.log('last product id', lastProductId) // renvoie bien l'id du dernier produit
         console.log('last product price', lastProductPrice) // renvoie bien le prix du dernier produit
 
         const url =`/product/load-more/${encodeURIComponent(filter)}`; // l'url change en fonction du filtre récupéré
 
-        const loadingMessage = document.querySelector('#loading-message');
-        if (loadingMessage) {
-            loadingMessage.style.display = 'block'; // pour que le message de chargement soit affiché uniquement pendant la requête
-        }
-
         const formData = new FormData();
         formData.append('lastProductId', lastProductId);
         formData.append('lastProductPrice', lastProductPrice);
 
-        // le fetch semble mauvais
+        // récupère les données de la requête
         fetch(url, {
             method: 'POST',
             body: formData,
@@ -263,6 +310,9 @@ $(document).ready(function() {
         })
         .then(data => {
 
+            console.log('last product element', lastProductElement) // renvoie bien le dernier produit
+            console.log('last product id', lastProductId) // renvoie bien l'id du dernier produit
+            console.log('last product price', lastProductPrice) // renvoie bien le prix du dernier produit
             console.log('Données reçues depuis fetch :', data);
 
             const productsContainer = document.querySelector('#list-products'); // le parent qui contient mes cards product
@@ -281,11 +331,6 @@ $(document).ready(function() {
             if (data.products.length < 8) {
                 allProductsLoaded = true;
             }
-
-            //  le message de chargement disparait une fois la requête terminée
-            if (loadingMessage) {
-                loadingMessage.style.display = 'none';
-            }
         })
         .catch(error => {
             console.error('Erreur lors du chargement des produits:', error);
@@ -296,8 +341,9 @@ $(document).ready(function() {
     // fonction qui détecte le scroll en bas de page et éxécute la fonction pour charger les produits
     window.addEventListener('scroll', function() {
         if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
-            const currentFilter = $('.dropdown-toggle').attr('data-filter');
-            loadProducts(currentFilter); // Charger initialement les produits avec le filtre appliqué s'il existe
+            const currentFilter = $('#dropdown-toggle').attr('data-filter');
+            const currentCategory = $('#nav-dropdown').attr('data-category-id');
+            loadProducts(currentFilter === 'none' ? null : currentFilter, currentCategory); // Charger initialement les produits avec le filtre appliqué s'il existe
         }
     });
 
