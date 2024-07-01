@@ -27,9 +27,15 @@
                         {% endif %}
                     </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'none' })}}">Pas de filtre</a></li>
-                    <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'ASC' })}}">Par prix croissant</a></li>
-                    <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'DESC' })}}">Par prix décroissant</a></li>
+                    {% if currentRoute == 'app_product_index' %}
+                        <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'none' })}}">Pas de filtre</a></li>
+                        <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'ASC' })}}">Par prix croissant</a></li>
+                        <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'DESC' })}}">Par prix décroissant</a></li>
+                    {% elseif currentRoute == 'app_get_product_by_category' %}
+                        <li><a class="dropdown-item" href="{{ path('app_get_product_by_category', { id_category: categoryId, filter: 'none' }) }}">Pas de filtre</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_get_product_by_category', { id_category: categoryId, filter: 'ASC' }) }}">Par prix croissant</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_get_product_by_category', { id_category: categoryId, filter: 'DESC' }) }}">Par prix décroissant</a></li>
+                    {% endif %}
                 </ul>
             </div>
             {# {% endif %} #}

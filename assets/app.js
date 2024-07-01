@@ -271,7 +271,10 @@ $(document).ready(function() {
     } 
 
     // Fonction qui récupère l'id du dernier produit affiché et récupère les infos des produits à l'id supérieur au dernier produit
-    function loadProducts(filter) {
+    function loadProducts(filter, categoryId = null) {
+
+        console.log('categoryId:', categoryId);
+
 
         if (allProductsLoaded) {
             return;
@@ -291,11 +294,16 @@ $(document).ready(function() {
         console.log('last product id', lastProductId) // renvoie bien l'id du dernier produit
         console.log('last product price', lastProductPrice) // renvoie bien le prix du dernier produit
 
-        const url =`/product/load-more/${encodeURIComponent(filter)}`; // l'url change en fonction du filtre récupéré
+        const url =`/product/${categoryId}/load-more/${encodeURIComponent(filter)}`; // l'url change en fonction du filtre récupéré
 
         const formData = new FormData();
         formData.append('lastProductId', lastProductId);
         formData.append('lastProductPrice', lastProductPrice);
+        if (categoryId !== null) {
+            formData.append('categoryId', categoryId);
+        }
+
+        console.log('categoryId', categoryId)
 
         // récupère les données de la requête
         fetch(url, {
@@ -338,11 +346,24 @@ $(document).ready(function() {
  
     }
 
+    // pour avoir le bon ID de category dans loadMore, je le prends depuis l'URL
+    function extractCategoryIdFromUrl(url) {
+        const match = url.match(/\/product\/(\d+)/);
+
+        if (match && match.length > 1) {
+            return match[1]; // Le groupe capturé correspond à l'ID de la catégorie
+        }
+
+        return null; // Retourne null si aucune correspondance trouvée
+    }
+
+
     // fonction qui détecte le scroll en bas de page et éxécute la fonction pour charger les produits
     window.addEventListener('scroll', function() {
         if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
             const currentFilter = $('#dropdown-toggle').attr('data-filter');
-            const currentCategory = $('#nav-dropdown').attr('data-category-id');
+            const currentCategory = extractCategoryIdFromUrl(currentUrl);
+            console.log('Current Category ID:', currentCategory);
             loadProducts(currentFilter === 'none' ? null : currentFilter, currentCategory); // Charger initialement les produits avec le filtre appliqué s'il existe
         }
     });

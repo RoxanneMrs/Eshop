@@ -18,8 +18,7 @@
 
     <li id="creations">
      
-        <a href="{{ path('app_product_index') }}" id="creations" class="dropdown-toggle"> Nos créations </a>
-        {# <span id="dropdown_toggle">V</span> #}
+      <a href="{{ path('app_product_index') }}" id="all-products" class="dropdown-toggle"> Nos créations </a>
    
       <ul id="dropdown">
           <li> 
@@ -27,7 +26,7 @@
           </li>
           {% for category in categories %}
           <li>
-            <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}" id="nav-dropdown" data-category-id="{{ category.id }}"> {{category.title}} </a>
+            <a href="{{ path('app_get_product_by_category', {id_category : category.id}) }}" class="category-select" data-category-id="{{ category.id }}"> {{category.title}} </a>
           </li>
           {% endfor %}
       </ul>

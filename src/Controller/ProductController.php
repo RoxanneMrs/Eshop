@@ -54,13 +54,14 @@ class ProductController extends AbstractController
         return $this->render('product/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
             'products' => $products,
-            'filter' => $filter
+            'filter' => $filter,
+            'currentRoute' => 'app_product_index', // Ajoutez cette ligne
         ]);
     }
 
 
      // Cette route permet d'accéder aux produits liés à 1 catégorie à partir de ma nav
-     #[Route('/category/{id_category}', name: 'app_get_product_by_category', methods: ['GET'])]
+     #[Route('/{id_category}', name: 'app_get_product_by_category', methods: ['GET'])]
      public function getProductByCategory(EntityManagerInterface $entityManager, int $id_category, CategoryRepository $categoryRepository, Request $request, ProductRepository $productRepository): Response
      {
          $filter = $request->query->get('filter');
@@ -78,26 +79,34 @@ class ProductController extends AbstractController
              'products' => $products, 
              'categories' => $categoryRepository->findAll(),
              'filter' => $filter,
+             'currentRoute' => 'app_get_product_by_category',
+             'categoryId' => $id_category,
          ]);
      }
 
      // Action pour le chargement progressif des produits
-     #[Route('/load-more/{filter}', name: 'app_product_load_more', methods: ['POST'])]
-     public function loadMore(ProductRepository $productRepository, Request $request, $filter): Response
+     #[Route('/{categoryId}/load-more/{filter}', name: 'app_product_load_more_category', methods: ['POST'])]
+     public function loadMore(ProductRepository $productRepository, Request $request, $filter, $categoryId): Response
      {
         try {
             // Récupération du lastProductId depuis la requête
             $lastProductId = $request->request->getInt('lastProductId');
             $lastProductPrice = $request->request->getInt('lastProductPrice');
-            $categoryId = $request->request->getInt('categoryId', 0);
             $limit = 8;
 
+            // $categoryId = $request->request->get('categoryId', null);
+            // if ($categoryId !== null) {
+            //     $categoryId = (int) $categoryId;
+            // }
+
             // Déterminer si un filtre par prix est demandé
-            if ($filter === null || $filter === 'none') {
-                $order = 'none';
-            } else if ($filter === 'ASC' || $filter === 'DESC') {
-                $order = strtoupper($filter);
-            }
+            // if ($filter === null || $filter === 'none') {
+            //     $order = 'none';
+            // } else if ($filter === 'ASC' || $filter === 'DESC') {
+            //     $order = strtoupper($filter);
+            // }
+
+            $order = strtoupper($filter);
 
              // Ajout des logs pour déboguer
             $this->logger->info('Chargement des produits avec les paramètres suivants:', [
@@ -137,11 +146,8 @@ class ProductController extends AbstractController
     }
     
 
-
-
-
     // La page qui affiche 1 article détaillé
-    #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
+    #[Route('/product/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
         return $this->render('product/show.html.twig', [
