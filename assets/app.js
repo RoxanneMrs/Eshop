@@ -100,6 +100,8 @@ $(document).ready(function() {
         const id_category = isViewAll ? 0 : parseInt($(this).attr('id').replace('category-link-', ''));
         let filter = getFilterValue();
   
+        hidePriceDropdown();
+
         fetchProductByCategory(id_category, filter);
 
             async function fetchProductByCategory(id_category, filter) {
@@ -151,6 +153,11 @@ $(document).ready(function() {
             // Implémentez votre logique pour obtenir la valeur actuelle du filtre (asc, desc, ou autre)
             const filterValue = $('#dropdown-toggle').data('filter');
             return filterValue;
+        }
+
+        function hidePriceDropdown() {
+            // Sélectionne et masque le dropdown de prix
+            $('#filter-dropdown').hide(); // ou $('.dropdown').css('display', 'none');
         }
 
         $("#products-categories a").removeClass("active"); 
@@ -275,7 +282,6 @@ $(document).ready(function() {
 
         console.log('categoryId:', categoryId);
 
-
         if (allProductsLoaded) {
             return;
         }
@@ -287,14 +293,14 @@ $(document).ready(function() {
         }
 
         if (filter !== 'ASC' && filter !== 'DESC') {
-            filter = 'none'; // Default filter
+            filter = 'none';
         }
         
         console.log('last product element', lastProductElement) // renvoie bien le dernier produit
-        console.log('last product id', lastProductId) // renvoie bien l'id du dernier produit
-        console.log('last product price', lastProductPrice) // renvoie bien le prix du dernier produit
+        console.log('last product id', lastProductId, 'type:', typeof lastProductId) // renvoie bien l'id du dernier produit
+        console.log('last product price', lastProductPrice, 'type:', typeof lastProductPrice) // renvoie bien le prix du dernier produit
 
-        const url =`/product/${categoryId}/load-more/${encodeURIComponent(filter)}`; // l'url change en fonction du filtre récupéré
+        const url =`/product/${encodeURIComponent(categoryId)}/load-more/${encodeURIComponent(filter)}`; // l'url change en fonction du filtre récupéré
 
         const formData = new FormData();
         formData.append('lastProductId', lastProductId);
@@ -303,7 +309,9 @@ $(document).ready(function() {
             formData.append('categoryId', categoryId);
         }
 
-        console.log('categoryId', categoryId)
+        console.log('categoryId après formData', categoryId);
+        console.log('FormData entries:', Array.from(formData.entries()));
+
 
         // récupère les données de la requête
         fetch(url, {
@@ -318,9 +326,9 @@ $(document).ready(function() {
         })
         .then(data => {
 
-            console.log('last product element', lastProductElement) // renvoie bien le dernier produit
-            console.log('last product id', lastProductId) // renvoie bien l'id du dernier produit
-            console.log('last product price', lastProductPrice) // renvoie bien le prix du dernier produit
+            console.log('last product element', lastProductElement); // renvoie bien le dernier produit
+            console.log('last product id', lastProductId, 'type:', typeof lastProductId); // renvoie bien l'id du dernier produit et son type
+            console.log('last product price', lastProductPrice, 'type:', typeof lastProductPrice); // renvoie bien le prix du dernier produit et son type
             console.log('Données reçues depuis fetch :', data);
 
             const productsContainer = document.querySelector('#list-products'); // le parent qui contient mes cards product
@@ -346,6 +354,7 @@ $(document).ready(function() {
  
     }
 
+
     // pour avoir le bon ID de category dans loadMore, je le prends depuis l'URL
     function extractCategoryIdFromUrl(url) {
         const match = url.match(/\/product\/(\d+)/);
@@ -361,9 +370,19 @@ $(document).ready(function() {
     // fonction qui détecte le scroll en bas de page et éxécute la fonction pour charger les produits
     window.addEventListener('scroll', function() {
         if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+
             const currentFilter = $('#dropdown-toggle').attr('data-filter');
-            const currentCategory = extractCategoryIdFromUrl(currentUrl);
+            const currentUrl = window.location.href; // je récupère l'url actuelle de ma page
+            
+            console.log('url actuelle :', window.location.href)
+
+            const currentCategory = extractCategoryIdFromUrl(currentUrl); // et grâce à elle je récupère ma catégorie
+
+            console.log('la catégorie récupérée par url :', extractCategoryIdFromUrl(currentUrl));
+
+            console.log('que me renvoie url :', extractCategoryIdFromUrl(window.location.href) );
             console.log('Current Category ID:', currentCategory);
+
             loadProducts(currentFilter === 'none' ? null : currentFilter, currentCategory); // Charger initialement les produits avec le filtre appliqué s'il existe
         }
     });

@@ -14,9 +14,7 @@
 
             <h4 class="d-none d-sm-block"> Filtrer par </h4>
 
-
-            {# {% if app.request.attributes.get('_route') == 'app_product_index' %} #}
-            <div class="dropdown">
+            <div class="dropdown" id="filter-dropdown">
                 <button class="btn btn-secondary dropdown-toggle" id="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-filter="{{ filter|default('none') }}">
                         {% if filter == 'ASC' %}
                             Par prix croissant
@@ -38,7 +36,6 @@
                     {% endif %}
                 </ul>
             </div>
-            {# {% endif %} #}
         </div>
 
 

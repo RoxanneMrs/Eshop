@@ -99,12 +99,12 @@ class ProductRepository extends ServiceEntityRepository
 
 
     
-    public function findProductsByCriteria(string $order, int $lastProductId = 0, $categoryId = null, int $lastProductPrice = 0, int $limit = 8): array
-{
+    public function findProductsByCriteria(int $lastProductId = 0, int $categoryId = null, float $lastProductPrice = 0, string $order, int $limit = 8): array
+    {
     $qb = $this->createQueryBuilder('p');
 
 
-    if ($categoryId !== null) {
+    if ($categoryId !== null && $categoryId !== 0) {
         $qb->andWhere('p.category = :categoryId')
             ->setParameter('categoryId', $categoryId);
     }
@@ -121,10 +121,6 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('lastProductPrice', $lastProductPrice)
             ->setParameter('lastProductId', $lastProductId)
             ->orderBy('p.price', 'DESC');
-    } else if ($order ==='none') {
-        $qb->andWhere('p.id > :lastProductId')
-            ->setParameter('lastProductId', $lastProductId)
-            ->orderBy('p.id', 'ASC');
     } else {
         $qb->andWhere('p.id > :lastProductId')
             ->setParameter('lastProductId', $lastProductId)
