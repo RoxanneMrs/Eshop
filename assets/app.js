@@ -18,57 +18,52 @@ import $ from 'jquery'
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
 // NAV PRINCIPALE
-$('#nav li').hover(function() {
-    if (!$(event.target).is('#creations') || window.innerWidth >= 768) {
-        $(this).addClass('highlight');
-    }
-}, function() {
-    if (!$(event.target).is('#creations') || window.innerWidth >= 768) {
-        $(this).removeClass('highlight');
-    }
-});
+    // la page de ma nav que j'hover devient verte
+    $('#nav li').hover(function() {
+        if (!$(event.target).closest('#creations') || window.innerWidth >= 768) {
+            $(this).addClass('highlight');
+        }
+    }, function() {
+            $(this).removeClass('highlight');
+    });
 
-$('#nav li').click(function() {
-    if (!$(event.target).is('#creations')) {
-        $('li.selected').find('a').css('color', 'rgb(124, 95, 138)');   
-        $('li').removeClass('selected');
-        $(this).addClass('selected');
-        $(this).find('a').css('color', 'rgb(247, 244, 240)');
-    }
-});
+    // la page de ma nav sur laquelle je clique devient violette
+    $('#nav li').click(function() {
+        if (!$(event.target).closest('#creations') || window.innerWidth > 768) {
+            $('li.selected').find('a').css('color', 'rgb(124, 95, 138)');   
+            $('li').removeClass('selected');
+            $(this).addClass('selected');
+            $(this).find('a').css('color', 'rgb(247, 244, 240)');
+        }
+    });
 
-const CREATIONS = $("#creations");
-const DROPDOWN = $("#dropdown");
-const DROPDOWN_TOGGLE = $(".dropdown-toggle::after");
+    const CREATIONS = $("#creations");
+    const DROPDOWN = $("#dropdown");
 
-CREATIONS.hover(function() {
-    DROPDOWN.slideToggle("slow")
-});
+    CREATIONS.hover(function() {
+        DROPDOWN.slideToggle("slow")
+    });
 
-CREATIONS.click(function() {
-    if (window.innerWidth <= 768) {
-        event.preventDefault(); 
-    }
-})
+    // pour le responsive, afficher la nav grâce au menu burger
+    $("#burger_menu").click(function(){
+        $("#nav").slideToggle();
+    });
 
-$("#burger_menu").click(function(){
-    $("#nav").slideToggle();
-});
+    // ici je fais en sorte que "mes créations" ne redirigent pas vers las page index mais qu'à la place il permette à ce que le dropdown s'ouvre et se ferme 
+    let isDropdownOpen = false;
+    CREATIONS.click(function(event) {
+        if (window.innerWidth <= 768) {
+            event.preventDefault();
+            isDropdownOpen = !isDropdownOpen;
+            CREATIONS.toggleClass('open', isDropdownOpen);
+            DROPDOWN.slideToggle("slow");
+        }
+    });
 
-DROPDOWN_TOGGLE.click(function() {
-    if (window.innerWidth <= 768) { // Activer uniquement sur les petits écrans
-      CREATIONS.toggleClass('open');
-      DROPDOWN.slideToggle();
-    }
-});
-
-// /// NAV MOBILE 
-// const burgerIcon = $("#burger");
-// const navList = $('#nav ul');
-
-// burgerIcon.addEventListener('click', () => {
-//     navList.classList.toggle('active');
-// });
+    // les liens sous "mes créations" doivent rester cliquables
+    DROPDOWN.find('a').click(function(event) {
+        event.stopPropagation(); 
+    });
 
 
 
