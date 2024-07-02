@@ -42,7 +42,7 @@
                         <a href="{{ path('app_profile_password_edit') }}"> <u> Modifier mon mot de passe </u> </a>
                     </li>
                     <li class="list-group-item text-center">
-                        <a href="{{ path('app_profile_delete') }}"> <u> Supprimer mon compte </u> </a>
+                        <a href="{{ path('app_profile_delete') }}" onclick="return confirm('Souhaitez vous vraiment supprimer votre compte ?')"> <u> Supprimer mon compte </u> </a>
                     </li>
                 </ul>
             </div>

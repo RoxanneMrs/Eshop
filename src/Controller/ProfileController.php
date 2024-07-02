@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\ChangePasswordFormType;
 use App\Form\UserType;
+use App\Service\ImageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +28,7 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/profile/edit', name: 'app_profile_edit')]
-    public function modify(Request $request, EntityManagerInterface $entityManager): Response
+    public function modify(Request $request, EntityManagerInterface $entityManager, ImageService $imageService) : Response
     {
 
         $form = $this->createForm(UserType::class, $this->getUser());
@@ -36,6 +37,15 @@ class ProfileController extends AbstractController
 
         if($form->isSubmitted()) {
             if($form->isValid()) {
+
+                $user = $this->getUser();
+                $directory = $this->getParameter('user_picture_directory');
+                $newFilename = $imageService->copyImage('picture', $directory, $form);
+        
+                if ($newFilename) {
+                    $user->setPicture($newFilename);
+                }
+
 
                 $entityManager->persist($this->getUser());
                 $entityManager->flush();

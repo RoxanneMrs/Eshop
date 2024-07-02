@@ -61,7 +61,7 @@ class CartController extends AbstractController
         $quantity = $request->request->getInt('quantity');
         if ($quantity <= 0 || $quantity > $product->getStock()) {
             $this->addFlash('error', 'Quantité invalide. Ce produit est disponible en ' . $product->getStock() . ' exemplaires maximum.');
-        return $this->redirectToRoute('app_product_show', ['id'=> $idProduct]);
+            return $this->redirectToRoute('app_product_show', ['id'=> $idProduct]);
         }
 
         $cart["id"][] = $product->getId();
