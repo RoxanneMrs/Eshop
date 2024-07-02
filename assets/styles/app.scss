@@ -79,7 +79,7 @@ select:focus {
 }
 
 .dark-purple {
-    color: rgb(86, 36, 110);
+    color: rgb(88, 36, 112);
 }
 
 .box-shadow {
@@ -276,23 +276,24 @@ input[type="search"]:hover {
         }
     }
 
-    .product-card {
-        width: 45%;
-        // background: none;
-        padding: 0.5rem;
-        margin: 1rem 0.5rem;
-        border: none;
-        // box-shadow: none;
+    #section-news {
+        .product-card {
+            width: 45%;
+            // background: none;
+            padding: 0.5rem;
+            margin: 1rem 0.5rem;
+            border: none;
+            // box-shadow: none;
         
-        .img-container {
-            height: 200px;
+            .img-container {
+                height: 200px;
+            }
+
+            .quick-view, .btn-preview {
+                display: none;
+            }     
         }
-
-        .quick-view, .btn-preview {
-        display: none;
-        }     
     }
-
     .discover {
         margin: 0rem 0rem 1.5rem 0rem;
     }
@@ -482,31 +483,32 @@ input[type="search"]:hover {
     }
 }
 
-.product-card {
-    width: 280px;
-    text-align: center;
-    padding: 0.7rem 1rem;
-    position: relative;
-    margin: 1rem 1.5rem;
-    border: 1px solid transparent;
-    box-shadow: 0px 5px 5px 1px rgba(124, 95, 138, 0.5);
-    background: rgb(248, 247, 246);
+#section-news {
+    .product-card {
+        width: 280px;
+        text-align: center;
+        padding: 0.7rem 1rem;
+        position: relative;
+        margin: 1rem 1.5rem;
+        border: 1px solid transparent;
+        box-shadow: 0px 5px 5px 1px rgba(124, 95, 138, 0.5);
+        background: rgb(248, 247, 246);
 
-    :hover .quick-view {
-        opacity: 1;
-    }
+        :hover .quick-view {
+            opacity: 1;
+        }
 
-    :hover .btn-preview {
-        opacity: 1;
-    }
+        :hover .btn-preview {
+            opacity: 1;
+        }
 
-    h5 {
-        color: rgb(124, 95, 138);
-        padding: 0.2rem;
-        margin: 0;
+        h5 {
+            color: rgb(124, 95, 138);
+            padding: 0.2rem;
+            margin: 0;
+        }
     }
 }
-
 .img-container {
     width: 100%;
     height: 250px;
@@ -841,10 +843,20 @@ input[type="search"]:hover {
     }
 
     .btn-dropdown {
-        border: 1px solid rgb(172, 199, 175);
-        background-color: rgb(178, 204, 181);
+        border: 1px solid rgb(86, 36, 110);
+        background-color: rgba(86, 36, 110, 0.836);
         padding: 0.2rem 2rem;
         color: white;
+
+        &:hover, :focus {
+            background-color: rgba(86, 36, 110, 0.562);
+        }
+    }
+
+    #filter-dropdown .dropdown-menu .show {
+        width: 100%;
+        border-radius: 0%;
+ 
     }
 }
 

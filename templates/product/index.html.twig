@@ -15,7 +15,7 @@
             <h4 class="d-none d-sm-block"> Filtrer par </h4>
 
             <div class="dropdown" id="filter-dropdown">
-                <button class="btn btn-secondary dropdown-toggle" id="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-filter="{{ filter|default('none') }}">
+                <button class="btn-dropdown dropdown-toggle" id="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-filter="{{ filter|default('none') }}">
                         {% if filter == 'ASC' %}
                             Par prix croissant
                         {% elseif filter == 'DESC' %}
@@ -23,7 +23,7 @@
                         {% else %}
                             Pas de filtre
                         {% endif %}
-                    </button>
+                </button>
                 <ul class="dropdown-menu">
                     {% if currentRoute == 'app_product_index' %}
                         <li><a class="dropdown-item" href="{{path('app_product_index', { filter : 'none' })}}">Pas de filtre</a></li>
