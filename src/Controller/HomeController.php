@@ -60,6 +60,8 @@ class HomeController extends AbstractController
             return $this->render('product/index.html.twig', [
                 'products' => $products,
                 'categories' => $categoryRepository->findAll(),
+                'filter' => $request->query->get('filter'),
+                'currentRoute' => 'app_product_index', 
             ]);
         
         } else {
