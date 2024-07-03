@@ -43,6 +43,9 @@ class Product
 
     #[ORM\Column]
     private ?bool $new = null;
+    
+    #[ORM\Column(length: 255)]
+    private ?string $priceIdStripe = null;
 
     public function __construct()
     {
@@ -164,6 +167,18 @@ class Product
     public function setNew(bool $new): static
     {
         $this->new = $new;
+
+        return $this;
+    }
+
+    public function getPriceIdStripe(): ?string
+    {
+        return $this->priceIdStripe;
+    }
+
+    public function setPriceIdStripe(string $priceIdStripe): static
+    {
+        $this->priceIdStripe = $priceIdStripe;
 
         return $this;
     }

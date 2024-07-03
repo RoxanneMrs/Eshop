@@ -48,7 +48,7 @@ class CartController extends AbstractController
                 "picture" => [],    
                 "price" => [],
                 "stock" => [],
-                // "priceIdStripe" => [],
+                "priceIdStripe" => [],
             ]);
         }
 
@@ -69,6 +69,7 @@ class CartController extends AbstractController
         $cart["text"][] = $product->getText();
         $cart["picture"][] = $product->getPicture();
         $cart["price"][] = $product->getPrice();
+        $cart["priceIdStripe"][] = $product->getPriceIdStripe();
         $cart["stock"][] = $quantity;
         // $cart["priceIdStripe"][] = $product->getPriceIdStripe();
 
@@ -102,10 +103,5 @@ class CartController extends AbstractController
     return $this->redirectToRoute('app_cart');
 
    }
-
-
-
-
-
 
 }
