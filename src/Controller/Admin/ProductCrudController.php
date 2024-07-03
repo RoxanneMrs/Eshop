@@ -51,6 +51,7 @@ class ProductCrudController extends AbstractCrudController
             ->setCurrency('EUR')
             ->setStoredAsCents(false)
             ->setNumDecimals(2),
+            TextField::new('priceIdStripe'),
         ];
     }
 }
