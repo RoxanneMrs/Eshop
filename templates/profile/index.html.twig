@@ -36,7 +36,7 @@
                         {{ app.user.address }} {{ app.user.city }} {{ app.user.postalCode }} {{ app.user.country }}
                     </li>
                     <li class="list-group-item text-center">
-                        <a href=""> Mes commandes </a>
+                        <a href="{{path('app_orders_history')}}"> Mes commandes </a>
                     </li>
                     <li class="list-group-item text-center">
                         <a href="{{ path('app_profile_password_edit') }}"> <u> Modifier mon mot de passe </u> </a>

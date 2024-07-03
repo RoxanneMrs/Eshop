@@ -8,6 +8,7 @@ parameters:
     app.mailAddress: '%env(MAIL_ADDRESS)%'
     user_picture_directory: '%kernel.project_dir%/public/uploads/users'
     product_picture_directory: '%kernel.project_dir%/public/uploads/products'
+    app.stripe_key: '%env(STRIPE_KEY)%'
 
 services:
     # default configuration for services in *this* file

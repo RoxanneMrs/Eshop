@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la commande n°{{ order.id }} {% endblock %}
+
+{% block body %}
+    <section class="section">
+        <h1 class="pb-4">Détails de la commande n°{{ order.id }}</h1>
+
+        <p><strong>Passée le :</strong> {{ order.date|date('d/m/Y') }}</p>
+        <h2>Produits commandés :</h2>
+
+         <table>
+            {% for orderDetail in order.orderDetails %}
+            <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Image</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td> {{ orderDetail.product.name }} </td>
+                    <td> <img style="width:100px" src="{{ asset('uploads/products/' ~ orderDetail.product.picture) }}" alt="Image de {{ orderDetail.product.text }}"> </td>
+                    <td> {{ orderDetail.product.price }} € </td>
+                    <td> {{ orderDetail.quantity }} </td> 
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+ 
+        <p><strong>Total :</strong> {{ order.total }} € </p>
+    </section>
+{% endblock %}

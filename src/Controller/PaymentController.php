@@ -17,8 +17,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Stripe\Stripe;
+use Stripe\Checkout\Session as StripeSession;
+use Stripe\PaymentIntent;
 
 class PaymentController extends AbstractController
 {
@@ -29,25 +32,31 @@ class PaymentController extends AbstractController
     {
 
         $user = $this->getUser();
+
+        if (!$user) {
+            // Rediriger vers la page de connexion ou afficher un message d'erreur
+            return $this->redirectToRoute('app_login');
+        }
+
         // je récupère ma session panier
         $productsInSession = $request->getSession()->get('cart');
 
-        if(!empty($productsInSession)) {
+        if (!empty($productsInSession)) {
 
             // Définir la clé secrète de Stripe
             // récupérer ma session stripe via ma clé stripe
             \Stripe\Stripe::setApiKey($this->getParameter('app.stripe_key'));
-            
+
             // je mets tous mes produits de mon panier dans un tableau php
             $products = [];
-    
-            for($i = 0; $i < count($productsInSession["id"]); $i++) {
+
+            for ($i = 0; $i < count($productsInSession["id"]); $i++) {
                 $products[] = [
                     "price" => $productsInSession["priceIdStripe"][$i],
-                    "quantity" => $productsInSession["quantity"][$i]
+                    "quantity" => $productsInSession["stock"][$i]
                 ];
             }
-    
+
             // afficher un formulaire de paiement avec une session de paiement stripe
             $session = \Stripe\Checkout\Session::create([
                 'payment_method_types' => ['card'],
@@ -62,8 +71,8 @@ class PaymentController extends AbstractController
                 'cancel_url' => $this->generateUrl('app_stripe_error', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 // 'client_reference_id' => 1
             ]);
-    
-    
+
+
             // créer un paiement en bdd
             // pour stocker les informations liées à la session de paiement stripe
             $payment = new Payment();
@@ -75,7 +84,7 @@ class PaymentController extends AbstractController
                 ->setPrice($session['amount_total'] / 100);
             $entityManager->persist($payment);
             $entityManager->flush();
-    
+
             return $this->redirect($session->url, 303);
 
         } else {
@@ -110,130 +119,140 @@ class PaymentController extends AbstractController
 
             // On vérifie si la page SUCCESS a déjà été visitée OU si la session à un customer d'enregistré.
             // S'il n'y a pas de Customer cela veut dire que l'utilisateur est allé sur la page Checkout mais n'a pas fait de paiement.
+            $lastPayment->setPaymentStatus($session['payment_status'])
+                ->setSuccessPageExpired(true);
+
+            $entityManager->persist($lastPayment);
+            $entityManager->flush();
+
 
             // ca me permet de savoir que le dernier paiement effectué par le user
             // n'est pas encore arrivé sur la page success
             // et que donc je peux créer mes factures et mes commandes
-            if ($lastPayment->isSuccessPageExpired() == false && $session['payment_status'] == "paid") {
 
-                // Récupération de toutes les informations liés à la session et donc au dernier paiement
-                $subscription = \Stripe\PaymentIntent::retrieve($session['payment_intent']);
-                // $invoice = \Stripe\Invoice::retrieve($subscription['latest_invoice']);
+            // Récupération de toutes les informations liés à la session et donc au dernier paiement
+            $subscription = \Stripe\PaymentIntent::retrieve($session['payment_intent']);
+            // $invoice = \Stripe\Invoice::retrieve($subscription['latest_invoice']);
 
-                // je mets à jour mon paiement
+            // je mets à jour mon paiement
 
-                /**
-                 * Insertion des informations de paiement en BDD
-                 */
-                $lastPayment->setPaymentStatus($session['payment_status'])
-                    // ->setCustomerStripeId($session['customer'])
-                    // ->setSubscriptionId($session['subscription'])
-                    ->setSuccessPageExpired(true); // On paramètre ici la valeur true ce qui permettra d'éviter à un utilisateur de retourner sur cette page une deuxième fois.
-                $entityManager->persist($lastPayment);
+            /**
+             * Insertion des informations de paiement en BDD
+             */
+            $lastPayment->setPaymentStatus($session['payment_status'])
+                // ->setCustomerStripeId($session['customer'])
+                // ->setSubscriptionId($session['subscription'])
+                ->setSuccessPageExpired(true); // On paramètre ici la valeur true ce qui permettra d'éviter à un utilisateur de retourner sur cette page une deuxième fois.
+            $entityManager->persist($lastPayment);
 
 
-                // je vais générer les orders et orders details ainsi que la facture que j'envoie par email
+            // je vais générer les orders et orders details ainsi que la facture que j'envoie par email
 
-                // je récupère la session cart
-                $cart = $request->getSession()->get('cart');
-                // je créé une commande
-                $order = new Order;
-                $cartTotal = 0;
+            // je récupère la session cart
+            $cart = $request->getSession()->get('cart');
+            // je créé une commande
+            $order = new Order;
+            $cartTotal = 0;
 
-                for ($i = 0; $i < count($cart["id"]); $i++) {
-                    $cartTotal += (float) $cart["price"][$i] * $cart["quantity"][$i];
+            for ($i = 0; $i < count($cart["id"]); $i++) {
+                $cartTotal += (float) $cart["price"][$i] * $cart["stock"][$i];
+            }
+
+            $order->setTotal($cartTotal);
+            $order->setStatus('En cours');
+            $order->setUser($this->getUser());
+            $order->setDate(new \DateTime);
+            $order->setPdf(false);
+            $entityManager->persist($order);
+            $entityManager->flush();
+
+            // pour chaque élément de mon panier je créé un détail de commande
+            for ($i = 0; $i < count($cart["id"]); $i++) {
+                $orderDetails = new OrderDetails;
+                $orderDetails->setIdOrder($order);
+                $orderDetails->setProduct($productRepository->find($cart["id"][$i]));
+                $orderDetails->setQuantity($cart["id"][$i]);
+
+                // Décrémenter le stock du produit
+                $product = $orderDetails->getProduct();
+                $newStock = (int) $product->getStock() - $cart["stock"][$i];
+                $product->setStock((string) $newStock);
+
+                $entityManager->persist($orderDetails);
+                $entityManager->persist($product); 
+                $entityManager->flush();
+            }
+
+            if (!$order->isPdf()) {
+
+                // on génera le PDF
+                $pdfOptions = new Options();
+                $pdfOptions->set(['defaultFont' => 'Arial', 'enable_remote' => true]);
+                // 2- On crée le pdf avec les options
+                $dompdf = new Dompdf($pdfOptions);
+
+                $invoiceNumber = $order->getId();
+
+                // 3- On prépare le twig qui sera transformée en pdf
+                $html = $this->renderView('invoices/index.html.twig', [
+                    'user' => $this->getUser(),
+                    'amount' => $order->getTotal(),
+                    'invoiceNumber' => $invoiceNumber,
+                    'date' => new \DateTime(),
+                    'orderDetails' => $orderDetailsRepository->findBy(['id_order' => $order->getId()])
+                ]);
+
+                // 4- On transforme le twig en pdf avec les options de format
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+
+                // 5- On enregistre le pdf dans une variable
+                $dompdf->render();
+                $finalInvoice = $dompdf->output();
+
+                if (!file_exists('uploads/factures')) {
+                    mkdir('uploads/factures');
                 }
 
-                $order->setTotal($cartTotal);
-                $order->setStatus('En cours');
-                $order->setUser($this->getUser());
-                $order->setDate(new \DateTime);
-                $order->setPdf(false);
+                $pathInvoice = "./uploads/factures/" . $invoiceNumber . "_" . $this->getUser()->getId() . ".pdf";
+                file_put_contents($pathInvoice, $finalInvoice);
+                // on l'enverra par mail la facture
+                // on affichera une page de succès
+
+                $email = (new TemplatedEmail())
+                    ->from($this->getParameter('app.mailAddress'))
+                    ->to($this->getUser()->getEmail())
+                    ->subject("Facture Blog Afpa 2024")
+                    ->htmlTemplate("invoices/email.html.twig")
+                    ->context([
+                        'user' => $this->getUser(),
+                        'amount' => $order->getTotal(),
+                        'invoiceNumber' => $invoiceNumber,
+                        'date' => new \DateTime(),
+                        'orderDetails' => $orderDetailsRepository->findBy(['id_order' => $order->getId()])
+                    ])
+                    ->attach($finalInvoice, sprintf('facture-' . $invoiceNumber . 'blog-afpa.pdf', date("Y-m-d")));
+
+                $mailer->send($email);
+
+                $order->setPdf(true);
                 $entityManager->persist($order);
                 $entityManager->flush();
 
-                // pour chaque élément de mon panier je créé un détail de commande
-                for ($i = 0; $i < count($cart["id"]); $i++) {
-                    $orderDetails = new OrderDetails;
-                    $orderDetails->setIdOrder($order);
-                    $orderDetails->setProduct($productRepository->find($cart["id"][$i]));
-                    $orderDetails->setQuantity($cart["id"][$i]);
+                // vider le panier
+                $session = $request->getSession();
+                $session->set('cart', []);
 
-                    $entityManager->persist($orderDetails);
-                    $entityManager->flush();
-                }
-
-                if(!$order->isPdf()) {
-
-                    // on génera le PDF
-                    $pdfOptions = new Options();
-                    $pdfOptions->set(['defaultFont' => 'Arial', 'enable_remote' => true]);
-                    // 2- On crée le pdf avec les options
-                    $dompdf = new Dompdf($pdfOptions);
-        
-                    $invoiceNumber = $order->getId();
-            
-                    // 3- On prépare le twig qui sera transformée en pdf
-                    $html = $this->renderView('invoices/index.html.twig', [
-                        'user' => $this->getUser(),
-                        'amount' => $order->getTotal(),
-                        'invoiceNumber' => $invoiceNumber,
-                        'date' => new \DateTime(),
-                        'orderDetails' => $orderDetailsRepository->findBy(['orderNumber' => $order->getId()])
-                    ]);
-            
-                    // 4- On transforme le twig en pdf avec les options de format
-                    $dompdf->loadHtml($html);
-                    $dompdf->setPaper('A4', 'portrait');
-            
-                    // 5- On enregistre le pdf dans une variable
-                    $dompdf->render();
-                    $finalInvoice = $dompdf->output();
-            
-                    if (!file_exists('uploads/factures')) {
-                        mkdir('uploads/factures');
-                    }
-        
-                    $pathInvoice = "./uploads/factures/" . $invoiceNumber . "_" . $this->getUser()->getId() . ".pdf";
-                    file_put_contents($pathInvoice, $finalInvoice);
-                    // on l'enverra par mail la facture
-                    // on affichera une page de succès
-            
-                    $email = (new TemplatedEmail())
-                        ->from($this->getParameter('app.mailAddress'))
-                        ->to($this->getUser()->getEmail())
-                        ->subject("Facture Blog Afpa 2024")
-                        ->htmlTemplate("invoice/email.html.twig")
-                        ->context([
-                            'user' => $this->getUser(),
-                            'amount' => $order->getTotal(),
-                            'invoiceNumber' => $invoiceNumber,
-                            'date' => new \DateTime(),
-                            'orderDetails' => $orderDetailsRepository->findBy(['orderNumber' => $order->getId()])
-                        ])
-                        ->attach($finalInvoice, sprintf('facture-' . $invoiceNumber . 'blog-afpa.pdf', date("Y-m-d")));
-            
-                    $mailer->send($email);
-            
-                    $order->setPdf(true);
-                    $entityManager->persist($order);
-                    $entityManager->flush();
-            
-                    // vider le panier
-                    $session = $request->getSession();
-                    $session->set('cart', []);        
-
-                    return $this->render('payment/success.html.twig', [
-                        'user' => $this->getUser(),
-                        'amount' => $order->getTotal(),
-                        'invoiceNumber' => $invoiceNumber,
-                        'date' => new \DateTime(),
-                        'orderDetails' => $orderDetailsRepository->findBy(['orderNumber' => $order->getId()])
-                    ]);
-        
-                }
+                return $this->render('payment/success.html.twig', [
+                    'user' => $this->getUser(),
+                    'amount' => $order->getTotal(),
+                    'invoiceNumber' => $invoiceNumber,
+                    'date' => new \DateTime(),
+                    'orderDetails' => $orderDetailsRepository->findBy(['id_order' => $order->getId()])
+                ]);
 
             }
+
 
         }
 
@@ -256,9 +275,4 @@ class PaymentController extends AbstractController
         ]);
     }
 
-
-
-
-
-    
 }

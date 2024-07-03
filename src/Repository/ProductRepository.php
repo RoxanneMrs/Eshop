@@ -35,71 +35,8 @@ class ProductRepository extends ServiceEntityRepository
 
 
 
-
-    // public function findProductsByLastId(int $lastProductId, int $limit = 8): array
-    // {
-    //     return $this->createQueryBuilder('p')
-    //         ->where('p.id > :lastProductId')
-    //         ->setParameter('lastProductId', $lastProductId)
-    //         ->orderBy('p.id', 'ASC')
-    //         ->setMaxResults($limit)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
-
-    // public function findProductsByCategory(int $lastProductId, int $categoryId, int $limit = 8): array 
-    // {
-    //     return $this->createQueryBuilder('p')
-    //         ->where('p.id > :lastProductId')
-    //         ->andWhere('p.category = :categoryId')
-    //         ->setParameter('lastProductId', $lastProductId)
-    //         ->setParameter('categoryId', $categoryId)
-    //         ->setMaxResults($limit)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
     
-    // public function findProductsByLastPrice(int $lastProductPrice, string $order, int $limit = 8)
-    // {
-    //     return $this->createQueryBuilder('p')
-    //         ->where($order === 'ASC' ? 'p.price > :lastProductPrice' : 'p.price < :lastProductPrice')
-    //         ->setParameter('lastProductPrice', $lastProductPrice)
-    //         ->orderBy('p.price', $order)
-    //         ->setMaxResults($limit)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
-
-
-    // public function findProductsByLastPriceAndCategory(int $lastProductPrice, string $order, int $categoryId, int $limit = 8)
-    // {
-    //     return $this->createQueryBuilder('p')
-    //         ->where($order === 'ASC' ? 'p.price > :lastProductPrice' : 'p.price < :lastProductPrice')
-    //         ->andWhere('p.category = :categoryId')
-    //         ->setParameter('lastProductPrice', $lastProductPrice)
-    //         ->setParameter('categoryId', $categoryId)
-    //         ->orderBy('p.price', $order)
-    //         ->setMaxResults($limit)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ; 
-    // }
-
-    // public function findProductByFilter($filter) : array {
-
-    //     return $this->createQueryBuilder('a')
-    //         ->orderBy("a.price", $filter)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
-
-
-    
-    public function findProductsByCriteria(string $order, int $lastProductId = 0, int $categoryId = null, float $lastProductPrice = 0,  int $limit = 8): array
+    public function findProductsByCriteria(int $lastProductId = 0, int $categoryId = null, float $lastProductPrice = 0, string $order, int $limit = 8): array
     {
     $qb = $this->createQueryBuilder('p');
 

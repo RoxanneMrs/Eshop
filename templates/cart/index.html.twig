@@ -4,7 +4,46 @@
 
 {% block body %}
 
-<section class="section">
+<style>
+/* public/css/cart.css */
+.cart-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.cart-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.cart-total {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 20px;
+}
+
+</style>
+
+
+<section class="cart-container">
     
      {{ include('flash.html.twig') }}
 
@@ -12,7 +51,7 @@
     
     {% if cartItems is not empty %}   
         
-        <table class="col-8 box-shadow">
+        <table class="col-8">
         
             <thead>
                 <tr>
@@ -46,17 +85,15 @@
 
             </tbody>
         
-
-        
         </table>
         
         <div class="cart-total">
             Total: <span>{{ cartTotal }} €</span>
         </div>
-
-        {# <form action="{{path('app_stripe_checkout')}}" method="POST">
+ 
+        <form action="{{path('app_stripe_checkout')}}" method="POST">
             <input type="submit" name="payer" value="Pay" class="btn btn-outline-secondary">
-        </form> #}
+        </form>
 
         <a href="{{ path('app_cart_delete')}}" class="btn btn-danger mt-2"> Vider le panier </a>
 
@@ -65,7 +102,6 @@
     {% endif %}    
 
 </section>
-
 
 
 {% endblock %}
