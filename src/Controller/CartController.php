@@ -92,7 +92,29 @@ class CartController extends AbstractController
     }
 
 
+    #[Route('/cart/delete/{idProduct}', name: 'app_cart_remove', methods: ['POST'])]
+    public function removeProduct(Request $request, int $idProduct): Response
+    {
+        $cartItems = $request->getSession()->get('cart', []);
+ 
+        foreach ($cartItems['id'] as $i => $idProduct) {
     
+             if (isset($cartItems["id"][$i])) {
+                 unset($cartItems["id"][$i]);
+             }
+         
+             $this->addFlash(
+                 'success',
+                 'L\'article a bien été supprimé du panier'
+             );
+         }
+ 
+        $request->getSession()->set('cart', $cartItems);
+ 
+        return $this->redirectToRoute('app_cart');
+    }
+ 
+
 
     #[Route('/cart/delete', name: 'app_cart_delete', methods: ['GET'])]
    public function deleteCart (Request $request): Response {

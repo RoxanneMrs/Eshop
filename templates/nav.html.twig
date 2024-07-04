@@ -56,7 +56,12 @@
         <a href="{{ path('app_register') }}"> S'inscrire </a>
       </li>
     {% endif %}
-  </ul>
 
-  
+    {% if is_granted('ROLE_ADMIN') %}
+      <li>
+        <a aria-label="backoffice" href="{{path('admin')}}"> BackOffice </a>
+      </li>
+    {% endif %}
+  </ul>
+ 
 </nav>

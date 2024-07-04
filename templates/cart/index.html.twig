@@ -43,7 +43,7 @@ th {
 </style>
 
 
-<section class="cart-container">
+<section class="section">
     
      {{ include('flash.html.twig') }}
 
@@ -59,30 +59,29 @@ th {
                     <th>Article</th>
                     <th>Description</th>
                     <th>Image</th>
-                    <th>Prix</th>
                     <th>Quantité</th>
-                    {# <th>Action</th> #}
+                    <th>Action</th>
+                    <th>Prix</th>
                 </tr>
             </thead>
 
             <tbody>
-        
-            {% for i in 0..(cartItems.id|length - 1) %}
-
-                {{ dump(cartItems) }}
-
-                <tr>
-                <td> {{ cartItems.id[i] }} </td>
-                <td> {{ cartItems.name[i] }} </td>
-                <td> {{ cartItems.text[i] }} </td>
-                <td> <img style="width:50px" src="{{ asset('uploads/products/' ~ cartItems.picture[i]) }}" alt="Image de {{ cartItems.text[i]}}"> </td>
-                <td> {{ cartItems.price[i] }} € </td>
-                <td> {{ cartItems.stock[i] }} </td> 
-                {# <td> {{ include('cart/_delete_form.html.twig') }} </td> #}
-                </tr>
-
-            {% endfor %}
-
+                {% for i in 0..(cartItems.id|length - 1) %}
+                    <tr>
+                    <td> {{ cartItems.id[i] }} </td>
+                    <td> {{ cartItems.name[i] }} </td>
+                    <td> {{ cartItems.text[i] | raw}} </td>
+                    <td> <img style="width:50px" src="{{ asset('uploads/products/' ~ cartItems.picture[i]) }}" alt="Image de {{ cartItems.text[i]}}"> </td>
+                    <td> {{ cartItems.stock[i] }} </td> 
+                    <td>
+                        <form method="post" action="{{ path('app_cart_remove', {'idProduct': cartItems.id[i]}) }}" class="d-flex justify-content-center">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cartItems.id[i]) }}">
+                            <button class="btn-remove">Supprimer l'article</button>
+                        </form>
+                    </td>
+                    <td> {{ cartItems.price[i] }} € </td>
+                    </tr>  
+                {% endfor %}
             </tbody>
         
         </table>

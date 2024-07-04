@@ -405,7 +405,7 @@ input[type="search"]:hover {
 #header-categories {
     width: 100%;
     height: 200px;
-    background-color: rgba(136, 173, 139, 1);
+    background-color: rgb(171, 154, 197);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -496,14 +496,14 @@ input[type="search"]:hover {
 #header-contact {
     width: 100%;
     height: 200px;
-    background-color: rgb(241, 238, 234);
+    background-color: rgba(136, 173, 139, 0.8);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
     h2, span {
-       color: rgba(124, 95, 138, 1); 
+       color: white; 
     }
 }
 
@@ -511,7 +511,7 @@ input[type="search"]:hover {
 #header-comments {
     width: 100%;
     height: 200px;
-    background-color: rgba(124, 95, 138, 1);
+    background-color: rgb(171, 154, 197);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -794,6 +794,21 @@ input[type="search"]:hover {
     }
 }
 
+
+// PAGE PANIER
+.btn-remove {
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 0;
+
+    &:hover {
+        text-decoration: underline;
+    } 
+}
 
 
 /// MEDIA QUERIES

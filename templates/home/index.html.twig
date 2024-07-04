@@ -130,7 +130,7 @@
 
 
 
-    <section class="section p-0 border-purple">
+    <section class="section">
         
         <div id="header-contact">
             <h2> VOS PROJETS </h2>
@@ -145,7 +145,7 @@
 
 
 
-    <section class="section bg-beige">
+    <section class="section">
 
         <div id="header-comments">
             <h2> AVIS </h2>
@@ -185,38 +185,5 @@
         
         <a href="{{ path('app_comment') }}" class="btn-see-more mb-4 mb-sm-5"> Voir plus </a>
     </section>
-
-
-{# href="{{ path('app_product_show', { id : product.id} ) }}" #}
-
-    {# <div class="row p-5">
-
-        <div class="col-8 border">
-
-            {% for product in products %}
-
-                <div class="col-md-12">
-                    <a href="{{ path('app_product_show', { id : product.id} ) }}">
-                        <div class="article d-flex p-3">
-
-                            <img class="col-md-4" src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
-                           
-                            <div class="d-flex flex-column ms-3">
-                                <h3> {{ product.name }} </h3>
-                                <p> {{ product.text }} </p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-            {% endfor %}
-
-            <div class="navigation">
-                {{ knp_pagination_render(products) }}
-            </div>
-
-        </div>
-
-    </div>  #}
 
 {% endblock %}
