@@ -93,13 +93,12 @@ $(document).ready(function() {
 
         const isViewAll = $(this).attr('id') === 'view-all';
         const id_category = isViewAll ? 0 : parseInt($(this).attr('id').replace('category-link-', ''));
-        let filter = getFilterValue();
   
         hidePriceDropdown();
 
-        fetchProductByCategory(id_category, filter);
+        fetchProductByCategory(id_category);
 
-            async function fetchProductByCategory(id_category, filter) {
+            async function fetchProductByCategory(id_category) {
 
                 const url = `/product/api/category/${id_category}`;
             
@@ -111,43 +110,28 @@ $(document).ready(function() {
                 });
                 
                 let data = await response.json();    
-
-                if (filter === 'desc') {
-                    data.sort((a, b) => b.price - a.price);
-                } 
-                
-                if (filter === 'asc') {
-                    data.sort((a, b) => a.price - b.price);
-                }
-            
                 let listProducts = "";
 
                 for(let i = 0; i < data.length; i++) {
 
-                    listProducts += "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
-                        "<div class='products-card'>" +             
-                            "<div class='products-img-container'>" +
-                                "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
-                            "</div>" +
-                            "<span class='type'>Pièce unique</span>" +
-                            "<h5>" + data[i].name + "</h5>" +
-                            "<div class='trait'> </div>" +
-                            "<span class='price'>" + data[i].price + "€ </span>" +
+                    listProducts += `<a href="/product/product/${data[i].id}">` +
+                        `<div class='products-card'>` +
+                            `<div class='products-img-container'>` +
+                                `<img src='/uploads/products/${data[i].picture}' alt='${data[i].name}' title='${data[i].name}'>` +
+                            `</div>` +
+                            `<span class='type'>Pièce unique</span>` +
+                            `<h5>${data[i].name}</h5>` +
+                            `<div class='trait'></div>` +
+                            `<span class='price'>${data[i].price}€</span>` +
                             
-                            "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
-                                "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
-                            "</form>" +
-                        "</div>" +
-                    "</a>";
+                            `<form action='{{ path('app_cart_add', { 'idProduct': ${data[i].id} }) }}' method='POST'>` +
+                                `<input type='submit' class='btn-add' value='Ajouter au panier'>` +
+                            `</form>` +
+                        `</div>` +
+                    `</a>`;
                 }
 
             $('#list-products').html(listProducts);
-        }
-
-        function getFilterValue() {
-            // Implémentez votre logique pour obtenir la valeur actuelle du filtre (asc, desc, ou autre)
-            const filterValue = $('#dropdown-toggle').data('filter');
-            return filterValue;
         }
 
         function hidePriceDropdown() {
@@ -256,7 +240,7 @@ $(document).ready(function() {
         productElement.dataset.productPrice = product.price;
     
         // Ajoutez le contenu HTML du produit (nom, image, prix, etc.)
-        productElement.innerHTML = `<a href="{{ path('app_product_show', ${product.id}) }}">            
+        productElement.innerHTML = `<a href="/product/product/${product.id}">            
                                         <div class="products-img-container">
                                             <img src="/uploads/products/${product.picture}" alt="${product.name}" title="${product.name}">
                                         </div>
