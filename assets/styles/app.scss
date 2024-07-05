@@ -858,9 +858,11 @@ th {
 
 /// MEDIA QUERIES
 @media screen and (max-width: 768px) {
-
-    header {
+    #header {
         width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     #burger_menu {
@@ -1014,6 +1016,10 @@ th {
 
     #header-contact {
         height: 150px;
+    }
+
+    .thread {
+        width: 60%;
     }
 
     #header-comments {

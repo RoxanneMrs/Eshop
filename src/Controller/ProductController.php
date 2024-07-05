@@ -115,7 +115,7 @@ class ProductController extends AbstractController
                 'limit' => $limit,
             ]);
 
-            $products = $productRepository->findProductsByCriteria($lastProductId, $categoryId, $lastProductPrice, $order, $limit);
+            $products = $productRepository->findProductsByCriteria($order, $lastProductId, $categoryId, $lastProductPrice, $limit);
        
 
             $productsData = [];

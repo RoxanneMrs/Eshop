@@ -36,7 +36,7 @@ class ProductRepository extends ServiceEntityRepository
 
 
     
-    public function findProductsByCriteria(int $lastProductId = 0, int $categoryId = null, float $lastProductPrice = 0, string $order, int $limit = 8): array
+    public function findProductsByCriteria(string $order,int $lastProductId = 0, int $categoryId = null, float $lastProductPrice = 0, int $limit = 8): array
     {
     $qb = $this->createQueryBuilder('p');
 
