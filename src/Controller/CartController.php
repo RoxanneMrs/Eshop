@@ -60,7 +60,7 @@ class CartController extends AbstractController
 
         $quantity = $request->request->getInt('quantity');
         if ($quantity <= 0 || $quantity > $product->getStock()) {
-            $this->addFlash('error', 'Quantité invalide. Ce produit est disponible en ' . $product->getStock() . ' exemplaires maximum.');
+            $this->addFlash('error', 'Ce produit n\'est disponible qu\'en ' . $product->getStock() . ' exemplaires maximum.');
             return $this->redirectToRoute('app_product_show', ['id'=> $idProduct]);
         }
 
@@ -74,43 +74,62 @@ class CartController extends AbstractController
         // $cart["priceIdStripe"][] = $product->getPriceIdStripe();
 
         $session->set('cart', $cart);
+
+        $this->addFlash('success', 'Le produit a été ajouté à votre panier.');
     
-       
         //calculer le montant total de mon panier
-        $cartTotal = 0;
+        // $cartTotal = 0;
 
-        for($i = 0; $i < count($session->get('cart')["id"]); $i++) {
-            $cartTotal += floatval($session->get('cart')["price"][$i]) * $session->get('cart')["stock"][$i];
-        }
-
+        // for($i = 0; $i < count($session->get('cart')["id"]); $i++) {
+        //     $cartTotal += floatval($session->get('cart')["price"][$i]) * $session->get('cart')["stock"][$i];
+        // }
 
         // afficher la page panier
-        return $this->render('cart/index.html.twig', [
-            'cartItems' => $session->get('cart'),
-            'cartTotal' => $cartTotal,
-        ]);
+        // return $this->render('cart/index.html.twig', [
+        //     'cartItems' => $session->get('cart'),
+        //     'cartTotal' => $cartTotal,
+        // ]);
+
+        // je récupère l'url de la page précédente et redirige vers celle-ci si possible
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer ?: $this->generateUrl('app_home'));
     }
 
 
     #[Route('/cart/delete/{idProduct}', name: 'app_cart_remove', methods: ['POST'])]
     public function removeProduct(Request $request, int $idProduct): Response
     {
-        $cartItems = $request->getSession()->get('cart', []);
- 
-        foreach ($cartItems['id'] as $i => $idProduct) {
+        $session = $request->getSession();
+
+        $cartItems = $session->get('cart', [
+            "id" => [], "name" => [], "text" => [], "picture" => [], 
+            "price" => [], "stock" => [], "priceIdStripe" => []
+        ]);
     
-             if (isset($cartItems["id"][$i])) {
-                 unset($cartItems["id"][$i]);
-             }
-         
-             $this->addFlash(
-                 'success',
-                 'L\'article a bien été supprimé du panier'
-             );
-         }
- 
-        $request->getSession()->set('cart', $cartItems);
- 
+        // Collecter les index des articles à supprimer
+        $indexesToRemove = [];
+        foreach ($cartItems['id'] as $i => $id) {
+            if ($id == $idProduct) {
+                $indexesToRemove[] = $i;
+            }
+        }
+    
+        // Supprimer les articles par leurs index
+        foreach ($indexesToRemove as $index) {
+            foreach ($cartItems as $key => $items) {
+                unset($cartItems[$key][$index]);
+            }
+        }
+    
+        // Réindexer les tableaux pour éviter des clés manquantes
+        foreach ($cartItems as $key => $items) {
+            $cartItems[$key] = array_values($cartItems[$key]);
+        }
+    
+        $session->set('cart', $cartItems);
+    
+        $this->addFlash('success', 'Article(s) supprimé(s) du panier');
+    
         return $this->redirectToRoute('app_cart');
     }
  

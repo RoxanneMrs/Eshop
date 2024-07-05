@@ -125,6 +125,20 @@ input[type="search"]::placeholder {
     color:rgb(124, 95, 138);
 }
 
+.cart-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-count {
+    position: absolute;
+    top: 14px;
+    right: 60px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
 input[type="search"]:hover {
     background-color: rgb(247, 244, 240);
 }
@@ -405,7 +419,7 @@ input[type="search"]:hover {
 #header-categories {
     width: 100%;
     height: 200px;
-    background-color: rgb(171, 154, 197);
+    background-color: rgba(136, 173, 139, 0.8);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -496,22 +510,30 @@ input[type="search"]:hover {
 #header-contact {
     width: 100%;
     height: 200px;
-    background-color: rgba(136, 173, 139, 0.8);
+    background-color: rgb(171, 154, 197);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 
     h2, span {
        color: white; 
     }
 }
 
+.thread {
+    width: 20%;
+    opacity: 0.8;
+    position: relative;
+    top: -30px; 
+}
+
 // ACCUEIL : SECTION COMMENTAIRES 
 #header-comments {
     width: 100%;
     height: 200px;
-    background-color: rgb(171, 154, 197);
+    background-color: rgba(136, 173, 139, 0.8);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -800,15 +822,38 @@ input[type="search"]:hover {
     background: none;
     border: none;
     color: black;
-    cursor: pointer;
-    font-size: inherit;
-    font-family: inherit;
     padding: 0;
 
     &:hover {
         text-decoration: underline;
     } 
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid rgb(171, 154, 197);
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+}
+
+th {
+    background-color: rgba(171, 154, 197, 0.2);
+    color: rgb(88, 36, 112);
+}
+
+.cart-total {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 20px;
+}
+
 
 
 /// MEDIA QUERIES

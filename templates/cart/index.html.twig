@@ -1,100 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!{% endblock %}
+{% block title %}Votre panier{% endblock %}
 
 {% block body %}
 
-<style>
-/* public/css/cart.css */
-.cart-container {
-    width: 80%;
-    margin: 0 auto;
-}
-
-.cart-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-.cart-total {
-    margin-top: 20px;
-    text-align: right;
-    font-size: 20px;
-}
-
-</style>
-
-
-<section class="section">
+<section class="section mt-0">
     
      {{ include('flash.html.twig') }}
 
-    <h2>Votre panier</h2>
+    <h2 class="py-4 dark-purple">Votre panier</h2>
     
     {% if cartItems is not empty %}   
         
-        <table class="col-8">
+        <div class="col-5">
         
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Article</th>
-                    <th>Description</th>
-                    <th>Image</th>
-                    <th>Quantité</th>
-                    <th>Action</th>
-                    <th>Prix</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for i in 0..(cartItems.id|length - 1) %}
+            <table>
+                <thead>
                     <tr>
-                    <td> {{ cartItems.id[i] }} </td>
-                    <td> {{ cartItems.name[i] }} </td>
-                    <td> {{ cartItems.text[i] | raw}} </td>
-                    <td> <img style="width:50px" src="{{ asset('uploads/products/' ~ cartItems.picture[i]) }}" alt="Image de {{ cartItems.text[i]}}"> </td>
-                    <td> {{ cartItems.stock[i] }} </td> 
-                    <td>
-                        <form method="post" action="{{ path('app_cart_remove', {'idProduct': cartItems.id[i]}) }}" class="d-flex justify-content-center">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cartItems.id[i]) }}">
-                            <button class="btn-remove">Supprimer l'article</button>
-                        </form>
-                    </td>
-                    <td> {{ cartItems.price[i] }} € </td>
-                    </tr>  
-                {% endfor %}
-            </tbody>
-        
-        </table>
-        
-        <div class="cart-total">
-            Total: <span>{{ cartTotal }} €</span>
-        </div>
- 
-        <form action="{{path('app_stripe_checkout')}}" method="POST">
-            <input type="submit" name="payer" value="Pay" class="btn btn-outline-secondary">
-        </form>
+                        {# <th>Id</th> #}
+                        <th>Article</th>
+                        <th>Image</th>
+                        <th>Quantité</th>
+                        <th>Action</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
 
-        <a href="{{ path('app_cart_delete')}}" class="btn btn-danger mt-2"> Vider le panier </a>
+                <tbody>
+                    {% for i in 0..(cartItems.id|length - 1) %}
+                        <tr>
+                        {# <td> {{ cartItems.id[i] }} </td> #}
+                        <td> {{ cartItems.name[i] }} </td>
+                        <td> <img style="width:50px" src="{{ asset('uploads/products/' ~ cartItems.picture[i]) }}" alt="Image de {{ cartItems.text[i]}}"> </td>
+                        <td> {{ cartItems.stock[i] }} </td> 
+                        <td>
+                            <form method="post" action="{{ path('app_cart_remove', {'idProduct': cartItems.id[i]}) }}" class="d-flex justify-content-center">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cartItems.id[i]) }}">
+                                <button class="btn-remove">Supprimer l'article</button>
+                            </form>
+                        </td>
+                        <td> {{ cartItems.price[i] }} € </td>
+                        </tr>  
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+            <div class="cart-total">
+                Total: <span>{{ cartTotal }} €</span>
+            </div>
+ 
+            <form action="{{path('app_stripe_checkout')}}" method="POST" class="text-end pt-2">
+                <input type="submit" name="payer" value="Payer" class="btn dark-purple box-shadow p-2">
+            </form>
+
+            <a href="{{ path('app_cart_delete')}}" class="btn dark-purple box-shadow p-2"> Vider le panier </a>
+        </div>
+
+     
 
     {% else %}
         <p>Votre panier est vide.</p>

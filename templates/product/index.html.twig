@@ -77,6 +77,7 @@
                             <div class="trait"> </div>
                             <span class="price"> {{ product.price }}€</span>
                             <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
+                                <input type="hidden" value="1" name="quantity" />
                                 <input type="submit" class="btn-add" value="Ajouter au panier" />
                             </form>
                         </a>

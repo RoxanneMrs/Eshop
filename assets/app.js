@@ -124,7 +124,8 @@ $(document).ready(function() {
                             `<div class='trait'></div>` +
                             `<span class='price'>${data[i].price}€</span>` +
                             
-                            `<form action='{{ path('app_cart_add', { 'idProduct': ${data[i].id} }) }}' method='POST'>` +
+                            `<form action='/cart/${data[i].id}' method='POST'>` +
+                                `<input type="hidden" value="1" name="quantity" />` +
                                 `<input type='submit' class='btn-add' value='Ajouter au panier'>` +
                             `</form>` +
                         `</div>` +
@@ -153,78 +154,6 @@ $(document).ready(function() {
 });
   
 
-//// REQUETE ASYNC TRIER PRODUITS PAR PRIX
-/* $(document).ready(function() {
-    
-    $("#filter").change(function() {
-
-        async function fetchData(filter) {
-
-            try {
-                const url = `/product/filter/${filter}`;
-        
-                const response = await fetch(url, {
-                    method: 'GET', 
-                    headers: {
-                    'Content-Type': 'application/json', 
-                    },
-                });
-        
-                if (!response.ok) {
-                    throw new Error(`Erreur: ${response.status}`); 
-                }
-        
-                const data = await response.json();
-
-                if (filter === 'desc') {
-                    data.sort((a, b) => b.price - a.price);
-                } 
-                
-                if (filter === 'asc') {
-                    data.sort((a, b) => a.price - b.price);
-                }
-
-                let listProducts = "";
-
-                for(let i = 0; i < data.length; i++) {
-
-                    listProducts += "<a href='{{ path('app_product_show', { id: " + data[i].id + " }) }}'>" +
-                        "<div class='products-card'>" +             
-                            "<div class='products-img-container'>" +
-                                "<img src='/uploads/products/" + data[i].picture +"' alt='"+ data[i].name +"' title='"+ data[i].name +"'>" +
-                            "</div>" +
-                            "<span class='type'>Pièce unique</span>" +
-                            "<h5>" + data[i].name + "</h5>" +
-                            "<div class='trait'> </div>" +
-                            "<span class='price'>" + data[i].price + "€ </span>" +
-                            
-                            "<form action='{{ path('app_cart_add', { 'idProduct':" + data[i].id + "}) }}' method='POST'>" +
-                                "<input type='submit' class='btn-add' value='Ajouter au panier'>" +
-                            "</form>" +
-                        "</div>" +
-                    "</a>";
-                }
-
-                $('#list-products').html(listProducts);
-
-                console.log(data); 
-            
-            } catch (error) {
-                console.error("Il y a eu une erreur avec la requête fetch: ", error.message);
-            }
-        }
-  
-        let filter = $(this).find(":selected").val();
-        if (filter) {
-            fetchData(filter);
-        }
-
-        fetchData(filter);
-    });
-
-});
- */
-
 ////  CODE POUR AFFICHER LES PRODUITS PETIT A PETIT
     
     let lastProductId = 0; // initialiser lastProductId
@@ -248,7 +177,8 @@ $(document).ready(function() {
                                         <h5> ${product.name} </h5>
                                         <div class="trait"> </div>
                                         <span class="price"> ${product.price} € </span>  
-                                        <form action="{{ path('app_cart_add', {'idProduct': ${product.id}}) }}" method="POST">
+                                        <form action="/cart/${product.id}" method="POST">
+                                            <input type="hidden" value="1" name="quantity" />
                                             <input type="submit" class="btn-add" value="Ajouter au panier">
                                         </form>
                                     </a>`;    

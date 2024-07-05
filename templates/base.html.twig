@@ -17,9 +17,9 @@
 
     <body>
            
-        {% include "header.html.twig" %}
+        {# {% include "header.html.twig" %} #}
 
-        {{ render(controller('App\\Controller\\NavController::index')) }}
+        {{ render(controller('App\\Controller\\HeaderController::index')) }}
 
         {% block body %}
         {% endblock %}
