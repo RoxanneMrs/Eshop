@@ -42,8 +42,8 @@ class ContactController extends AbstractController
 
                 // $message = (new Email())
                 $message = (new TemplatedEmail())
-                    ->from($this->getParameter('contact-marais@borisdymak.fr'))
-                    ->to($this->getParameter('contact-marais@borisdymak.fr'))
+                    ->from($this->getParameter('app.mailAddress'))
+                    ->to($this->getParameter('app.mailAddress'))
                     ->cc($contact->getEmail())
                     ->subject($contact->getTopic())
                     ->text($contact->getMessage())
