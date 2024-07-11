@@ -87,7 +87,6 @@ class ProductController extends AbstractController
      public function loadMore(ProductRepository $productRepository, Request $request, $filter, $categoryId): Response
      {
         try {
-            // Récupération du lastProductId depuis la requête
             $lastProductId = $request->request->getInt('lastProductId');
             $lastProductPrice = $request->request->getInt('lastProductPrice');
             $categoryId = $request->request->getInt('categoryId');
@@ -100,14 +99,8 @@ class ProductController extends AbstractController
                 $order = strtoupper($filter);
             }
 
-
-            // $categoryId = $request->request->get('categoryId', null);
-            // if ($categoryId !== null) {
-            //     $categoryId = (int) $categoryId;
-            // }
-
-             // Ajout des logs pour déboguer
-            $this->logger->info('Chargement des produits avec les paramètres suivants:', [
+            // Ajout des logs pour déboguer
+            $this->logger->info('Chargement des produits avec les paramètres suivants :', [
                 'lastProductId' => $lastProductId,
                 'lastProductPrice' => $lastProductPrice,
                 'categoryId' => $categoryId,
@@ -117,9 +110,7 @@ class ProductController extends AbstractController
 
             $products = $productRepository->findProductsByCriteria($order, $lastProductId, $categoryId, $lastProductPrice, $limit);
        
-
             $productsData = [];
-
             foreach ($products as $product) {
                 $productData = [
                     'id' => $product->getId(),

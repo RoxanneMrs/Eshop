@@ -24,7 +24,6 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-
             ->add('email', EmailType::class, [
                 'label' => "Email",
                 'attr' => ['placeholder' => 'Votre email'],
@@ -34,20 +33,14 @@ class RegistrationFormType extends AbstractType
                     new Email(['message' => 'Veuillez renseigner un email valide!']),
                 ],
             ])
-
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => "Accepter les conditions",
                 'mapped' => false,
                 'constraints' => [
-                    new IsTrue([
-                        'message' => 'Veuillez accepter les conditions.',
-                    ]),
+                    new IsTrue(['message' => 'Veuillez accepter les conditions.',]),
                 ],
             ])
-
             ->add('password', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'label' => "Mot de passe",
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
@@ -57,25 +50,15 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Votre mot de passe doit comporter un minimum {{ limit }} caractères',
-                        // max length allowed by Symfony for security reasons
+                        'minMessage' => 'Votre mot de passe doit faire au minimum {{ limit }} caractères',
                         'max' => 4096,
                     ]),
                 ],
             ])
-
             ->add('picture', FileType::class, [
                 'label' => "Image de profil",
-
-                // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
                 'required' => false,
-
-                // unmapped fields can't define their validation using attributes
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
                         'maxSize' => '4024k',
@@ -87,7 +70,6 @@ class RegistrationFormType extends AbstractType
                     ])
                 ],
             ])
-
             ->add('firstName', TextType::class, [
                 'label' => "Prénom",
                 'attr' => ['placeholder' => 'Votre prénom'],
@@ -97,7 +79,6 @@ class RegistrationFormType extends AbstractType
                     new Length(['min' => 2, 'minMessage' => 'Votre prénom doit comporter un minimum de 2 caractères'])
                 ],
             ])
-
             ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'attr' => ['placeholder' => 'Votre nom'],

@@ -86,9 +86,7 @@ $('#products-categories li').click(function() {
 
 // REQUETE ASYNC POUR LES CATEGORIES DE LA PAGE PRODUCT
 $(document).ready(function() {
-
     $("#products-categories a").click(function(event) {
-
         event.preventDefault(); 
 
         const isViewAll = $(this).attr('id') === 'view-all';
@@ -156,7 +154,7 @@ $(document).ready(function() {
 
 ////  CODE POUR AFFICHER LES PRODUITS PETIT A PETIT
     
-    let lastProductId = 0; // initialiser lastProductId
+    let lastProductId = 0;
     let lastProductPrice = 0;
     let allProductsLoaded = false; 
 
@@ -189,8 +187,6 @@ $(document).ready(function() {
     // Fonction qui récupère l'id du dernier produit affiché et récupère les infos des produits à l'id supérieur au dernier produit
     function loadProducts(filter, categoryId = null) {
 
-        console.log('categoryId:', categoryId);
-
         if (allProductsLoaded) {
             return;
         }
@@ -204,23 +200,14 @@ $(document).ready(function() {
         if (filter !== 'ASC' && filter !== 'DESC') {
             filter = 'none';
         }
-        
-        console.log('last product element', lastProductElement) // renvoie bien le dernier produit
-        console.log('last product id', lastProductId, 'type:', typeof lastProductId) // renvoie bien l'id du dernier produit
-        console.log('last product price', lastProductPrice, 'type:', typeof lastProductPrice) // renvoie bien le prix du dernier produit
 
         const url =`/product/${encodeURIComponent(categoryId)}/load-more/${encodeURIComponent(filter)}`; // l'url change en fonction du filtre récupéré
-
         const formData = new FormData();
         formData.append('lastProductId', lastProductId);
         formData.append('lastProductPrice', lastProductPrice);
         if (categoryId !== null) {
             formData.append('categoryId', categoryId);
         }
-
-        console.log('categoryId après formData', categoryId);
-        console.log('FormData entries:', Array.from(formData.entries()));
-
 
         // récupère les données de la requête
         fetch(url, {
@@ -234,11 +221,6 @@ $(document).ready(function() {
             return response.json();
         })
         .then(data => {
-
-            console.log('last product element', lastProductElement); // renvoie bien le dernier produit
-            console.log('last product id', lastProductId, 'type:', typeof lastProductId); // renvoie bien l'id du dernier produit et son type
-            console.log('last product price', lastProductPrice, 'type:', typeof lastProductPrice); // renvoie bien le prix du dernier produit et son type
-            console.log('Données reçues depuis fetch :', data);
 
             const productsContainer = document.querySelector('#list-products'); // le parent qui contient mes cards product
             
@@ -279,20 +261,11 @@ $(document).ready(function() {
     // fonction qui détecte le scroll en bas de page et éxécute la fonction pour charger les produits
     window.addEventListener('scroll', function() {
         if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
-
             const currentFilter = $('#dropdown-toggle').attr('data-filter');
             const currentUrl = window.location.href; // je récupère l'url actuelle de ma page
-            
-            console.log('url actuelle :', window.location.href)
-
             const currentCategory = extractCategoryIdFromUrl(currentUrl); // et grâce à elle je récupère ma catégorie
-
-            console.log('la catégorie récupérée par url :', extractCategoryIdFromUrl(currentUrl));
-
-            console.log('que me renvoie url :', extractCategoryIdFromUrl(window.location.href) );
-            console.log('Current Category ID:', currentCategory);
-
-            loadProducts(currentFilter === 'none' ? null : currentFilter, currentCategory); // Charger initialement les produits avec le filtre appliqué s'il existe
+            loadProducts(currentFilter === 'none' ? null : currentFilter, currentCategory); 
+            // charger initialement les produits avec le filtre appliqué s'il existe
         }
     });
 
