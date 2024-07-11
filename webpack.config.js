@@ -56,6 +56,11 @@ Encore
     // enables Sass/SCSS support
     .enableSassLoader()
 
+     .copyFiles({
+        from: './vendor/easycorp/easyadmin-bundle/src/Resources/public',
+        to: 'bundles/easyadmin/[path][name].[ext]'
+    });
+
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
 

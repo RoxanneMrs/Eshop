@@ -75,7 +75,7 @@ class CartController extends AbstractController
 
         $session->set('cart', $cart);
 
-        $this->addFlash('success', 'Le produit a été ajouté à votre panier.');
+        // $this->addFlash('success', 'Le produit a été ajouté à votre panier.');
     
         //calculer le montant total de mon panier
         // $cartTotal = 0;

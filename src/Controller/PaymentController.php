@@ -43,11 +43,9 @@ class PaymentController extends AbstractController
 
         if (!empty($productsInSession)) {
 
-            // Définir la clé secrète de Stripe
-            // récupérer ma session stripe via ma clé stripe
-            \Stripe\Stripe::setApiKey($this->getParameter('app.stripe_key'));
+            // define secret stripe key and get the session
+            Stripe::setApiKey($this->getParameter('app.stripe_key'));
 
-            // je mets tous mes produits de mon panier dans un tableau php
             $products = [];
 
             for ($i = 0; $i < count($productsInSession["id"]); $i++) {
@@ -57,8 +55,8 @@ class PaymentController extends AbstractController
                 ];
             }
 
-            // afficher un formulaire de paiement avec une session de paiement stripe
-            $session = \Stripe\Checkout\Session::create([
+            // show a payment form with the stripe session
+            $session = StripeSession::create([
                 'payment_method_types' => ['card'],
                 'currency' => 'eur',
                 'line_items' => [
@@ -69,7 +67,6 @@ class PaymentController extends AbstractController
                 'mode' => 'payment',
                 'success_url' => $this->generateUrl('app_stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 'cancel_url' => $this->generateUrl('app_stripe_error', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                // 'client_reference_id' => 1
             ]);
 
 
@@ -185,15 +182,15 @@ class PaymentController extends AbstractController
 
             if (!$order->isPdf()) {
 
-                // on génera le PDF
+                // générer le PDF
                 $pdfOptions = new Options();
                 $pdfOptions->set(['defaultFont' => 'Arial', 'enable_remote' => true]);
-                // 2- On crée le pdf avec les options
+                // On crée le pdf avec les options
                 $dompdf = new Dompdf($pdfOptions);
 
                 $invoiceNumber = $order->getId();
 
-                // 3- On prépare le twig qui sera transformée en pdf
+                // On prépare le twig qui sera transformé en pdf
                 $html = $this->renderView('invoices/index.html.twig', [
                     'user' => $this->getUser(),
                     'amount' => $order->getTotal(),
@@ -202,11 +199,11 @@ class PaymentController extends AbstractController
                     'orderDetails' => $orderDetailsRepository->findBy(['id_order' => $order->getId()])
                 ]);
 
-                // 4- On transforme le twig en pdf avec les options de format
+                // On transforme le twig en pdf avec les options de format
                 $dompdf->loadHtml($html);
                 $dompdf->setPaper('A4', 'portrait');
 
-                // 5- On enregistre le pdf dans une variable
+                // On enregistre le pdf dans une variable
                 $dompdf->render();
                 $finalInvoice = $dompdf->output();
 

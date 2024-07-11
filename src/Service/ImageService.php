@@ -10,7 +10,6 @@
         public function __construct(private SluggerInterface $slugger) {
         }
 
-
         public function copyImage($name, $directory, $form) {
 
             $imageFile = $form->get('picture')->getData();

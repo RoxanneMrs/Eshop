@@ -33,11 +33,11 @@ class ChangePasswordFormType extends AbstractType
                 'first_options' => [
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter a password',
+                            'message' => 'Entrez un mot de passe',
                         ]),
                         new Length([
-                            'min' => 12,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
+                            'min' => 6,
+                            'minMessage' => 'Votre mot de passe doit faire au minimum {{ min }} caractères',
                             // max length allowed by Symfony for security reasons
                             'max' => 4096,
                         ]),

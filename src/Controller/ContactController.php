@@ -46,7 +46,7 @@ class ContactController extends AbstractController
                     ->to($this->getParameter('app.mailAddress'))
                     ->cc($contact->getEmail())
                     ->subject($contact->getTopic())
-                    ->text('Trop bien les mails')
+                    ->text($contact->getMessage())
                     // ->html('<p>' . $contact->getMessage() .' </p>');
                     ->htmlTemplate("email/contact.html.twig")
                     ->context(['contact' => $contact,]);
