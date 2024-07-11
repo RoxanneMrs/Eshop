@@ -42,11 +42,11 @@ class ContactController extends AbstractController
 
                 // $message = (new Email())
                 $message = (new TemplatedEmail())
-                    ->from($this->getParameter('app.mailAddress'))
-                    ->to($this->getParameter('app.mailAddress'))
+                    ->from($this->getParameter('contact-marais@borisdymak.fr'))
+                    ->to($this->getParameter('contact-marais@borisdymak.fr'))
                     ->cc($contact->getEmail())
                     ->subject($contact->getTopic())
-                    ->text('Trop bien les mails')
+                    ->text($contact->getMessage())
                     // ->html('<p>' . $contact->getMessage() .' </p>');
                     ->htmlTemplate("email/contact.html.twig")
                     ->context(['contact' => $contact,]);
