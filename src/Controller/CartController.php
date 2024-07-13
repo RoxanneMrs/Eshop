@@ -125,7 +125,10 @@ class CartController extends AbstractController
         foreach ($cartItems as $key => $items) {
             $cartItems[$key] = array_values($cartItems[$key]);
         }
-    
+
+
+ 
+ 
         $session->set('cart', $cartItems);
     
         $this->addFlash('success', 'Article(s) supprimé(s) du panier');

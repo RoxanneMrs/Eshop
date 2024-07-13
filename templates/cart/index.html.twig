@@ -10,7 +10,7 @@
 
     <h2 class="py-4 dark-purple">Votre panier</h2>
     
-    {% if cartItems is not empty %}   
+    {% if cartItems is not empty and cartItems.id is not empty %}   
         <div class="col-sm-5 col-11">
             <table>
                 <thead>
