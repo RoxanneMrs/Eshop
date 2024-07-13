@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos de l'Atelier{% endblock %}
+
+{% block body %}
+<div id="banner-about">
+		<h1> PRÉSENTATION DE L'ATELIER DE MARAIS </h1>
+		<p> Bienvenue dans le doux univers de l'Atelier de Marais</p>
+	</div>
+
+<section class="section" id="about">
+
+    <div class="col-sm-6">
+
+        <div class="d-flex align-items-center my-2">
+
+            <div>
+                <img src="{{ asset('banner_thread_scroll.png')}}" alt="Photo d'une des créations" height="150px" width="150px" style="border-radius : 50%;"> 
+            </div>
+
+            <div class="p-3">
+                <strong>Créatrice</strong>
+                <p class="mt-2"> Je suis Corinne, la créatrice derrière chaque accessoire cousu avec amour dans mon salon. En tant que passionnée de couture depuis toujours, j'ai commencé à créer les accessoires de l'Atelier de Marais dans un but récréatif avant que ma fille ne me conseille de vendre les accessoires que je n'utilisais pas.
+                </p>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center my-2">
+            <div>
+                <img src="{{ asset('banner_about.jpg')}}" alt="Photo de bobines de fil" height="150px" width="150px" style="border-radius : 50%;"> 
+            </div>
+
+            <div class="p-3">
+                <strong> Inspiration et création </strong>
+                <p class="mt-2">À l'Atelier de Marais, chaque pièce que je conçois est le fruit de mon amour pour les tissus et le détail. Mon inspiration vient de la nature, de la beauté des petits moments de la vie et des besoins de la vie de tous les jours. Je m'efforce de sélectionner les meilleurs matériaux et de créer des designs uniques qui allient élégance et praticité. Mon objectif est de proposer des accessoires qui embellissent votre quotidien avec une touche de Provence.</p>
+            </div>
+        </div>
+
+         <div class="d-flex align-items-center my-2">
+            <div>
+                <img src="{{ asset('coton.jpg')}}" alt="Photo de bobines de fil" height="150px" width="150px" style="border-radius : 50%;"> 
+            </div>
+
+            <div class="p-3">
+                <strong> Matériaux </strong>
+                <p class="mt-2">La grande majorité de mes créations sont faites en coton, un matériau que j'apprécie pour sa douceur, sa durabilité et sa praticité sur une multitude d'accessoires. Je sélectionne soigneusement chaque tissu en privilégiant sa qualité et ses motifs colorés. </p>
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

@@ -17,12 +17,10 @@ class FooterController extends AbstractController
     }
 
 
-
     #[Route('/conditionsdevente', name: 'app_conditions')]
     public function showConditions(): Response
     {
         return $this->render('footer/terms_and_conditions.html.twig', [
-            'controller_name' => 'FooterController',
         ]);
     }
 
@@ -30,7 +28,20 @@ class FooterController extends AbstractController
     public function showLegalNotices(): Response
     {
         return $this->render('footer/legal_notices.html.twig', [
-            'controller_name' => 'FooterController',
+        ]);
+    }
+
+    #[Route('/cookies', name: 'app_cookies')]
+    public function showCookies(): Response
+    {
+        return $this->render('footer/cookies.html.twig', [
+        ]);
+    }
+
+    #[Route('/about', name: 'app_about')]
+    public function showAbout(): Response
+    {
+        return $this->render('footer/about.html.twig', [
         ]);
     }
 }

@@ -16,7 +16,12 @@
             <a href="{{ path('app_profile_edit') }}"style="text-decoration: underline;"> Modifier votre profil </a>
             
             <div class="card col-11 col-sm-4 box-shadow m-2">
-                <img src="{{ asset('/uploads/users/' ~ app.user.picture) }}" alt="{{app.user.firstName}}">
+                
+                {% if app.user.picture is empty %}
+                    <img src="{{ asset('/uploads/users/default.png' ) }}" alt="{{app.user.firstName}}">
+                {% else %}   
+                    <img src="{{ asset('/uploads/users/' ~ app.user.picture) }}" alt="{{app.user.firstName}}">
+                {% endif %}
 
                 <div class="card-body">
                     <h5 class="card-title m-0">

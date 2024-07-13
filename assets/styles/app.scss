@@ -854,7 +854,31 @@ th {
     font-size: 20px;
 }
 
+/// PAGE A PROPOS DE L'ATELIER
+#banner-about {
+    background: url(/public/coton.jpg) no-repeat;
+    background-position-x: left;
+    background-attachment: fixed;
+    background-position-y:bottom;
+    opacity: 0.9;
+    width: 100vw;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 
+    h1, p {
+        color: white;
+        text-shadow: rgb(46, 13, 90) 0.1em 0.1em 0.2em;
+    }
+
+    p {
+        font-size: large;
+        font-weight: bold;
+    }
+}
 
 /// MEDIA QUERIES
 @media screen and (max-width: 768px) {
@@ -882,6 +906,10 @@ th {
             background-color:rgba(255, 255, 255, 0.6);
             margin: 7% 0;
         }
+    }
+
+    .cart-count {
+        right: 13px;
     }
 
     #nav {
@@ -1092,6 +1120,9 @@ th {
         }
     }
     
+    #about {
+        display: block;
+    }
 
 }
 
