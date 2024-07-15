@@ -72,14 +72,25 @@
                                 <img src="{{ asset('/uploads/products/' ~ product.picture) }}" alt="{{product.text}}" title="{{product.name}}">
                             </div>    
 
-                            <span class="type"> Pièce unique </span>
+                            {% if product.stock > 1 %}
+                                <span class="type"> Stock limité </span>
+                            {% else %}
+                                <span class="type"> Pièce unique </span>
+                            {% endif %}
+                            
                             <h5> {{ product.name }} </h5>
                             <div class="trait"> </div>
                             <span class="price"> {{ product.price }}€</span>
-                            <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
-                                <input type="hidden" value="1" name="quantity" />
-                                <input type="submit" class="btn-add" value="Ajouter au panier" />
-                            </form>
+
+                            {% if product.stock >= 1 %}
+                                <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
+                                    <input type="hidden" value="1" name="quantity" />
+                                    <input type="submit" class="btn-add" value="Ajouter au panier" />
+                                </form>
+                            {% else %}
+                                <button class="btn-no-stock" disabled> Rupture de stock </button>
+                            {% endif %}
+
                         </a>
                     </div>
                 {% endfor %}

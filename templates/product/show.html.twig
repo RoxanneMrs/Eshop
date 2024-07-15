@@ -26,14 +26,19 @@
 
                 <form action="{{ path('app_cart_add', {'idProduct': product.id}) }}" method="POST">
                     
-                    Quantité :
-                    <select name="quantity" class="form-purple col-12 mb-3">
-                        {% for i in 1..product.stock %}
-                            <option value="{{ i }}">{{ i }}</option>
-                        {% endfor %}
-                    </select>
 
-                    <input type="submit" class="btn-modalAdd" value="Ajouter au panier" />
+                    {% if product.stock > 0 %}
+                        Quantité :
+                        <select name="quantity" class="form-purple col-12 mb-3">
+                            {% for i in 1..product.stock %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <input type="submit" class="btn-modalAdd" value="Ajouter au panier" />
+                    {% else %}
+                        <button class="btn-modalNoStock" disabled> Rupture de stock </button>
+                    {% endif %}
                 </form>                                                       
             </div>                              
         </div>

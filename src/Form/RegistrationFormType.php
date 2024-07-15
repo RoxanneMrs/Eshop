@@ -30,7 +30,7 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Votre email doit être renseigné']),
-                    new Email(['message' => 'Veuillez renseigner un email valide!']),
+                    new Email(['message' => 'Veuillez renseigner un email valide !']),
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
@@ -66,7 +66,8 @@ class RegistrationFormType extends AbstractType
                             'image/png',
                             'image/jpeg',
                         ],
-                        'mimeTypesMessage' => 'Veuillez uploader un fichier de type pgn ou jpeg',
+                        'mimeTypesMessage' => 
+                        'Veuillez uploader un fichier de type png ou jpeg',
                     ])
                 ],
             ])

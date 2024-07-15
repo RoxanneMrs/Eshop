@@ -13,49 +13,49 @@
      {% include 'flash.html.twig' %}
 
     
-    <section class="section m-5">
+    <section class="section m-sm-5">
     
         <h1 class="mb-5">Créer un compte</h1>
 
         {{ form_errors(registrationForm) }}
 
-        {{ form_start(registrationForm, { 'attr': {'class': 'col-8 box-shadow', 'novalidate': 'novalidate'} }) }}
+        {{ form_start(registrationForm, { 'attr': {'class': 'col-sm-8 box-shadow', 'novalidate': 'novalidate'} }) }}
 
             <div class="row justify-content-center">
-                <div class="col-6">
+                <div class="col-sm-6">
                     {{ form_row(registrationForm.firstName, {'attr': {'class': 'form-purple mb-4'}}) }}
                 </div>
-                <div class="col-6">
+                <div class="col-sm-6">
                     {{ form_row(registrationForm.name, {'attr': {'class': 'form-purple mb-4'}}) }}
                 </div>
             </div>
 
             <div class="row justify-content-center"> 
-                <div class="col-6">
+                <div class="col-sm-6">
                     {{ form_row(registrationForm.phoneNumber, {'attr': {'class': 'form-purple mb-4'}}) }}
                 </div>
-                <div class="col-6">
+                <div class="col-sm-6">
                     {{ form_row(registrationForm.address, {'attr': {'class': 'form-purple mb-4'}}) }}
                 </div>
             </div>
 
             <div class="row justify-content-center"> 
-                <div class="col-4">
+                <div class="col-sm-4">
                     {{ form_row(registrationForm.city, {'attr': {'class': 'form-purple mb-4'}}) }}
                 </div>
-                <div class="col-4">
+                <div class="col-sm-4">
                     {{ form_row(registrationForm.postalCode, {'attr': {'class': 'form-purple mb-4'}}) }}
                 </div>
-                <div class="col-4">
+                <div class="col-sm-4">
                     {{ form_row(registrationForm.country, {'attr': {'class': 'form-purple mb-4'}}) }}
                 </div>
             </div>
             
             <div class="row justify-content-center">
-                <div class="col-6">       
+                <div class="col-sm-6">       
                     {{ form_row(registrationForm.email, {'attr': {'class': 'form-purple mb-4'}}) }}
                 </div>
-                <div class="col-6">
+                <div class="col-sm-6">
                     {{ form_row(registrationForm.password, {'attr' : {'class': 'form-purple mb-4'}}) }}
                 </div>
             </div>
